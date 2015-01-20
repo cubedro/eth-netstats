@@ -4,29 +4,50 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var stats = require('./routes/stats');
-
-require('es6-promise').polyfill();
-
-express().http().io();
+var config = require('./config/nodes');
+var Node = require('./models/node');
 
 var app = express();
+app.http().io();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
+// uncomment after placing favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/stats', stats);
+var nodes = [],
+    nodeStatus = [];
+for(i in config) {
+    var node = new Node(config[i], i);
+    console.log(node);
+    node.update();
+    nodes[i] = node;
+    nodeStatus[i] = {
+        name: node.info.name,
+        type: 'C++',
+        active: (node.info.stats.peers > 0),
+        peers: node.info.stats.peers || 0,
+        mining: node.info.stats.mining || false,
+        block: node.info.stats.block
+    };
+}
+
+app.get('/', function(req, res) {
+  res.render('index', { title: 'Ethereum Network Status' });
+});
+
+app.io.route('ready', function(req) {
+    req.io.emit('init', {
+        nodes: nodeStatus
+    });
+    console.log('emited');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

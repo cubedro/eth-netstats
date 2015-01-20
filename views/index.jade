@@ -1,5 +1,131 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div.container-fluid(ng-controller='StatsCtrl')
+    div.row
+      div.col-lg-6
+        div.col-sm-12
+          h1= title
+          p Welcome to #{title}
+
+        div.clearfix
+
+        div.col-xs-6.stat-holder
+          div.row.big-info.nodesactive.text-success
+            div.pull-left.icon-full-width
+              i.icon-bulb
+            div.pull-left
+              span.small-title nodes active
+              span.big-details {{nodesTotal}}/{{nodesActive}}
+            div.clearfix
+        div.col-xs-6.stat-holder
+          div.row.big-info.bestblock.text-info
+            div.pull-left.icon-full-width
+              i.icon-block
+            div.pull-left
+              span.small-title best block
+              span.big-details {{bestBlock}}
+            div.clearfix
+        div.col-xs-6.stat-holder
+          div.row.big-info.blocktime.text-success
+            div.pull-left.icon-full-width
+              i.icon-time
+            div.pull-left
+              span.small-title block time
+              span.big-details 12 sec
+            div.clearfix
+        div.col-xs-6.stat-holder
+          div.row.big-info.uptime.text-info
+            div.pull-left.icon-full-width
+              i.icon-clock
+            div.pull-left
+              span.small-title up-time
+              span.big-details 100.00%
+            div.clearfix
+
+        div.clearfix
+
+      div.col-lg-6
+        div.col-xs-12
+          div#mapHolder
+
+      div.clearfix
+
+      div.col-sm-12
+        h1= title
+        p Welcome to #{title}
+
+        table.table.table-striped
+          thead
+            tr.text-info
+              th
+                i.icon-node
+              th
+                i.icon-laptop
+              th
+                i.icon-group
+              th
+                i.icon-mining
+              th
+                i.icon-block
+              th.hidden-sm.hidden-xs &nbsp;
+              th
+                i.icon-time
+              th
+                i.icon-clock
+          tbody
+            tr(ng-repeat='node in nodes', class="{{ node.active ? 'text-success' : 'text-danger' }}")
+              td(rel="{{node.id}}") {{node.name}}
+              td {{node.type}}
+              td {{node.peers}}
+              td(class="{{(node.mining === false) ? 'text-danger' : 'text-success'}}")
+                i(class="{{(node.mining === false) ? 'icon-cancel' : 'icon-check'}}")
+              td {{'#' + node.block.height}}
+              td.hidden-sm.hidden-xs
+                span.small {{node.block.hash}}
+              td 16 sec
+              td 98.3%
+            tr.text-success
+              td poc-7.ethdev.com
+              td C++
+              td 7
+              td
+                i.icon-check
+              td #8196
+              td.hidden-sm.hidden-xs
+                span.small 06d1a2c709f23678e716ae8bea400161815a37a16aeced3a4ffed79b96f63566
+              td 16 sec
+              td 98.3%
+            tr.text-warning
+              td poc-6.ethdev.com
+              td C++
+              td 4
+              td
+                i.icon-warning-o
+              td #8186
+              td.hidden-sm.hidden-xs
+                span.small 1545f88598e54e56ec5570b08c592f8c8403e3e1c9ec0eec2f9ba619729ec85e
+              td 3 min
+              td 94.1%
+            tr.text-danger
+              td poc-5.ethdev.com
+              td C++
+              td 0
+              td
+                i.icon-cancel
+              td #3196
+              td.hidden-sm.hidden-xs
+                span.small 45f4e588bf9a03ba0d7146dd83a6a8faf00df471d7484b92d904b77014d10e01
+              td 2 days
+              td 79.4%
+            tr.text-danger
+              td poc-4.ethdev.com
+              td C++
+              td 0
+              td
+                i.icon-cancel
+              td #1196
+              td.hidden-sm.hidden-xs
+                span.small 36d6fe290d52da4518f9017fa7b5dd407007053e345463e7a6fdc905b8d9b2a3
+              td 1 mon
+              td 21.8%
