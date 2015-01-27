@@ -1,0 +1,20 @@
+---
+# default config for ec2 instances
+
+# cpp-compilation needs RAM
+instance_type:      t2.medium
+security_group:     eth-netstat
+
+# image:              ami-d6e7c084
+image:              ami-9eaa1cf6
+# region:             ap-southeast-1
+region:             us-east-1
+keypair:            eth-netstat
+
+# limit access to AWS to these clients in CDIR notation
+ip_access_range:    0.0.0.0/0
+
+
+project_description: https://github.com/cubedro/eth-netstats 
+
+total_no_instances: 3
