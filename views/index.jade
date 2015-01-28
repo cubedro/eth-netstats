@@ -16,7 +16,7 @@ block content
               i.icon-bulb
             div.pull-left
               span.small-title nodes active
-              span.big-details {{nodesTotal}}/{{nodesActive}}
+              span.big-details {{nodesActive}}/{{nodesTotal}}
             div.clearfix
         div.col-xs-6.stat-holder
           div.row.big-info.bestblock.text-info
@@ -24,7 +24,7 @@ block content
               i.icon-block
             div.pull-left
               span.small-title best block
-              span.big-details {{bestBlock}}
+              span.big-details {{"#" + bestBlock}}
             div.clearfix
         div.col-xs-6.stat-holder
           div.row.big-info.blocktime.text-success
@@ -74,15 +74,15 @@ block content
               th
                 i.icon-clock
           tbody
-            tr(ng-repeat='node in nodes', class="{{ node.active ? 'text-success' : 'text-danger' }}")
+            tr(ng-repeat='node in nodes', class="{{ node.stats.active ? 'text-success' : 'text-danger' }}")
               td(rel="{{node.id}}") {{node.name}}
               td {{node.type}}
-              td {{node.peers}}
-              td(class="{{(node.mining === false) ? 'text-danger' : 'text-success'}}")
-                i(class="{{(node.mining === false) ? 'icon-cancel' : 'icon-check'}}")
-              td {{'#' + node.block.height}}
+              td {{node.stats.peers}}
+              td(class="{{(node.stats.mining === false) ? 'text-danger' : 'text-success'}}")
+                i(class="{{(node.stats.mining === false) ? 'icon-cancel' : 'icon-check'}}")
+              td {{'#' + node.stats.block.height}}
               td.hidden-sm.hidden-xs
-                span.small {{node.block.hash}}
+                span.small {{node.stats.block.hash}}
               td 16 sec
               td 98.3%
             //- tr.text-success

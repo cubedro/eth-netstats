@@ -29,14 +29,7 @@ for(i in config) {
     console.log(node);
     node.update();
     nodes[i] = node;
-    nodeStatus[i] = {
-        name: node.info.name,
-        type: 'C++',
-        active: (node.info.stats.peers > 0),
-        peers: node.info.stats.peers || 0,
-        mining: node.info.stats.mining || false,
-        block: node.info.stats.block
-    };
+    nodeStatus[i] = node.info;
 }
 
 app.get('/', function(req, res) {
