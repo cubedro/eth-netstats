@@ -1,0 +1,32 @@
+---
+- name: update package list
+  sudo: true
+  apt: update_cache=true
+
+- name: install docker dependencies
+  sudo: true
+  apt: name={{ item }} install_recommends=false
+  with_items:
+    # Docker has serious problems on EC2: http://www.danstutzman.com/2014/07/speed-up-docker-on-ec2
+    # and https://github.com/docker/docker/issues/4036
+    - linux-generic
+    - python-pip
+  notify: restart server
+
+# make sure resteart is done now, not at end of play
+- meta: flush_handlers
+
+- name: install docker
+  sudo: true
+  # install script from https://docs.docker.com/installation/ubuntulinux/
+  # TODO this is not idempotent
+  shell: curl -sSL https://get.docker.com/ubuntu/ | sudo sh  
+
+- name: install docker python API
+  sudo: true
+  pip: name=docker-py
+
+- name: enable docker for standard user
+  sudo: true
+  user: name={{ ansible_ssh_user }} groups=docker append=yes
+  notify: restart sshd
