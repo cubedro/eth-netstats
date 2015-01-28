@@ -1,0 +1,7 @@
+---
+- name: Install eth nodes w/ json-rpc for query-testing
+  hosts: tag_Role_query_test_node 
+  remote_user: ubuntu
+  roles:
+    - docker
+    - client
