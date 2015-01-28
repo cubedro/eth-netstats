@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var nodes = [],
     nodeStatus = [];
+
 for(i in config) {
     var node = new Node(config[i], i);
     console.log(node);

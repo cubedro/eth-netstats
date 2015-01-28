@@ -24,35 +24,21 @@ var Node = function Node(options, id)
 	return this;
 }
 
-Node.prototype.update = function(cb)
+Node.prototype.update = function()
 {
-	console.log(this);
-
-	if( ! this.web3.provider.installed()) {
-		var sock = new this.web3.providers[this.info.rpcProvider]((this.info.rpcProvider === 'HttpRpcProvider' ? 'http://' : 'ws://' ) + this.info.rpcHost + ':' + this.info.rpcPort);
+	if( ! this.web3.haveProvider()) {
+		var sock = new this.web3.providers.HttpSyncProvider('http://' + this.info.rpcHost + ':' + this.info.rpcPort);
 		this.web3.setProvider(sock);
 	}
 
-	var self = this;
 	var eth = this.web3.eth;
 
-	eth.peerCount.then(function(data){
-		self.info.stats.peers = data;
+	this.info.stats.peers = eth.peerCount;
+	this.info.stats.mining = eth.mining;
+	this.info.stats.block.height = eth.number;
+	this.info.stats.block.hash = eth.block(this.info.stats.block.height).hash;
 
-		return eth.number;
-	})
-	.then(function(data){
-		self.info.stats.block = data;
-
-		return eth.mining;
-	})
-	.then(function(data){
-		self.info.stats.mining = data;
-
-		cb(self.info.stats);
-	}).catch(function(error) {
-		console.log(error);
-	});
+	return this.info;
 };
 
 module.exports = Node;
