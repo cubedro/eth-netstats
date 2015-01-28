@@ -31,8 +31,8 @@ block content
             div.pull-left.icon-full-width
               i.icon-time
             div.pull-left
-              span.small-title block time
-              span.big-details 12 sec
+              span.small-title last block
+              span.big-details(am-time-ago="lastBlock", am-preprocess="unix")
             div.clearfix
         div.col-xs-6.stat-holder
           div.row.big-info.uptime.text-info
@@ -40,7 +40,7 @@ block content
               i.icon-clock
             div.pull-left
               span.small-title up-time
-              span.big-details 100.00%
+              span.big-details 100%
             div.clearfix
 
         div.clearfix
@@ -83,8 +83,8 @@ block content
               td {{'#' + node.stats.block.height}}
               td.hidden-sm.hidden-xs
                 span.small {{node.stats.block.hash}}
-              td 16 sec
-              td 98.3%
+              td(am-time-ago="node.stats.block.timestamp", am-preprocess="unix")
+              td 100%
             //- tr.text-success
             //-   td poc-7.ethdev.com
             //-   td C++

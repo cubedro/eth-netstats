@@ -2,9 +2,8 @@
 
 /* Filters */
 
-angular.module('netStatsApp.filters', []).
-	filter('interpolate', ['version', function(version) {
-		return function(text) {
-			return String(text).replace(/\%VERSION\%/mg, version);
-		}
-}]);
+// angular.module('netStatsApp').filter('fromNow', function() {
+//   return function(time) {
+//     return moment.unix(time).fromNow();
+//   }
+// });
