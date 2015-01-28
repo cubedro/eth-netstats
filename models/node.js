@@ -15,7 +15,8 @@ var Node = function Node(options, id)
 		mining: false,
 		block: {
 			height: 0,
-			hash: '?'
+			hash: '?',
+			timestamp: 0
 		}
 	}
 
@@ -33,10 +34,23 @@ Node.prototype.update = function()
 
 	var eth = this.web3.eth;
 
-	this.info.stats.peers = eth.peerCount;
-	this.info.stats.mining = eth.mining;
-	this.info.stats.block.height = eth.number;
-	this.info.stats.block.hash = eth.block(this.info.stats.block.height).hash;
+	try {
+		this.info.stats.peers = parseInt(eth.peerCount);
+	}
+	catch (err) {
+		this.info.stats.peers = 0;
+	}
+
+	if(this.info.stats.peers > 0) {
+		this.info.stats.block.height = eth.number;
+		var block = eth.block(this.info.stats.block.height)
+		this.info.stats.block.hash = block.hash;
+		this.info.stats.block.timestamp = block.timestamp;
+		this.info.stats.mining = eth.mining;
+		this.info.stats.active = true;
+	} else {
+		this.info.stats.active = false;
+	}
 
 	return this.info;
 };
