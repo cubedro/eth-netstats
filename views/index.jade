@@ -73,7 +73,7 @@ block content
               th
                 i.icon-clock
           tbody
-            tr(ng-repeat='node in nodes', class="{{ node.stats.active ? 'text-success' : 'text-danger' }}")
+            tr(ng-repeat='node in nodes', class="{{ node.stats | mainClass : bestBlock }}")
               td(rel="{{node.id}}") {{node.name}}
               td {{node.type}}
               td(class="{{ node.stats.peers | peerClass }}") {{node.stats.peers}}
