@@ -3,8 +3,17 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
-var config = require('./config/nodes');
+var config;
+
+if(fs.existsSync('./config/nodes.js')){
+    config = require('./config/nodes');
+} else {
+    config = require('./config/nodes.default');
+}
+console.log(config);
+// var config = require('./config/nodes');
 var Node = require('./models/node');
 
 var app = express();
