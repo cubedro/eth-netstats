@@ -22,15 +22,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 var nodes = [],
-    nodeStatus = [];
+    nodeStatus = [],
+    nodeInterval;
 
 for(i in config) {
-    var node = new Node(config[i], i);
-    console.log(node);
-    node.update();
-    nodes[i] = node;
-    nodeStatus[i] = node.info;
+    nodes[i] = new Node(config[i], i);
+    console.log(nodes[i]);
+    nodeStatus[i] = nodes[i].update();
 }
+
+nodeInterval = setInterval(function(){
+    for(i in nodes){
+        app.io.broadcast('update', nodes[i].update());
+    }
+}, 10000);
 
 app.get('/', function(req, res) {
   res.render('index', { title: 'Ethereum Network Status' });

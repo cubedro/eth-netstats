@@ -14,7 +14,7 @@ function StatsCtrl($scope, socket, _) {
 	});
 
 	socket.on('update', function(data){
-		$scope.nodes[data.node.id] = data.node;
+		$scope.nodes[data.id] = data;
 
 		updateStats();
 	});

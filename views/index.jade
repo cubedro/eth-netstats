@@ -11,7 +11,7 @@ block content
         div.clearfix
 
         div.col-xs-6.stat-holder
-          div.row.big-info.nodesactive.text-success
+          div.row.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
             div.pull-left.icon-full-width
               i.icon-bulb
             div.pull-left

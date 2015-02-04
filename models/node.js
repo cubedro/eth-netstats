@@ -6,7 +6,7 @@ var Node = function Node(options, id)
 {
 	this.info = options;
 	this.info.geo = geoip.lookup(this.info.rpcHost);
-	this.info.id = id;
+	this.info.id = parseInt(id);
 	this.info.stats = {
 		active: false,
 		peers: 0,
