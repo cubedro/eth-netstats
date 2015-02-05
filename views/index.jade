@@ -27,7 +27,7 @@ block content
               span.big-details {{"#" + bestBlock}}
             div.clearfix
         div.col-xs-6.stat-holder
-          div.row.big-info.blocktime.text-success
+          div.row.big-info.blocktime(class="{{ lastBlock | timeClass }}")
             div.pull-left.icon-full-width
               i.icon-time
             div.pull-left
@@ -82,5 +82,5 @@ block content
               td(class="{{ node.stats.block.height | blockClass : bestBlock }}") {{'#' + node.stats.block.height}}
               td(class="{{ node.stats.block.height | blockClass : bestBlock }}").hidden-sm.hidden-xs
                 span.small {{node.stats.block.hash}}
-              td(am-time-ago="node.stats.block.timestamp", am-preprocess="unix")
+              td(am-time-ago="node.stats.block.timestamp", am-preprocess="unix", class="{{ node.stats.block.timestamp | timeClass }}")
               td {{ node.stats.active ? '100%' : '0%' }}

@@ -49,4 +49,21 @@ angular.module('netStatsApp.filters', [])
   return function(current, best) {
     return (best - current <= 1 ? '' : (best - current > 1 && best - current < 4 ? 'text-warning' : 'text-danger'));
   };
+})
+.filter('timeClass', function() {
+	return function(timestamp) {
+		var time = Math.floor((new Date()).getTime() / 1000);
+		var diff = time - timestamp;
+
+		if(diff <= 12)
+			return 'text-success';
+
+		if(diff <= 20)
+			return 'text-info';
+
+		if(diff <= 30)
+			return 'text-warning';
+
+		return 'text-danger';
+	};
 });
