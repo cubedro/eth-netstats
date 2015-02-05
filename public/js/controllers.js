@@ -4,6 +4,15 @@
 
 function StatsCtrl($scope, socket, _) {
 
+	// Main Stats init
+	// ---------------
+
+	$scope.nodesTotal = 0;
+	$scope.nodesActive = 0;
+	$scope.bestBlock = 0;
+	$scope.lastBlock = 0;
+	$scope.upTimeTotal = 0;
+
 	// Socket listeners
 	// ----------------
 
