@@ -37,7 +37,7 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('miningClass', function() {
 	return function(mining) {
-		return (! mining ? 'text-danger' : '');
+		return (! mining ? 'text-danger' : 'text-success');
 	};
 })
 .filter('miningIconClass', function() {
@@ -47,7 +47,7 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('blockClass', function() {
 	return function(current, best) {
-		return (best - current <= 1 ? '' : (best - current > 1 && best - current < 4 ? 'text-warning' : 'text-danger'));
+		return (best - current <= 1 ? 'text-success' : (best - current > 1 && best - current < 4 ? 'text-warning' : 'text-danger'));
 	};
 })
 .filter('timeClass', function() {
