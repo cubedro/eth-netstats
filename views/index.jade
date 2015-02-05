@@ -10,7 +10,7 @@ block content
 
         div.clearfix
 
-        div.col-xs-6.stat-holder
+        div.col-xs-6.stat-holder(ng-cloak)
           div.row.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
             div.pull-left.icon-full-width
               i.icon-bulb
@@ -51,7 +51,7 @@ block content
 
       div.clearfix
 
-      div.col-sm-12
+      div.col-sm-12(ng-cloak)
         h1 Nodes in detail
 
         table.table.table-striped
