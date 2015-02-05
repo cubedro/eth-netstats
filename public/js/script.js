@@ -18,7 +18,7 @@
 		responsive: true,
 		element: mapHolder,
 		fills: {
-			defaultFill: '#181818'
+			defaultFill: '#282828'
 		},
 		geographyConfig: {
 			borderWidth: 0,
