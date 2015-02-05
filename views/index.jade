@@ -83,5 +83,5 @@ block content
               td(class="{{ node.stats.block.height | blockClass : bestBlock }}") {{'#' + node.stats.block.height}}
               td(class="{{ node.stats.block.height | blockClass : bestBlock }}").hidden-sm.hidden-xs
                 span.small {{node.stats.block.hash}}
-              td(am-time-ago="node.stats.block.timestamp", am-preprocess="unix", class="{{ node.stats.block.timestamp | timeClass }}")
+              td(am-time-ago="node.stats.block.timestamp", am-preprocess="unix", class="{{ node.stats.block.timestamp | timeClass }}") ∞
               td(class="{{ node.stats.uptime.total | upTimeClass }}") {{ node.stats.uptime.total | upTimeFilter }}
