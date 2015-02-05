@@ -3,14 +3,14 @@ extends layout
 block content
   div.container-fluid(ng-controller='StatsCtrl')
     div.row
-      div.col-lg-6
+      div.col-lg-6(ng-cloak)
         div.col-sm-12
           h1= title
           p Welcome to #{title}
 
         div.clearfix
 
-        div.col-xs-6.stat-holder(ng-cloak)
+        div.col-xs-6.stat-holder
           div.row.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
             div.pull-left.icon-full-width
               i.icon-bulb
