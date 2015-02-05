@@ -54,6 +54,10 @@ angular.module('netStatsApp.filters', [])
 	return function(timestamp) {
 		return timeClass(timestamp);
 	};
+}).filter('geoTooltip', function() {
+	return function(geo) {
+		return geo.city + ", " + geo.country;
+	};
 });
 
 function peerClass(peers)

@@ -80,5 +80,9 @@
 		console.log(data);
 	});
 
-	$('[data-toggle="tooltip"]').tooltip();
+	$('body').on('mouseenter', '[data-toggle="tooltip"]', function( event ) {
+		$(this).tooltip('show');
+	}).on('mouseleave', '[data-toggle="tooltip"]', function( event ) {
+		$(this).tooltip('hide');
+	})
 })();

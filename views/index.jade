@@ -74,7 +74,8 @@ block content
                 i.icon-clock(data-toggle="tooltip", data-placement="top", title="Up-time")
           tbody
             tr(ng-repeat='node in nodes', class="{{ node.stats | mainClass : bestBlock }}")
-              td(rel="{{node.id}}") {{node.name}}
+              td(rel="{{node.id}}")
+                span(data-toggle="tooltip", data-placement="top", data-original-title="{{node.geo | geoTooltip}}") {{node.name}}
               td {{node.type}}
               td(class="{{ node.stats.peers | peerClass }}") {{node.stats.peers}}
               td(class="{{ node.stats.mining | miningClass }}")
