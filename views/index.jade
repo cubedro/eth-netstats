@@ -35,12 +35,12 @@ block content
               span.big-details(am-time-ago="lastBlock", am-preprocess="unix")
             div.clearfix
         div.col-xs-6.stat-holder
-          div.row.big-info.uptime.text-info
+          div.row.big-info.uptime(class="{{ upTimeTotal | upTimeClass }}")
             div.pull-left.icon-full-width
               i.icon-clock
             div.pull-left
               span.small-title up-time
-              span.big-details 100%
+              span.big-details {{ upTimeTotal | upTimeFilter }}
             div.clearfix
 
         div.clearfix
@@ -84,4 +84,4 @@ block content
               td(class="{{ node.stats.block.height | blockClass : bestBlock }}").hidden-sm.hidden-xs
                 span.small {{node.stats.block.hash}}
               td(am-time-ago="node.stats.block.timestamp", am-preprocess="unix", class="{{ node.stats.block.timestamp | timeClass }}")
-              td {{ node.stats.active ? '100%' : '0%' }}
+              td(class="{{ node.stats.uptime.total | upTimeClass }}") {{ node.stats.uptime.total | upTimeFilter }}

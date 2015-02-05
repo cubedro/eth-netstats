@@ -15,6 +15,11 @@ var Node = function Node(options, id)
 			height: 0,
 			hash: '?',
 			timestamp: 0
+		},
+		uptime: {
+			down: 0,
+			inc: 0,
+			total: 0
 		}
 	}
 
@@ -46,7 +51,11 @@ Node.prototype.update = function()
 		this.info.stats.active = true;
 	} else {
 		this.info.stats.active = false;
+		this.info.stats.uptime.down++;
 	}
+
+	this.info.stats.uptime.inc++;
+	this.info.stats.uptime.total = ((this.info.stats.uptime.inc - this.info.stats.uptime.down) / this.info.stats.uptime.inc) * 100;
 
 	return this.info;
 };

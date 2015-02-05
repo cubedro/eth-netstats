@@ -54,7 +54,24 @@ angular.module('netStatsApp.filters', [])
 	return function(timestamp) {
 		return timeClass(timestamp);
 	};
-}).filter('geoTooltip', function() {
+})
+.filter('upTimeFilter', function() {
+	return function(uptime) {
+		return Math.round(uptime) + '%';
+	};
+})
+.filter('upTimeClass', function() {
+	return function(uptime) {
+		if(uptime >= 90)
+			return 'text-success';
+
+		if(uptime >= 75)
+			return 'text-warning';
+
+		return 'text-danger';
+	};
+})
+.filter('geoTooltip', function() {
 	return function(geo) {
 		return geo.city + ", " + geo.country;
 	};
