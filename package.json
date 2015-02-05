@@ -1,6 +1,10 @@
 {
   "name": "eth-netstats",
   "version": "0.0.0",
+  "engines": {
+    "node": "0.10.x",
+    "npm": "2.1.x"
+  },
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
