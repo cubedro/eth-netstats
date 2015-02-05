@@ -73,7 +73,10 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('geoTooltip', function() {
 	return function(geo) {
-		return geo.city + ", " + geo.country;
+		if(geo !== null)
+			return geo.city + ", " + geo.country;
+
+		return '';
 	};
 });
 

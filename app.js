@@ -4,7 +4,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var fs = require('fs');
-
 var config;
 
 if(fs.existsSync('./config/nodes.js')){
@@ -12,8 +11,7 @@ if(fs.existsSync('./config/nodes.js')){
 } else {
     config = require('./config/nodes.default');
 }
-console.log(config);
-// var config = require('./config/nodes');
+
 var Node = require('./models/node');
 
 var app = express();
