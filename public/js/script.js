@@ -80,7 +80,5 @@
 		console.log(data);
 	});
 
-	socket.on('update', function(data){
-		//
-	});
+	$('[data-toggle="tooltip"]').tooltip();
 })();
