@@ -1,0 +1,1 @@
+web: ./www/bin
