@@ -7,3 +7,4 @@ config/nodes.js
 *~
 *.swp
 *.pem
+.node-xmlhttprequest-*
