@@ -43,10 +43,7 @@ Node.prototype.update = function()
 	}
 
 	if(this.info.stats.peers != null) {
-		this.info.stats.block.height = parseInt(eth.number);
-		var block = eth.block(this.info.stats.block.height)
-		this.info.stats.block.hash = block.hash;
-		this.info.stats.block.timestamp = block.timestamp;
+		this.info.stats.block = eth.block(parseInt(eth.number));
 		this.info.stats.mining = eth.mining;
 		this.info.stats.active = true;
 	} else {

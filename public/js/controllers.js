@@ -43,8 +43,8 @@ function StatsCtrl($scope, $filter, socket, _) {
 		}).length;
 
 		$scope.bestBlock = _.max($scope.nodes, function(node) {
-			return parseInt(node.stats.block.height);
-		}).stats.block.height;
+			return parseInt(node.stats.block.number);
+		}).stats.block.number;
 
 		$scope.lastBlock = _.max($scope.nodes, function(node) {
 			return parseInt(node.stats.block.timestamp);

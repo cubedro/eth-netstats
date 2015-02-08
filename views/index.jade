@@ -80,8 +80,8 @@ block content
               td(class="{{ node.stats.peers | peerClass }}") {{node.stats.peers}}
               td(class="{{ node.stats.mining | miningClass }}")
                 i(class="{{ node.stats.mining | miningIconClass }}")
-              td(class="{{ node.stats.block.height | blockClass : bestBlock }}") {{'#' + node.stats.block.height}}
-              td(class="{{ node.stats.block.height | blockClass : bestBlock }}").hidden-sm.hidden-xs
+              td(class="{{ node.stats.block.number | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
+              td(class="{{ node.stats.block.number | blockClass : bestBlock }}").hidden-sm.hidden-xs
                 span.small {{node.stats.block.hash}}
               td(am-time-ago="node.stats.block.timestamp", am-preprocess="unix", class="{{ node.stats.block.timestamp | timeClass }}") ∞
               td(class="{{ node.stats.uptime.total | upTimeClass }}") {{ node.stats.uptime.total | upTimeFilter }}
