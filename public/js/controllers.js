@@ -13,13 +13,7 @@ function StatsCtrl($scope, $filter, socket, _) {
 	$scope.lastBlock = 0;
 	$scope.upTimeTotal = 0;
 
-	$scope.map = [
-		{
-			radius: 5,
-			latitude: 11.515,
-			longitude: 165.1619
-		}
-	];
+	$scope.map = [];
 
 	// Socket listeners
 	// ----------------
