@@ -12,7 +12,7 @@ var Node = function Node(options, id)
 		peers: 0,
 		mining: false,
 		block: {
-			height: 0,
+			number: 0,
 			hash: '?',
 			timestamp: 0
 		},
@@ -44,6 +44,9 @@ Node.prototype.update = function()
 
 	if(this.info.stats.peers != null) {
 		this.info.stats.block = eth.block(parseInt(eth.number));
+		if(this.info.stats.block.hash != '?'){
+			this.info.stats.block.difficulty = this.web3.toDecimal(this.info.stats.block.difficulty);
+		}
 		this.info.stats.mining = eth.mining;
 		this.info.stats.active = true;
 	} else {
