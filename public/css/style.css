@@ -62,6 +62,7 @@ table td i {
 }
 
 #mapHolder {
+	display: block;
 	position: relative;
 	padding-bottom: 56.25%;
 	height: 0;

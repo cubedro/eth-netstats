@@ -21,13 +21,7 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('mainClass', function() {
 	return function(node, bestBlock) {
-	  	if( ! node.active)
-			return 'text-danger';
-
-		if(node.peers === 0)
-			return 'text-danger';
-
-		return timeClass(node.block.timestamp);
+	  	return mainClass(node, bestBlock);
 	};
 })
 .filter('peerClass', function() {
@@ -78,7 +72,23 @@ angular.module('netStatsApp.filters', [])
 
 		return '';
 	};
+})
+.filter('bubbleClass', function() {
+	return function(node, bestBlock) {
+		return mainClass(node, bestBlock).replace('text-', '');
+	}
 });
+
+function mainClass(node, bestBlock)
+{
+	if( ! node.active)
+		return 'text-danger';
+
+	if(node.peers === 0)
+		return 'text-danger';
+
+	return timeClass(node.block.timestamp);
+}
 
 function peerClass(peers)
 {

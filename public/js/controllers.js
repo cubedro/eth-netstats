@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-function StatsCtrl($scope, socket, _) {
+function StatsCtrl($scope, $filter, socket, _) {
 
 	// Main Stats init
 	// ---------------
@@ -13,16 +13,28 @@ function StatsCtrl($scope, socket, _) {
 	$scope.lastBlock = 0;
 	$scope.upTimeTotal = 0;
 
+	$scope.map = [
+		{
+			radius: 5,
+			latitude: 11.515,
+			longitude: 165.1619
+		}
+	];
+
 	// Socket listeners
 	// ----------------
 
-	socket.on('init', function(data){
+	socket.emit('ready');
+
+	socket.on('init', function(data)
+	{
 		$scope.nodes = data.nodes;
 
 		updateStats();
 	});
 
-	socket.on('update', function(data){
+	socket.on('update', function(data)
+	{
 		$scope.nodes[data.id] = data;
 
 		updateStats();
@@ -31,9 +43,37 @@ function StatsCtrl($scope, socket, _) {
 	function updateStats()
 	{
 		$scope.nodesTotal = $scope.nodes.length;
-		$scope.nodesActive = _.filter($scope.nodes, function(node){ return node.stats.active == true; }).length;
-		$scope.bestBlock = _.max($scope.nodes, function(node){ return parseInt(node.stats.block.height); }).stats.block.height;
-		$scope.lastBlock = _.max($scope.nodes, function(node){ return parseInt(node.stats.block.timestamp); }).stats.block.timestamp;
-		$scope.upTimeTotal = _.reduce($scope.nodes, function(total, node){ return total + node.stats.uptime.total; }, 0) / $scope.nodes.length;
+
+		$scope.nodesActive = _.filter($scope.nodes, function(node) {
+			return node.stats.active == true;
+		}).length;
+
+		$scope.bestBlock = _.max($scope.nodes, function(node) {
+			return parseInt(node.stats.block.height);
+		}).stats.block.height;
+
+		$scope.lastBlock = _.max($scope.nodes, function(node) {
+			return parseInt(node.stats.block.timestamp);
+		}).stats.block.timestamp;
+
+		$scope.upTimeTotal = _.reduce($scope.nodes, function(total, node) {
+			return total + node.stats.uptime.total;
+		}, 0) / $scope.nodes.length;
+
+		$scope.map = _.map($scope.nodes, function(node) {
+			if(node.geo != null)
+				return {
+					radius: 3,
+					latitude: node.geo.ll[0],
+					longitude: node.geo.ll[1],
+					fillKey: $filter('bubbleClass')(node, $scope.bestBlock)
+				};
+			else
+				return {
+					radius: 0,
+					latitude: 0,
+					longitude: 0
+				};
+		});
 	}
 }
