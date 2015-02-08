@@ -76,8 +76,9 @@ block content
             tr(ng-repeat='node in nodes', class="{{ node.stats | mainClass : bestBlock }}")
               td(rel="{{node.id}}")
                 span(data-toggle="tooltip", data-placement="top", data-original-title="{{node.geo | geoTooltip}}") {{node.name}}
-                div.small {{node.rpcHost}}
+                div.small {{node.ip}}
               td {{node.type}}
+                div.small {{node.os}}
               td(class="{{ node.stats.peers | peerClass }}") {{node.stats.peers}}
               td(class="{{ node.stats.mining | miningClass }}")
                 i(class="{{ node.stats.mining | miningIconClass }}")

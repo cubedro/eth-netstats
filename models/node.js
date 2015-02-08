@@ -4,8 +4,15 @@ require('es6-promise').polyfill();
 
 var Node = function Node(options, id)
 {
-	this.info = options;
-	this.info.geo = geoip.lookup(this.info.rpcHost);
+	this.options = options;
+	this.info = {
+		name: options.name,
+		ip: options.rpcHost,
+		type: options.type,
+		os: options.os
+	};
+
+	this.info.geo = geoip.lookup(this.info.ip);
 	this.info.id = parseInt(id);
 	this.info.stats = {
 		active: false,
@@ -30,7 +37,7 @@ var Node = function Node(options, id)
 
 Node.prototype.update = function()
 {
-	var sock = new this.web3.providers.HttpSyncProvider('http://' + this.info.rpcHost + ':' + this.info.rpcPort);
+	var sock = new this.web3.providers.HttpSyncProvider('http://' + this.options.rpcHost + ':' + this.options.rpcPort);
 	this.web3.setProvider(sock);
 
 	var eth = this.web3.eth;
