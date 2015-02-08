@@ -1,7 +1,5 @@
 var geoip = require('geoip-lite');
 
-require('es6-promise').polyfill();
-
 var Node = function Node(options, id)
 {
 	this.options = options;
