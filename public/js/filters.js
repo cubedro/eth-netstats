@@ -44,6 +44,11 @@ angular.module('netStatsApp.filters', [])
 		return (best - current <= 1 ? 'text-success' : (best - current > 1 && best - current < 4 ? 'text-warning' : 'text-danger'));
 	};
 })
+.filter('gasFilter', function() {
+	return function(gas) {
+		return (typeof gas !== 'undefined' ? parseInt(gas) : '?');
+	}
+})
 .filter('timeClass', function() {
 	return function(timestamp) {
 		return timeClass(timestamp);
