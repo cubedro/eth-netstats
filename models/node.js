@@ -49,7 +49,7 @@ Node.prototype.update = function()
 
 	if(this.info.stats.peers != null) {
 		this.info.stats.block = eth.block(parseInt(eth.number));
-		if(this.info.stats.block.hash != '?'){
+		if(this.info.stats.block.hash != '?' && typeof this.info.stats.block.difficulty !== 'undefined'){
 			this.info.stats.block.difficulty = this.web3.toDecimal(this.info.stats.block.difficulty);
 		}
 		this.info.stats.mining = eth.mining;
