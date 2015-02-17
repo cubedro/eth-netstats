@@ -39,10 +39,14 @@ angular.module('netStatsApp.filters', [])
 		return (! mining ? 'icon-cancel' : 'icon-check');
 	};
 })
-.filter('nodeVersion', function() {
+.filter('nodeVersion', function($sce) {
 	return function(version) {
-		return version.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + '<br>' + '$2')
-	}
+		version = version.replace('eth version ', 'v')
+						.replace("\n" + 'Network protocol version: ', ' (')
+						.replace("\n" + 'Client database version: ', ',')
+						.replace("\n" + 'Build: ', ')<br>');
+		return $sce.trustAsHtml(version);
+	};
 })
 .filter('blockClass', function() {
 	return function(current, best) {
