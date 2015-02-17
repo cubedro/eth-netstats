@@ -52,20 +52,14 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			case "init":
 				$scope.nodes = data;
 
-				if($scope.nodes.length > 0)
-				{
-					toastr['success']("Got nodes list", "Got nodes!");
-				}
+				if($scope.nodes.length > 0) toastr['success']("Got nodes list", "Got nodes!");
 				break;
 
 			case "add":
 				if(addNewNode(data))
-				{
 					toastr['success']("New node connected!", "New node!");
-				} else {
+				else
 					toastr['info']("Node reconnected!", "Node is back!");
-				}
-
 				break;
 
 			case "update":

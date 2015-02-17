@@ -32,6 +32,7 @@ app.factory('toastr', function ($rootScope) {
   toastr.options = {
     "closeButton": false,
     "debug": false,
+    "progressBar": true,
     "newestOnTop": true,
     "progressBar": false,
     "positionClass": "toast-top-right",
