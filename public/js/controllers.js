@@ -18,10 +18,27 @@ function StatsCtrl($scope, $filter, socket, _) {
 	// Socket listeners
 	// ----------------
 
-	socket.emit('ready');
+	socket = new Primus();
+
+	socket.on('open', function open() {
+		socket.emit('ready');
+		console.log('The connection has been opened.');
+	}).on('end', function end() {
+		self._socket = false;
+	}).on('error', function error(err) {
+		console.log(err);
+	}).on('reconnecting', function reconnecting(opts) {
+		console.log('We are scheduling a reconnect operation', opts);
+	}).on('data', function incoming(data) {
+		console.log('Received some data', data);
+	});
+
+	// socket.emit('ready', 'test');
 
 	socket.on('init', function(data)
 	{
+		console.log(data);
+
 		$scope.nodes = data.nodes;
 
 		updateStats();
@@ -29,6 +46,8 @@ function StatsCtrl($scope, $filter, socket, _) {
 
 	socket.on('update', function(data)
 	{
+		console.log(data);
+
 		$scope.nodes[data.id] = data;
 
 		updateStats();
@@ -51,7 +70,7 @@ function StatsCtrl($scope, $filter, socket, _) {
 		}).stats.block.timestamp;
 
 		$scope.upTimeTotal = _.reduce($scope.nodes, function(total, node) {
-			return total + node.stats.uptime.total;
+			return total + node.stats.uptime;
 		}, 0) / $scope.nodes.length;
 
 		$scope.map = _.map($scope.nodes, function(node) {
@@ -69,5 +88,7 @@ function StatsCtrl($scope, $filter, socket, _) {
 					longitude: 0
 				};
 		});
+
+		$scope.$apply();
 	}
 }

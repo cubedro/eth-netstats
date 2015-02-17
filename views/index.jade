@@ -75,10 +75,10 @@ block content
           tbody
             tr(ng-repeat='node in nodes', class="{{ node.stats | mainClass : bestBlock }}")
               td(rel="{{node.id}}")
-                span(data-toggle="tooltip", data-placement="top", data-original-title="{{node.geo | geoTooltip}}") {{node.name}}
-                div.small {{node.ip}}
-              td {{node.type}}
-                div.small {{node.os}}
+                span(data-toggle="tooltip", data-placement="top", data-original-title="{{node.geo | geoTooltip}}") {{node.info.name}}
+                div.small {{node.info.ip}}
+              td {{node.info.node}}
+                div.small {{node.info.os}}, {{node.info.os_v}}
               td(class="{{ node.stats.peers | peerClass }}") {{node.stats.peers}}
               td(class="{{ node.stats.mining | miningClass }}")
                 i(class="{{ node.stats.mining | miningIconClass }}")
@@ -87,4 +87,4 @@ block content
                 span.small {{node.stats.block.hash}}
                 div.small Difficulty: {{node.stats.block.difficulty | gasFilter}} | Gas used: {{node.stats.block.gasUsed | gasFilter}} | Min gas price: {{node.stats.block.minGasPrice | gasFilter}} | Gas limit: {{node.stats.block.gasLimit | gasFilter}}
               td(am-time-ago="node.stats.block.timestamp", am-preprocess="unix", class="{{ node.stats.block.timestamp | timeClass }}") ∞
-              td(class="{{ node.stats.uptime.total | upTimeClass }}") {{ node.stats.uptime.total | upTimeFilter }}
+              td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}

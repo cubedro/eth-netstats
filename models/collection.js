@@ -10,44 +10,63 @@ var Collection = function Collection()
 
 Collection.prototype.add = function(data)
 {
-	if(typeof data.id == 'undefined')
-		return false;
+	var node = this.getNodeOrNew({ id : data.id }, data);
 
-	var node = this.getNodeOrNew({ id : data.id });
-
-	node.info = data.info;
+	return node.getInfo();
 }
 
-Collection.prototype.get = function(id)
+Collection.prototype.update = function(id, stats)
 {
-	return this.getNode(id);
+	var node = this.getNode({ id: id });
+
+	if(!node)
+		return false;
+
+	node.stats = stats;
+
+	console.log(this.all());
+
+	return node.getStats();
 }
 
 Collection.prototype.getIndex = function(search)
 {
 	return _.findIndex(this._list, search);
-
-	return (index >= 0 ? index : false);
 }
 
 Collection.prototype.getNode = function(search)
 {
 	var index = this.getIndex(search);
 
-	if(index)
+	if(index >= 0)
 		return this._list[index];
 
 	return false;
 }
 
-Collection.prototype.getIndexOrNew = function(search)
+Collection.prototype.getNodeByIndex = function(index)
 {
-	var index = this.getIndex(search) || this._list.push(new Node());
+	if(this._list[index])
+		return this._list[index];
+
+	return false;
 }
 
-Collection.prototype.getNodeOrNew = function(search)
+Collection.prototype.getIndexOrNew = function(search, data)
 {
-	return this.getNode(this.getIndexOrNew(search));
+	var index = this.getIndex(search);
+
+	return (index >= 0 ? index : this._list.push(new Node(data)) - 1);
+}
+
+Collection.prototype.getNodeOrNew = function(search, data)
+{
+	return this.getNodeByIndex(this.getIndexOrNew(search, data));
+}
+
+Collection.prototype.all = function()
+{
+	return this._list;
 }
 
 module.exports = Collection;
