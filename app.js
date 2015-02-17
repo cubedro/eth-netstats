@@ -34,8 +34,8 @@ api.on('connection', function(spark) {
     console.log(spark.address);
     console.log(spark.query);
 
-    spark.on('hello', function(data){
-        console.log('got hello data from ' + spark.id);
+    spark.on('hello', function(data) {
+        console.log('got hello data from ', spark.id);
         console.log(data);
 
         if(typeof data.id !== 'undefined' && typeof data.info !== 'undefined')
@@ -49,7 +49,7 @@ api.on('connection', function(spark) {
         }
     });
 
-    spark.on('update', function(data){
+    spark.on('update', function(data) {
         console.log('got update from ' + spark.id);
         console.log(data);
 
@@ -59,6 +59,10 @@ api.on('connection', function(spark) {
 
             client.write({action: 'update', data: stats});
         }
+    });
+
+    spark.on('end', function(data) {
+        //
     });
 });
 

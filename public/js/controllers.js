@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-function StatsCtrl($scope, $filter, socket, _) {
+function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 	// Main Stats init
 	// ---------------
@@ -13,6 +13,7 @@ function StatsCtrl($scope, $filter, socket, _) {
 	$scope.lastBlock = 0;
 	$scope.upTimeTotal = 0;
 
+	$scope.nodes = [];
 	$scope.map = [];
 
 	// Socket listeners
@@ -25,7 +26,7 @@ function StatsCtrl($scope, $filter, socket, _) {
 		console.log('The connection has been opened.');
 	})
 	.on('end', function end() {
-		self._socket = false;
+		console.log('Socket connection ended.')
 	})
 	.on('error', function error(err) {
 		console.log(err);
@@ -34,35 +35,39 @@ function StatsCtrl($scope, $filter, socket, _) {
 		console.log('We are scheduling a reconnect operation', opts);
 	})
 	.on('data', function incoming(data) {
-		console.log('Received some data', data);
 		socketAction(data.action, data.data);
 	});
 
 	socket.on('init', function(data)
 	{
-		console.log(data);
-
-		$scope.nodes = data.nodes;
-
-		updateStats();
+		socketAction("init", data.nodes);
 	});
 
 	function socketAction(action, data)
 	{
+		console.log('Action: ', action);
+		console.log('Data: ', data);
+
 		switch(action) {
+			case "init":
+				$scope.nodes = data;
+				if($scope.nodes.length > 0){
+					toastr['success']("Got nodes list", "Got nodes!");
+				}
+				break;
+
 			case "add":
-				console.log(data);
 				$scope.nodes.push(data);
+				toastr['success']("New node connected!", "New node!");
 				break;
 
 			case "update":
-				console.log(data);
 				$scope.nodes[findIndex({id: data.id})].stats = data.stats;
 				break;
 
 			case "info":
-				console.log(data);
 				$scope.nodes[findIndex({id: data.id})].info = data.info;
+				break;
 		}
 
 		updateStats();
