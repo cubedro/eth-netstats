@@ -1,68 +1,68 @@
 var geoip = require('geoip-lite');
 
-var Node = function Node(options, id)
+var Node = function Node(data)
 {
-	this.options = options;
-	this.info = {
-		name: options.name,
-		ip: options.rpcHost,
-		type: options.type,
-		os: options.os
+	this.id = null;
+	this.info = {};
+	this.geo = {}
+	this.stats = {
+		active: false,
+		listening: false,
+		mining: false,
+		peers: 0,
+		pending: 0,
+		gasPrice: 0,
+		block: {
+			difficulty: 0,
+			number: 0,
+			gasLimit: 0,
+			timestamp: 0,
+			blocktime: 0
+		},
+		blocktimeAvg: 0,
+		difficulty: [],
+		uptime: 0,
+		lastUpdate: 0
 	};
 
-	this.info.geo = geoip.lookup(this.info.ip);
-	this.info.id = parseInt(id);
-	this.info.stats = {
-		active: false,
-		peers: 0,
-		mining: false,
-		block: {
-			number: 0,
-			hash: '?',
-			timestamp: 0
-		},
-		uptime: {
-			down: 0,
-			inc: 0,
-			total: 0
-		}
-	}
+	if(typeof data.id !== 'undefined')
+		this.id = data.id;
 
-	this.web3 = require('ethereum.js');
+	if(typeof data.info !== 'undefined')
+		this.info = data.info;
+
+	if(typeof data.ip !== 'undefined'){
+		this.info.ip = data.ip;
+		this.setGeo(data.ip);
+	}
 
 	return this;
 }
 
-Node.prototype.update = function()
+Node.prototype.setGeo = function(ip)
 {
-	var sock = new this.web3.providers.HttpSyncProvider('http://' + this.options.rpcHost + ':' + this.options.rpcPort);
-	this.web3.setProvider(sock);
+	this.geo = geoip.lookup(ip);
+}
 
-	var eth = this.web3.eth;
+Node.prototype.setInfo = function(data)
+{
+	if(typeof data.info !== 'undefined')
+		this.info = data.info;
 
-	try {
-		this.info.stats.peers = eth.peerCount;
+	if(typeof data.ip !== 'undefined'){
+		this.info.ip = data.ip;
+		this.setGeo(data.ip);
 	}
-	catch (err) {
-		this.info.stats.peers = null;
-	}
+}
 
-	if(this.info.stats.peers != null) {
-		this.info.stats.block = eth.block(parseInt(eth.number));
-		if(this.info.stats.block.hash != '?' && typeof this.info.stats.block.difficulty !== 'undefined'){
-			this.info.stats.block.difficulty = this.web3.toDecimal(this.info.stats.block.difficulty);
-		}
-		this.info.stats.mining = eth.mining;
-		this.info.stats.active = true;
-	} else {
-		this.info.stats.active = false;
-		this.info.stats.uptime.down++;
-	}
+Node.prototype.getInfo = function()
+{
+	return {id: this.id, info: this.info, geo: this.geo, stats: this.stats};
+}
 
-	this.info.stats.uptime.inc++;
-	this.info.stats.uptime.total = ((this.info.stats.uptime.inc - this.info.stats.uptime.down) / this.info.stats.uptime.inc) * 100;
-
-	return this.info;
-};
+Node.prototype.getStats = function()
+{
+	return {id: this.id, stats: this.stats};
+}
 
 module.exports = Node;
