@@ -77,7 +77,7 @@ block content
               td(rel="{{node.id}}")
                 span(data-toggle="tooltip", data-placement="top", data-original-title="{{node.geo | geoTooltip}}") {{node.info.name}}
                 div.small {{node.info.ip}}
-              td {{node.info.node}}
+              td.small {{ node.info.node | nodeVersion }}
                 div.small {{node.info.os}}, {{node.info.os_v}}
               td(class="{{ node.stats.peers | peerClass }}") {{node.stats.peers}}
               td(class="{{ node.stats.mining | miningClass }}")

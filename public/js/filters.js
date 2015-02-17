@@ -39,6 +39,11 @@ angular.module('netStatsApp.filters', [])
 		return (! mining ? 'icon-cancel' : 'icon-check');
 	};
 })
+.filter('nodeVersion', function() {
+	return function(version) {
+		return version.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + '<br>' + '$2')
+	}
+})
 .filter('blockClass', function() {
 	return function(current, best) {
 		return (best - current <= 1 ? 'text-success' : (best - current > 1 && best - current < 4 ? 'text-warning' : 'text-danger'));
