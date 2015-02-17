@@ -34,7 +34,6 @@ app.factory('toastr', function ($rootScope) {
     "debug": false,
     "progressBar": true,
     "newestOnTop": true,
-    "progressBar": false,
     "positionClass": "toast-top-right",
     "preventDuplicates": false,
     "onclick": null,
