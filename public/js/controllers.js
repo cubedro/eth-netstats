@@ -51,14 +51,21 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 		switch(action) {
 			case "init":
 				$scope.nodes = data;
-				if($scope.nodes.length > 0){
+
+				if($scope.nodes.length > 0)
+				{
 					toastr['success']("Got nodes list", "Got nodes!");
 				}
 				break;
 
 			case "add":
-				$scope.nodes.push(data);
-				toastr['success']("New node connected!", "New node!");
+				if(addNewNode(data))
+				{
+					toastr['success']("New node connected!", "New node!");
+				} else {
+					toastr['info']("Node reconnected!", "Node is back!");
+				}
+
 				break;
 
 			case "update":
@@ -76,6 +83,21 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	function findIndex(search)
 	{
 		return _.findIndex($scope.nodes, search);
+	}
+
+	function addNewNode(data)
+	{
+		var index = findIndex({id: data.id});
+		if(index < 0)
+		{
+			$scope.nodes.push(data);
+
+			return true;
+		}
+
+		$scope.nodes[index] = data;
+
+		return false;
 	}
 
 	function updateStats()
