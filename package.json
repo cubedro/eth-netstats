@@ -13,7 +13,7 @@
     "body-parser": "~1.8.1",
     "debug": "~2.0.0",
     "ethereum.js": "*",
-    "express.io": "^1.1.13",
+    "express": "^4.11.2",
     "geoip-lite": "^1.1.4",
     "jade": "~1.6.0",
     "lodash": "^3.2.0",
