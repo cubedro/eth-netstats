@@ -45,7 +45,7 @@ api.on('connection', function(spark) {
             var info = Nodes.add(data);
             spark.emit('ready');
 
-            client.emit('new', info);
+            client.write({action: 'add', data: info});
         }
     });
 
@@ -57,7 +57,7 @@ api.on('connection', function(spark) {
         {
             var stats = Nodes.update(data.id, data.stats);
 
-            client.emit('updated', stats);
+            client.write({action: 'update', data: stats});
         }
     });
 });

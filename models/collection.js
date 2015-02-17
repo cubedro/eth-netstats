@@ -11,6 +11,7 @@ var Collection = function Collection()
 Collection.prototype.add = function(data)
 {
 	var node = this.getNodeOrNew({ id : data.id }, data);
+	node.setInfo(data);
 
 	return node.getInfo();
 }
@@ -23,8 +24,6 @@ Collection.prototype.update = function(id, stats)
 		return false;
 
 	node.stats = stats;
-
-	console.log(this.all());
 
 	return node.getStats();
 }

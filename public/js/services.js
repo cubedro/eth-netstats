@@ -27,7 +27,7 @@ app.factory('socket', function ($rootScope) {
   // };
 });
 
-var underscore = angular.module('underscore', []);
-underscore.factory('_', function() {
+var lodash = angular.module('lodash', []);
+lodash.factory('_', function() {
   return window._;
 });

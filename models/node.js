@@ -12,7 +12,13 @@ var Node = function Node(data)
 		peers: 0,
 		pending: 0,
 		gasPrice: 0,
-		block: {},
+		block: {
+			difficulty: 0,
+			number: 0,
+			gasLimit: 0,
+			timestamp: 0,
+			blocktime: 0
+		},
 		blocktimeAvg: 0,
 		difficulty: [],
 		uptime: 0,
@@ -25,8 +31,10 @@ var Node = function Node(data)
 	if(typeof data.info !== 'undefined')
 		this.info = data.info;
 
-	if(typeof data.ip !== 'undefined')
+	if(typeof data.ip !== 'undefined'){
+		this.info.ip = data.ip;
 		this.setGeo(data.ip);
+	}
 
 	return this;
 }
@@ -36,9 +44,20 @@ Node.prototype.setGeo = function(ip)
 	this.geo = geoip.lookup(ip);
 }
 
+Node.prototype.setInfo = function(data)
+{
+	if(typeof data.info !== 'undefined')
+		this.info = data.info;
+
+	if(typeof data.ip !== 'undefined'){
+		this.info.ip = data.ip;
+		this.setGeo(data.ip);
+	}
+}
+
 Node.prototype.getInfo = function()
 {
-	return {id: this.id, info: this.info, geo: this.geo};
+	return {id: this.id, info: this.info, geo: this.geo, stats: this.stats};
 }
 
 Node.prototype.getStats = function()
