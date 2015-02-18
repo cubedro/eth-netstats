@@ -52,20 +52,14 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			case "init":
 				$scope.nodes = data;
 
-				if($scope.nodes.length > 0)
-				{
-					toastr['success']("Got nodes list", "Got nodes!");
-				}
+				if($scope.nodes.length > 0) toastr['success']("Got nodes list", "Got nodes!");
 				break;
 
 			case "add":
 				if(addNewNode(data))
-				{
 					toastr['success']("New node connected!", "New node!");
-				} else {
+				else
 					toastr['info']("Node reconnected!", "Node is back!");
-				}
-
 				break;
 
 			case "update":
@@ -128,7 +122,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 						radius: 3,
 						latitude: node.geo.ll[0],
 						longitude: node.geo.ll[1],
-						fillKey: $filter('bubbleClass')(node, $scope.bestBlock)
+						fillKey: $filter('bubbleClass')(node.stats, $scope.bestBlock)
 					};
 				else
 					return {
@@ -137,6 +131,8 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 						longitude: 0
 					};
 			});
+
+			console.log($scope.map);
 		}
 
 		$scope.$apply();
