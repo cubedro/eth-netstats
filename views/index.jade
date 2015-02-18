@@ -18,7 +18,7 @@ block content
               span.small-title active nodes
               span.big-details {{nodesActive}}/{{nodesTotal}}
             div.clearfix
-        div.col-xs-4.stat-holder
+        div.col-xs-5.stat-holder
           div.row.big-info.difficulty.text-info
             div.pull-left.icon-full-width
               i.icon-difficulty
@@ -26,7 +26,7 @@ block content
               span.small-title difficulty
               span.big-details {{ lastDifficulty }}
             div.clearfix
-        div.col-xs-4.stat-holder
+        div.col-xs-3.stat-holder
           div.row.big-info.uptime(class="{{ upTimeTotal | upTimeClass }}")
             div.pull-left.icon-full-width
               i.icon-clock
@@ -42,7 +42,7 @@ block content
               span.small-title best block
               span.big-details {{"#" + bestBlock}}
             div.clearfix
-        div.col-xs-4.stat-holder
+        div.col-xs-5.stat-holder
           div.row.big-info.blocktime(class="{{ lastBlock | timeClass }}")
             div.pull-left.icon-full-width
               i.icon-time
@@ -50,7 +50,7 @@ block content
               span.small-title last block
               span.big-details {{ lastBlock | blockTimeFilter }}
             div.clearfix
-        div.col-xs-4.stat-holder
+        div.col-xs-3.stat-holder
           div.row.big-info.avgblocktime(class="{{ avgBlockTime | timeClass }}")
             div.pull-left.icon-full-width
               i.icon-gas
@@ -82,8 +82,12 @@ block content
               th
                 i.icon-group(data-toggle="tooltip", data-placement="top", title="Peers")
               th
+                i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions")
+              th
                 i.icon-block(data-toggle="tooltip", data-placement="top", title="Last node block")
               th.hidden-sm.hidden-xs &nbsp;
+              th
+                i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions")
               th
                 i.icon-time(data-toggle="tooltip", data-placement="top", title="Last node time")
               th
@@ -98,10 +102,12 @@ block content
                 //- div.small {{node.info.os}}, {{node.info.os_v}}
               td(class="{{ node.stats.mining | miningClass }}")
                 i(class="{{ node.stats.mining | miningIconClass }}")
-              td(class="{{ node.stats.peers | peerClass }}") {{node.stats.peers}}
+              td(class="{{ node.stats.peers | peerClass }}", style="padding-left: 18px;") {{node.stats.peers}}
+              td(style="padding-left: 18px;") {{node.stats.pending}}
               td(class="{{ node.stats.block.number | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
               td(class="{{ node.stats.block.number | blockClass : bestBlock }}").hidden-sm.hidden-xs
                 span.small {{node.stats.block.hash}}
                 //- div.small Difficulty: {{node.stats.block.difficulty | gasFilter}} | Gas used: {{node.stats.block.gasUsed | gasFilter}} | Min gas price: {{node.stats.block.minGasPrice | gasFilter}} | Gas limit: {{node.stats.block.gasLimit | gasFilter}}
+              td(style="padding-left: 18px;") {{node.stats.block.txCount}}
               td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.timestamp | blockTimeFilter }}
               td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}
