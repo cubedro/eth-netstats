@@ -47,7 +47,6 @@ block content
             div.pull-left.icon-full-width
               i.icon-time
             div.pull-left
-              span.small-title last block
               span.big-details {{ lastBlock | blockTimeFilter }}
             div.clearfix
         div.col-xs-4.stat-holder
@@ -103,6 +102,5 @@ block content
               td(class="{{ node.stats.block.number | blockClass : bestBlock }}").hidden-sm.hidden-xs
                 span.small {{node.stats.block.hash}}
                 //- div.small Difficulty: {{node.stats.block.difficulty | gasFilter}} | Gas used: {{node.stats.block.gasUsed | gasFilter}} | Min gas price: {{node.stats.block.minGasPrice | gasFilter}} | Gas limit: {{node.stats.block.gasLimit | gasFilter}}
-              td(am-time-ago="node.stats.block.timestamp", am-preprocess="unix", class="{{ node.stats.block.timestamp | timeClass }}") ∞
-              //- td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.blocktime | blockTimeFilter }}
+              td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.blocktime | blockTimeFilter }}
               td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}
