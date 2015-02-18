@@ -122,7 +122,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 						radius: 3,
 						latitude: node.geo.ll[0],
 						longitude: node.geo.ll[1],
-						fillKey: $filter('bubbleClass')(node, $scope.bestBlock)
+						fillKey: $filter('bubbleClass')(node.stats, $scope.bestBlock)
 					};
 				else
 					return {
@@ -131,6 +131,8 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 						longitude: 0
 					};
 			});
+
+			console.log($scope.map);
 		}
 
 		$scope.$apply();
