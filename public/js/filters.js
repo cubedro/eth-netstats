@@ -44,7 +44,7 @@ angular.module('netStatsApp.filters', [])
 		version = version.replace('eth version ', 'v')
 						.replace("\n" + 'Network protocol version: ', ' (')
 						.replace("\n" + 'Client database version: ', ',')
-						.replace("\n" + 'Build: ', ')<br>');
+						.replace("\n" + 'Build: ', ') - ');
 		return $sce.trustAsHtml(version);
 	};
 })
@@ -62,6 +62,16 @@ angular.module('netStatsApp.filters', [])
 	return function(timestamp) {
 		return timeClass(timestamp);
 	};
+})
+.filter('avgTimeFilter', function() {
+	return function(time) {
+		return Math.round(time) + 's';
+	};
+})
+.filter('avgTimeClass', function() {
+	return function(time) {
+		return blockTimeClass(time);
+	}
 })
 .filter('upTimeFilter', function() {
 	return function(uptime) {
@@ -115,6 +125,11 @@ function timeClass(timestamp)
 	var time = Math.floor((new Date()).getTime() / 1000);
 	var diff = time - timestamp;
 
+	return blockTimeClass(diff);
+}
+
+function blockTimeClass(diff)
+{
 	if(diff <= 12)
 		return 'text-success';
 
@@ -124,5 +139,5 @@ function timeClass(timestamp)
 	if(diff <= 30)
 		return 'text-warning';
 
-	return 'text-danger';
+	return 'text-danger'
 }
