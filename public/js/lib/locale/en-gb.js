@@ -39,7 +39,7 @@
             s : 'a few sec',
             m : 'a min',
             mm : '%d min',
-            h : 'an h',
+            h : '1 h',
             hh : '%d h',
             d : 'a day',
             dd : '%d days',
