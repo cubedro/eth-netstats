@@ -11,7 +11,9 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.nodesActive = 0;
 	$scope.bestBlock = 0;
 	$scope.lastBlock = 0;
+	$scope.lastDifficulty = 0;
 	$scope.upTimeTotal = 0;
+	$scope.avgBlockTime = 0;
 
 	$scope.nodes = [];
 	$scope.map = [];
@@ -69,6 +71,11 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			case "info":
 				$scope.nodes[findIndex({id: data.id})].info = data.info;
 				break;
+
+			case "inactive":
+				$scope.nodes[findIndex({id: data.id})].stats = data.stats;
+				toastr['error']("Node went away!", "Node connection was lost!");
+				break;
 		}
 
 		updateStats();
@@ -111,6 +118,14 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			$scope.lastBlock = _.max($scope.nodes, function(node) {
 				return parseInt(node.stats.block.timestamp);
 			}).stats.block.timestamp;
+
+			$scope.lastDifficulty = _.max($scope.nodes, function(node) {
+				return parseInt(node.stats.block.timestamp);
+			}).stats.block.difficulty;
+
+			$scope.avgBlockTime = _.max($scope.nodes, function(node) {
+				return parseInt(node.stats.block.timestamp);
+			}).stats.blocktimeAvg;
 
 			$scope.upTimeTotal = _.reduce($scope.nodes, function(total, node) {
 				return total + node.stats.uptime;

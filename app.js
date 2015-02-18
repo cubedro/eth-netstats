@@ -34,13 +34,15 @@ api.on('connection', function(spark) {
     console.log(spark.address);
     console.log(spark.query);
 
-    spark.on('hello', function(data) {
+    spark.on('hello', function(data)
+    {
         console.log('got hello data from ', spark.id);
         console.log(data);
 
         if(typeof data.id !== 'undefined' && typeof data.info !== 'undefined')
         {
             data.ip = spark.address.ip;
+            data.spark = spark.id;
 
             var info = Nodes.add(data);
             spark.emit('ready');
@@ -49,7 +51,8 @@ api.on('connection', function(spark) {
         }
     });
 
-    spark.on('update', function(data) {
+    spark.on('update', function(data)
+    {
         console.log('got update from ' + spark.id);
         console.log(data);
 
@@ -61,8 +64,11 @@ api.on('connection', function(spark) {
         }
     });
 
-    spark.on('end', function(data) {
-        //
+    spark.on('end', function(data)
+    {
+        var stats = Nodes.inactive(spark.id);
+
+        client.write({action: 'inactive', data: stats});
     });
 });
 
