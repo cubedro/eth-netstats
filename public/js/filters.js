@@ -67,11 +67,11 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('blockTimeFilter', function() {
 	return function(timestamp) {
+		if(timestamp === 0)
+			return '∞';
+
 		var time = Math.floor((new Date()).getTime() / 1000);
 		var diff = time - timestamp;
-
-		if(diff === 0)
-			return '∞';
 
 		if(diff < 60)
 			return Math.round(diff) + ' s';
