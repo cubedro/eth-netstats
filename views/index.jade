@@ -103,5 +103,5 @@ block content
               td(class="{{ node.stats.block.number | blockClass : bestBlock }}").hidden-sm.hidden-xs
                 span.small {{node.stats.block.hash}}
                 //- div.small Difficulty: {{node.stats.block.difficulty | gasFilter}} | Gas used: {{node.stats.block.gasUsed | gasFilter}} | Min gas price: {{node.stats.block.minGasPrice | gasFilter}} | Gas limit: {{node.stats.block.gasLimit | gasFilter}}
-              td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.blocktime | blockTimeFilter }}
+              td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.timestamp | blockTimeFilter }}
               td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}

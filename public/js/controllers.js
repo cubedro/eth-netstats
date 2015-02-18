@@ -117,7 +117,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 			$scope.lastBlock = _.max($scope.nodes, function(node) {
 				return parseInt(node.stats.block.timestamp);
-			}).stats.block.blocktime;
+			}).stats.block.timestamp;
 
 			$scope.lastDifficulty = _.max($scope.nodes, function(node) {
 				return parseInt(node.stats.block.timestamp);

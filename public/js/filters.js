@@ -66,14 +66,23 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('blockTimeFilter', function() {
-	return function(time) {
-		if(time === 0)
+	return function(timestamp) {
+		var time = Math.floor((new Date()).getTime() / 1000);
+		var diff = time - timestamp;
+
+		if(diff === 0)
 			return '∞';
 
-		return moment.duration(Math.round(time), 's').humanize() + ' ago';
+		if(diff < 60)
+			return Math.round(diff) + ' s';
+
+		return moment.duration(Math.round(diff), 's').humanize() + ' ago';
 	};
 }).filter('avgTimeFilter', function() {
 	return function(time) {
+		if(time < 60)
+			return Math.round(time) + ' s';
+
 		return moment.duration(Math.round(time), 's').humanize();
 	};
 })
