@@ -44,7 +44,9 @@ angular.module('netStatsApp.filters', [])
 		version = version.replace('eth version ', 'v')
 						.replace("\n" + 'Network protocol version: ', ' (')
 						.replace("\n" + 'Client database version: ', ',')
-						.replace("\n" + 'Build: ', ') - ');
+						.replace("\n" + 'Build: ', ') - ')
+						.replace('/Debug', '')
+						.replace('/.', '');
 		return $sce.trustAsHtml(version);
 	};
 })
@@ -63,9 +65,16 @@ angular.module('netStatsApp.filters', [])
 		return timeClass(timestamp);
 	};
 })
-.filter('avgTimeFilter', function() {
+.filter('blockTimeFilter', function() {
 	return function(time) {
-		return Math.round(time) + 's';
+		if(time === 0)
+			return '∞';
+
+		return moment.duration(Math.round(time), 's').humanize() + ' ago';
+	};
+}).filter('avgTimeFilter', function() {
+	return function(time) {
+		return moment.duration(Math.round(time), 's').humanize();
 	};
 })
 .filter('avgTimeClass', function() {
