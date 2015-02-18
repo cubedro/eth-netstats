@@ -28,6 +28,18 @@ Collection.prototype.update = function(id, stats)
 	return node.getStats();
 }
 
+Collection.prototype.inactive = function(id)
+{
+	var node = this.getNode({ spark: id });
+
+	if(!node)
+		return false;
+
+	node.stats.active = false;
+
+	return node.getStats();
+}
+
 Collection.prototype.getIndex = function(search)
 {
 	return _.findIndex(this._list, search);

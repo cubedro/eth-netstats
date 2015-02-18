@@ -36,6 +36,9 @@ var Node = function Node(data)
 		this.setGeo(data.ip);
 	}
 
+	if(typeof data.spark !== 'undefined')
+		this.spark = data.spark;
+
 	return this;
 }
 
@@ -53,6 +56,9 @@ Node.prototype.setInfo = function(data)
 		this.info.ip = data.ip;
 		this.setGeo(data.ip);
 	}
+
+	if(typeof data.spark !== 'undefined')
+		this.spark = data.spark;
 }
 
 Node.prototype.getInfo = function()

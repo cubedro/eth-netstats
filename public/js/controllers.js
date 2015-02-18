@@ -69,6 +69,11 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			case "info":
 				$scope.nodes[findIndex({id: data.id})].info = data.info;
 				break;
+
+			case "inactive":
+				$scope.nodes[findIndex({id: data.id})].stats = data.stats;
+				toastr['error']("Node went away!", "Node connection was lost!");
+				break;
 		}
 
 		updateStats();

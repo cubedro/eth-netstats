@@ -6,7 +6,7 @@ block content
       div.col-lg-6(ng-cloak)
         div.col-sm-12
           h1= title
-          p Welcome to #{title}
+          //- p Welcome to #{title}
 
         div.clearfix
 
@@ -79,7 +79,7 @@ block content
                 div.small {{node.info.ip}}
               td.small
                 div.small(ng-bind-html="node.info.node | nodeVersion")
-                div.small {{node.info.os}}, {{node.info.os_v}}
+                //- div.small {{node.info.os}}, {{node.info.os_v}}
               td(class="{{ node.stats.peers | peerClass }}") {{node.stats.peers}}
               td(class="{{ node.stats.mining | miningClass }}")
                 i(class="{{ node.stats.mining | miningIconClass }}")
