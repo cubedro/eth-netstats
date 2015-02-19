@@ -59,9 +59,9 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 			case "add":
 				if(addNewNode(data))
-					toastr['success']("New node connected!", "New node!");
+					toastr['success']("New node "+ $scope.nodes[findIndex({id: data.id})].info.name +" connected!", "New node!");
 				else
-					toastr['info']("Node reconnected!", "Node is back!");
+					toastr['info']("Node "+ $scope.nodes[findIndex({id: data.id})].info.name +" reconnected!", "Node is back!");
 				break;
 
 			case "update":
@@ -74,7 +74,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 			case "inactive":
 				$scope.nodes[findIndex({id: data.id})].stats = data.stats;
-				toastr['error']("Node went away!", "Node connection was lost!");
+				toastr['error']("Node "+ $scope.nodes[findIndex({id: data.id})].info.name +" went away!", "Node connection was lost!");
 				break;
 		}
 
