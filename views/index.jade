@@ -89,7 +89,7 @@ block content
               th
                 i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions")
               th
-                i.icon-time(data-toggle="tooltip", data-placement="top", title="Last node time")
+                i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time")
               th
                 i.icon-clock(data-toggle="tooltip", data-placement="top", title="Up-time")
           tbody
@@ -106,7 +106,7 @@ block content
               td(style="padding-left: 18px;") {{node.stats.pending}}
               td(class="{{ node.stats.block.number | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
               td(class="{{ node.stats.block.number | blockClass : bestBlock }}").hidden-sm.hidden-xs
-                span.small {{node.stats.block.hash}}
+                span.small {{node.stats.block.hash | hashFilter}}
                 //- div.small Difficulty: {{node.stats.block.difficulty | gasFilter}} | Gas used: {{node.stats.block.gasUsed | gasFilter}} | Min gas price: {{node.stats.block.minGasPrice | gasFilter}} | Gas limit: {{node.stats.block.gasLimit | gasFilter}}
               td(style="padding-left: 18px;") {{node.stats.block.txCount}}
               td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.timestamp | blockTimeFilter }}

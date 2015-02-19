@@ -60,6 +60,11 @@ angular.module('netStatsApp.filters', [])
 		return (typeof gas !== 'undefined' ? parseInt(gas) : '?');
 	}
 })
+.filter('hashFilter', function() {
+	return function(hash) {
+		return hash.substr(0, 6) + '...' + hash.substr(58, 6);
+	}
+})
 .filter('timeClass', function() {
 	return function(timestamp) {
 		return timeClass(timestamp);
