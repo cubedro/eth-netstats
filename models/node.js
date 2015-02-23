@@ -16,7 +16,9 @@ var Node = function Node(data)
 			difficulty: 0,
 			number: 0,
 			gasLimit: 0,
-			timestamp: 0
+			timestamp: 0,
+			arrival: 0,
+			propagation: 0
 		},
 		blocktimeAvg: 0,
 		blockTimes: [],
