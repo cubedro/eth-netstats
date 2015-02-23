@@ -18,6 +18,10 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.nodes = [];
 	$scope.map = [];
 
+	$scope.timeout = setInterval(function(){
+		$scope.$apply();
+	}, 1000);
+
 	// Socket listeners
 	// ----------------
 
