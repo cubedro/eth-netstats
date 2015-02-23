@@ -46,6 +46,7 @@ api.on('connection', function(spark) {
         {
             data.ip = spark.address.ip;
             data.spark = spark.id;
+            data.latency = spark.latency;
 
             var info = Nodes.add(data);
             spark.emit('ready');

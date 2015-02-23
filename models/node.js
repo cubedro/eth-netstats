@@ -40,6 +40,9 @@ var Node = function Node(data)
 	if(typeof data.spark !== 'undefined')
 		this.spark = data.spark;
 
+	if(typeof data.latency !== 'undefined')
+		this.stats.latency = data.latency;
+
 	return this;
 }
 
