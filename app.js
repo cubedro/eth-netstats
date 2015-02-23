@@ -20,6 +20,7 @@ api = new Primus(server, {
 });
 
 api.use('emit', require('primus-emit'));
+api.use('spark-latency', require('primus-spark-latency'));
 
 var client = new Primus(server, {
     transformer: 'websockets',
@@ -30,12 +31,14 @@ var client = new Primus(server, {
 client.use('emit', require('primus-emit'));
 
 api.on('connection', function(spark) {
+    console.log('Latency: ', spark.latency);
     console.log(spark.id);
     console.log(spark.address);
     console.log(spark.query);
 
     spark.on('hello', function(data)
     {
+        console.log('Latency: ', spark.latency);
         console.log('got hello data from ', spark.id);
         console.log(data);
 
@@ -53,11 +56,13 @@ api.on('connection', function(spark) {
 
     spark.on('update', function(data)
     {
+        console.log('Latency: ', spark.latency);
         console.log('got update from ' + spark.id);
         console.log(data);
 
         if(typeof data.id !== 'undefined' && typeof data.stats !== 'undefined')
         {
+            data.stats.latency = spark.latency;
             var stats = Nodes.update(data.id, data.stats);
 
             client.write({action: 'update', data: stats});

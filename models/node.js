@@ -21,6 +21,7 @@ var Node = function Node(data)
 		},
 		blocktimeAvg: 0,
 		difficulty: [],
+		latency: 0,
 		uptime: 0,
 		lastUpdate: 0
 	};

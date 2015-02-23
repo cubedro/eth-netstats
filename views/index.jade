@@ -78,6 +78,8 @@ block content
               th
                 i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type")
               th
+                i.icon-gas(data-toggle="tooltip", data-placement="top", title="Node latency")
+              th
                 i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining")
               th
                 i.icon-group(data-toggle="tooltip", data-placement="top", title="Peers")
@@ -100,8 +102,9 @@ block content
               td
                 div.small(ng-bind-html="node.info.node | nodeVersion")
                 //- div.small {{node.info.os}}, {{node.info.os_v}}
+              td.small(class="{{ node.stats | mainClass : bestBlock }}") {{node.stats | latencyFilter}}
               td(class="{{ node.stats.mining | miningClass }}")
-                i(class="{{ node.stats.mining | miningIconClass }}")
+                i.small(class="{{ node.stats.mining | miningIconClass }}")
               td(class="{{ node.stats.peers | peerClass }}", style="padding-left: 18px;") {{node.stats.peers}}
               td(style="padding-left: 18px;") {{node.stats.pending}}
               td(class="{{ node.stats.block.number | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
