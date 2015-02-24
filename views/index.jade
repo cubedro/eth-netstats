@@ -104,7 +104,7 @@ block content
               td
                 div.small(ng-bind-html="node.info.node | nodeVersion")
                 //- div.small {{node.info.os}}, {{node.info.os_v}}
-              td.small(class="{{ node.stats | mainClass : bestBlock }}") {{node.stats | latencyFilter}}
+              td.small(class="{{ node.stats.latency | latencyClass }}") {{node.stats | latencyFilter}}
               td(class="{{ node.stats.mining | miningClass }}")
                 i.small(class="{{ node.stats.mining | miningIconClass }}")
               td(class="{{ node.stats.peers | peerClass }}", style="padding-left: 18px;") {{node.stats.peers}}
@@ -115,5 +115,5 @@ block content
                 //- div.small Difficulty: {{node.stats.block.difficulty | gasFilter}} | Gas used: {{node.stats.block.gasUsed | gasFilter}} | Min gas price: {{node.stats.block.minGasPrice | gasFilter}} | Gas limit: {{node.stats.block.gasLimit | gasFilter}}
               td(style="padding-left: 18px;") {{node.stats.block.txCount}}
               td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.timestamp | blockTimeFilter }}
-              td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.propagation}} ms
+              td(class="{{ node.stats.block.propagation | propagationTimeClass }}") {{node.stats.block.propagation}} ms
               td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}

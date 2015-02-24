@@ -78,6 +78,34 @@ angular.module('netStatsApp.filters', [])
 		return timeClass(timestamp);
 	};
 })
+.filter('propagationTimeClass', function() {
+	return function(propagation) {
+		if(propagation <= 2000)
+			return 'text-success';
+
+		if(propagation <= 4000)
+			return 'text-info';
+
+		if(propagation <= 5000)
+			return 'text-warning';
+
+		return 'text-danger'
+	};
+})
+.filter('latencyClass', function() {
+	return function(time) {
+		if(time <= 1000)
+			return 'text-success';
+
+		if(time <= 2000)
+			return 'text-info';
+
+		if(time <= 3000)
+			return 'text-warning';
+
+		return 'text-danger'
+	};
+})
 .filter('blockTimeFilter', function() {
 	return function(timestamp) {
 		if(timestamp === 0)
