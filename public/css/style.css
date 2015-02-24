@@ -123,3 +123,7 @@ table td i {
 		width: 100%;
 	}
 }
+
+.ng-cloak {
+    display: none !important;
+}
