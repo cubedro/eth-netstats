@@ -84,9 +84,6 @@ angular.module('netStatsApp.filters', [])
 			return 'text-success';
 
 		if(propagation <= 7000)
-			return 'text-info';
-
-		if(propagation <= 10000)
 			return 'text-warning';
 
 		return 'text-danger'
@@ -98,9 +95,6 @@ angular.module('netStatsApp.filters', [])
 			return 'text-success';
 
 		if(time <= 1000)
-			return 'text-info';
-
-		if(time <= 2000)
 			return 'text-warning';
 
 		return 'text-danger'
