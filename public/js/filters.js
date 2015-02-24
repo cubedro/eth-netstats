@@ -80,13 +80,13 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('propagationTimeClass', function() {
 	return function(propagation) {
-		if(propagation <= 2000)
+		if(propagation <= 3000)
 			return 'text-success';
 
-		if(propagation <= 4000)
+		if(propagation <= 7000)
 			return 'text-info';
 
-		if(propagation <= 5000)
+		if(propagation <= 10000)
 			return 'text-warning';
 
 		return 'text-danger'
@@ -94,13 +94,13 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('latencyClass', function() {
 	return function(time) {
-		if(time <= 1000)
+		if(time <= 100)
 			return 'text-success';
 
-		if(time <= 2000)
+		if(time <= 1000)
 			return 'text-info';
 
-		if(time <= 3000)
+		if(time <= 2000)
 			return 'text-warning';
 
 		return 'text-danger'
