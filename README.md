@@ -2,7 +2,9 @@ Ethereum Network Stats
 ============
 [![Build Status][travis-image]][travis-url] [![dependency status][dep-image]][dep-url]
 
-Visual interface for tracking ethereum network status. This is the front-end for [eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api).
+This is a visual interface for tracking ethereum network status. It uses WebSockets to receive stats from running nodes and output it through an angular interface. It's the front-end for [eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api).
+
+![Screenshot](/raw/master/public/images/screenshot.jpg "Screenshot")
 
 ## Prerequisite
 * node
