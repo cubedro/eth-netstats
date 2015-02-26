@@ -2,7 +2,14 @@ Ethereum Network Stats
 ============
 [![Build Status][travis-image]][travis-url] [![dependency status][dep-image]][dep-url]
 
-To run via Docker
+Visual interface for tracking ethereum network status. This is the front-end for [eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api).
+
+## Prerequisite
+* node
+* npm
+
+## Installation
+To install via Docker
 
 create a docker image via
 

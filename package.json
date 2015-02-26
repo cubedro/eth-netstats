@@ -1,9 +1,9 @@
 {
   "name": "eth-netstats",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
-    "node": "0.10.x",
-    "npm": "2.1.x"
+    "node": "0.12.0",
+    "npm": "2.5.0"
   },
   "private": true,
   "scripts": {
