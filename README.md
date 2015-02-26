@@ -4,7 +4,7 @@ Ethereum Network Stats
 
 This is a visual interface for tracking ethereum network status. It uses WebSockets to receive stats from running nodes and output it through an angular interface. It's the front-end for [eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api).
 
-![Screenshot](/raw/master/public/images/screenshot.jpg "Screenshot")
+![Screenshot](/public/images/screenshot.jpg?raw=true "Screenshot")
 
 ## Prerequisite
 * node
