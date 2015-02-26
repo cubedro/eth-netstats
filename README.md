@@ -2,7 +2,7 @@ Ethereum Network Stats
 ============
 [![Build Status][travis-image]][travis-url] [![dependency status][dep-image]][dep-url]
 
-This is a visual interface for tracking ethereum network status. It uses WebSockets to receive stats from running nodes and output it through an angular interface. It's the front-end for [eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api).
+This is a visual interface for tracking ethereum network status. It uses WebSockets to receive stats from running nodes and output them through an angular interface. It is the front-end implementation for [eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api).
 
 ![Screenshot](/public/images/screenshot.jpg?raw=true "Screenshot")
 
@@ -11,18 +11,20 @@ This is a visual interface for tracking ethereum network status. It uses WebSock
 * npm
 
 ## Installation
-To install via Docker
+Make sure you have node.js and npm installed.
 
-create a docker image via
-
-```
-docker build --tag="eth-netstats" path/to/eth-netstats-repo
-```
-
-run it via
+Clone the repository and install the dependencies
 
 ```
-docker run --publish=3000:3000 eth-netstats
+git clone https://github.com/cubedro/eth-netstats
+cd eth-netstats
+npm install
+```
+
+##Run
+
+```
+npm start
 ```
 
 see the interface at http://localhost:3000
