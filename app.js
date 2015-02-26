@@ -8,6 +8,8 @@ var Primus = require('primus'),
     api,
     client;
 
+var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
+
 var Collection = require('./models/collection');
 var Nodes = new Collection();
 
