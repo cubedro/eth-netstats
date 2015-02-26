@@ -44,7 +44,7 @@ api.on('connection', function(spark) {
         console.log('got hello data from ', spark.id);
         console.log(data);
 
-        if(typeof data.secret === 'undefined' || data.secret !== process.env.WS_SECRET)
+        if(typeof data.secret === 'undefined' || data.secret !== WS_SECRET)
         {
             spark.end(undefined, { reconnect: false });
 
