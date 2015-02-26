@@ -1,11 +1,12 @@
 {
   "name": "eth-netstats",
-  "version": "0.0.1",
-  "engines": {
-    "node": "0.10.x",
-    "npm": "2.1.x"
-  },
+  "description": "Ethereum Network Intelligence dashboard",
+  "version": "0.0.2",
   "private": true,
+  "engines": {
+    "node": "0.12.0",
+    "npm": "2.5.0"
+  },
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -21,5 +22,21 @@
     "primus-spark-latency": "^0.1.1",
     "serve-favicon": "^2.2.0",
     "ws": "^0.7.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cubedro/eth-netstats.git"
+  },
+  "homepage": "https://github.com/cubedro/eth-netstats",
+  "bugs": {
+    "url": "https://github.com/cubedro/eth-netstats/issues"
+  },
+  "authors": [
+    {
+      "name": "Marian Oancea",
+      "email": "marian@ethdev.com",
+      "url": "https://github.com/cubedro"
+    }
+  ],
+  "license": "LGPL-3.0"
 }
