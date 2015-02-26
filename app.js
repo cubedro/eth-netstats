@@ -42,6 +42,13 @@ api.on('connection', function(spark) {
         console.log('got hello data from ', spark.id);
         console.log(data);
 
+        if(typeof data.secret === 'undefined' || data.secret !== process.env.WS_SECRET)
+        {
+            spark.end(undefined, { reconnect: false });
+
+            return false;
+        }
+
         if(typeof data.id !== 'undefined' && typeof data.info !== 'undefined')
         {
             data.ip = spark.address.ip;
