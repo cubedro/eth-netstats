@@ -60,9 +60,44 @@ angular.module('netStatsApp.filters', [])
 		return (typeof gas !== 'undefined' ? parseInt(gas) : '?');
 	}
 })
+.filter('latencyFilter', function() {
+	return function(stats) {
+		if(stats.active === false)
+			return 'offline';
+		else
+			return stats.latency + ' ms';
+	}
+})
+.filter('hashFilter', function() {
+	return function(hash) {
+		return hash.substr(0, 6) + '...' + hash.substr(58, 6);
+	}
+})
 .filter('timeClass', function() {
 	return function(timestamp) {
 		return timeClass(timestamp);
+	};
+})
+.filter('propagationTimeClass', function() {
+	return function(propagation) {
+		if(propagation <= 3000)
+			return 'text-success';
+
+		if(propagation <= 7000)
+			return 'text-warning';
+
+		return 'text-danger'
+	};
+})
+.filter('latencyClass', function() {
+	return function(time) {
+		if(time <= 100)
+			return 'text-success';
+
+		if(time <= 1000)
+			return 'text-warning';
+
+		return 'text-danger'
 	};
 })
 .filter('blockTimeFilter', function() {
@@ -74,7 +109,7 @@ angular.module('netStatsApp.filters', [])
 		var diff = time - timestamp;
 
 		if(diff < 60)
-			return Math.round(diff) + ' s';
+			return Math.round(diff) + ' s ago';
 
 		return moment.duration(Math.round(diff), 's').humanize() + ' ago';
 	};

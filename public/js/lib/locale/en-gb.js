@@ -37,7 +37,7 @@
             future : 'in %s',
             past : '%s ago',
             s : 'a few sec',
-            m : 'a min',
+            m : '1 min',
             mm : '%d min',
             h : '1 h',
             hh : '%d h',

@@ -17,10 +17,13 @@ var Node = function Node(data)
 			number: 0,
 			gasLimit: 0,
 			timestamp: 0,
-			blocktime: 0
+			arrival: 0,
+			propagation: 0
 		},
 		blocktimeAvg: 0,
+		blockTimes: [],
 		difficulty: [],
+		latency: 0,
 		uptime: 0,
 		lastUpdate: 0
 	};
@@ -38,6 +41,9 @@ var Node = function Node(data)
 
 	if(typeof data.spark !== 'undefined')
 		this.spark = data.spark;
+
+	if(typeof data.latency !== 'undefined')
+		this.stats.latency = data.latency;
 
 	return this;
 }
