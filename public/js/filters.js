@@ -115,29 +115,30 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('blockPropagationFilter', function() {
-	return function(miliseconds) {
-		if(miliseconds < 1000)
-			return miliseconds + " ms";
-
+	return function(ms) {
 		var result = 0;
 
-		if(miliseconds < 1000*60){
-			result = miliseconds/1000;
-			return result.format(1) + " s";
+		if(ms < 1000){
+			return ms + " ms";
 		}
 
-		if(miliseconds < 1000*60*60){
-			result = miliseconds/1000/60;
-			return result.format(1) + " min";
+		if(ms < 1000*60){
+			result = ms/1000;
+			return result.toFixed(1).toString() + " s";
 		}
 
-		if(miliseconds < 1000*60*60*24){
-			result = miliseconds/1000/60/60;
-			return result.format(1) + " h";
+		if(ms < 1000*60*60){
+			result = ms/1000/60;
+			return result.toFixed(1) + " min";
 		}
 
-		result = miliseconds/1000/60/60/24;
-		return result.format(1) + " days";
+		if(ms < 1000*60*60*24){
+			result = ms/1000/60/60;
+			return result.toFixed(1) + " h";
+		}
+
+		result = ms/1000/60/60/24;
+		return result.toFixed(1) + " days";
 	};
 })
 .filter('avgTimeFilter', function() {
