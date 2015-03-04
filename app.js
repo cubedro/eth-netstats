@@ -8,6 +8,8 @@ var Primus = require('primus'),
     api,
     client;
 
+var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
+
 var Collection = require('./models/collection');
 var Nodes = new Collection();
 
@@ -41,6 +43,13 @@ api.on('connection', function(spark) {
         console.log('Latency: ', spark.latency);
         console.log('got hello data from ', spark.id);
         console.log(data);
+
+        if(typeof data.secret === 'undefined' || data.secret !== WS_SECRET)
+        {
+            spark.end(undefined, { reconnect: false });
+
+            return false;
+        }
 
         if(typeof data.id !== 'undefined' && typeof data.info !== 'undefined')
         {
