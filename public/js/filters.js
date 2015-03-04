@@ -113,7 +113,34 @@ angular.module('netStatsApp.filters', [])
 
 		return moment.duration(Math.round(diff), 's').humanize() + ' ago';
 	};
-}).filter('avgTimeFilter', function() {
+})
+.filter('blockPropagationFilter', function() {
+	return function(miliseconds) {
+		if(miliseconds < 1000)
+			return miliseconds + " ms";
+
+		var result = 0;
+
+		if(miliseconds < 1000*60){
+			result = miliseconds/1000;
+			return result.format(1) + " s";
+		}
+
+		if(miliseconds < 1000*60*60){
+			result = miliseconds/1000/60;
+			return result.format(1) + " min";
+		}
+
+		if(miliseconds < 1000*60*60*24){
+			result = miliseconds/1000/60/60;
+			return result.format(1) + " h";
+		}
+
+		result = miliseconds/1000/60/60/24;
+		return result.format(1) + " days";
+	};
+})
+.filter('avgTimeFilter', function() {
 	return function(time) {
 		if(time < 60)
 			return Math.round(time) + ' s';
