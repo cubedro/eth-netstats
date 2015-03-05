@@ -118,27 +118,27 @@ angular.module('netStatsApp.filters', [])
 	return function(ms) {
 		var result = 0;
 
-		if(ms < 1000){
+		if(ms < 1000) {
 			return ms + " ms";
 		}
 
-		if(ms < 1000*60){
+		if(ms < 1000*60) {
 			result = ms/1000;
-			return result.toFixed(1).toString() + " s";
+			return result.toFixed(1) + " s";
 		}
 
-		if(ms < 1000*60*60){
+		if(ms < 1000*60*60) {
 			result = ms/1000/60;
-			return result.toFixed(1) + " min";
+			return Math.round(result) + " min";
 		}
 
-		if(ms < 1000*60*60*24){
+		if(ms < 1000*60*60*24) {
 			result = ms/1000/60/60;
-			return result.toFixed(1) + " h";
+			return Math.round(result) + " h";
 		}
 
 		result = ms/1000/60/60/24;
-		return result.toFixed(1) + " days";
+		return Math.round(result) + " days";
 	};
 })
 .filter('avgTimeFilter', function() {
