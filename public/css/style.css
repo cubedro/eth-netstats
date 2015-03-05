@@ -5,18 +5,19 @@ body {
 }
 
 .big-info {
-	padding-bottom: 30px;
-	padding-top: 30px;
-	/*border: 1px solid rgba(255,255,255,0.05);*/
+	padding-bottom: 20px;
+	padding-top: 20px;
+	background: #090909;
+	border: 1px solid rgba(255,255,255,0.05);
 }
 
 .big-info .icon-full-width i {
 	display: block;
-	width: 110px;
-	height: 90px;
-	font-size: 90px;
-	line-height: 90px;
-	margin-right: 20px;
+	width: 85px;
+	height: 70px;
+	font-size: 70px;
+	line-height: 70px;
+	margin-right: 15px;
 }
 
 .big-info span {
@@ -26,19 +27,18 @@ body {
 .big-info span.small-title {
 	display: block;
 	font-weight: 700;
-	font-size: 16px;
+	font-size: 14px;
 	line-height: 20px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
-	padding-top: 6px;
 	color: #aaa !important;
 }
 
 .big-info span.big-details {
 	display: block;
 	font-weight: 200;
-	font-size: 60px;
-	line-height: 64px;
+	font-size: 50px;
+	line-height: 55px;
 	letter-spacing: -4px;
 }
 
