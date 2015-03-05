@@ -13,10 +13,18 @@ block content
         div.col-xs-2.stat-holder
           div.row.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
             div.pull-left.icon-full-width
-              i.icon-bulb
+              i.icon-node
             div.pull-left
               span.small-title active nodes
               span.big-details {{nodesActive}}/{{nodesTotal}}
+            div.clearfix
+        div.col-xs-2.stat-holder
+          div.row.big-info.uptime(class="{{ upTimeTotal | upTimeClass }}")
+            div.pull-left.icon-full-width
+              i.icon-bulb
+            div.pull-left
+              span.small-title up-time
+              span.big-details {{ upTimeTotal | upTimeFilter }}
             div.clearfix
         div.col-xs-2.stat-holder
           div.row.big-info.difficulty.text-info
@@ -25,14 +33,6 @@ block content
             div.pull-left
               span.small-title difficulty
               span.big-details {{ lastDifficulty }}
-            div.clearfix
-        div.col-xs-2.stat-holder
-          div.row.big-info.uptime(class="{{ upTimeTotal | upTimeClass }}")
-            div.pull-left.icon-full-width
-              i.icon-clock
-            div.pull-left
-              span.small-title up-time
-              span.big-details {{ upTimeTotal | upTimeFilter }}
             div.clearfix
         div.col-xs-2.stat-holder
           div.row.big-info.bestblock.text-info
@@ -68,7 +68,7 @@ block content
       div.clearfix
 
       div.col-sm-12(ng-cloak)
-        h1 Nodes in detail
+        //- h1 Nodes in detail
 
         table.table.table-striped
           thead
@@ -78,7 +78,7 @@ block content
               th
                 i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type")
               th
-                i.icon-gas(data-toggle="tooltip", data-placement="top", title="Node latency")
+                i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency")
               th
                 i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining")
               th
@@ -93,7 +93,7 @@ block content
               th
                 i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time")
               th
-                i.icon-clock(data-toggle="tooltip", data-placement="top", title="Propagation time")
+                i.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time")
               th
                 i.icon-bulb(data-toggle="tooltip", data-placement="top", title="Up-time")
           tbody
