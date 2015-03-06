@@ -2,8 +2,8 @@ extends layout
 
 block content
   div.container-fluid(ng-controller='StatsCtrl')
-    div.row
-      div.col-lg-12(ng-cloak)
+    div.row(ng-cloak)
+      div.col-lg-12
         //- div.col-sm-12
           //- h1= title
           //- p Welcome to #{title}
@@ -61,13 +61,26 @@ block content
 
         div.clearfix
 
-      div.col-lg-5
-        div.col-xs-12
-          nodemap#mapHolder(data="map")
+      div.col-xs.12
+        div.col-lg-8(style="padding-top: 30px;")
+          div.col-xs-3.stat-holder
+            div.row.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
+              div.pull-left.icon-full-width
+                i.icon-node
+              div.pull-left
+                span.small-title active nodes
+                span.big-details {{nodesActive}}/{{nodesTotal}}
+              div.clearfix
+
+          div.clearfix
+
+        div.col-lg-4
+          div.col-xs-12
+            nodemap#mapHolder(data="map")
 
       div.clearfix
 
-      div.col-sm-12(ng-cloak)
+      div.col-sm-12
         //- h1 Nodes in detail
 
         table.table.table-striped
