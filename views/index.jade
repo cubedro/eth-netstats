@@ -2,23 +2,31 @@ extends layout
 
 block content
   div.container-fluid(ng-controller='StatsCtrl')
-    div.row
-      div.col-lg-7(ng-cloak)
-        div.col-sm-12
-          h1= title
+    div.row(ng-cloak)
+      div.col-lg-12
+        //- div.col-sm-12
+          //- h1= title
           //- p Welcome to #{title}
 
-        div.clearfix
+        //- div.clearfix
 
-        div.col-xs-4.stat-holder
+        div.col-xs-2.stat-holder
           div.row.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
             div.pull-left.icon-full-width
-              i.icon-bulb
+              i.icon-node
             div.pull-left
               span.small-title active nodes
               span.big-details {{nodesActive}}/{{nodesTotal}}
             div.clearfix
-        div.col-xs-5.stat-holder
+        div.col-xs-2.stat-holder
+          div.row.big-info.uptime(class="{{ upTimeTotal | upTimeClass }}")
+            div.pull-left.icon-full-width
+              i.icon-bulb
+            div.pull-left
+              span.small-title up-time
+              span.big-details {{ upTimeTotal | upTimeFilter }}
+            div.clearfix
+        div.col-xs-2.stat-holder
           div.row.big-info.difficulty.text-info
             div.pull-left.icon-full-width
               i.icon-difficulty
@@ -26,15 +34,7 @@ block content
               span.small-title difficulty
               span.big-details {{ lastDifficulty }}
             div.clearfix
-        div.col-xs-3.stat-holder
-          div.row.big-info.uptime(class="{{ upTimeTotal | upTimeClass }}")
-            div.pull-left.icon-full-width
-              i.icon-clock
-            div.pull-left
-              span.small-title up-time
-              span.big-details {{ upTimeTotal | upTimeFilter }}
-            div.clearfix
-        div.col-xs-4.stat-holder
+        div.col-xs-2.stat-holder
           div.row.big-info.bestblock.text-info
             div.pull-left.icon-full-width
               i.icon-block
@@ -42,7 +42,7 @@ block content
               span.small-title best block
               span.big-details {{"#" + bestBlock}}
             div.clearfix
-        div.col-xs-5.stat-holder
+        div.col-xs-2.stat-holder
           div.row.big-info.blocktime(class="{{ lastBlock | timeClass }}")
             div.pull-left.icon-full-width
               i.icon-time
@@ -50,7 +50,7 @@ block content
               span.small-title last block
               span.big-details {{ lastBlock | blockTimeFilter }}
             div.clearfix
-        div.col-xs-3.stat-holder
+        div.col-xs-2.stat-holder
           div.row.big-info.avgblocktime(class="{{ avgBlockTime | timeClass }}")
             div.pull-left.icon-full-width
               i.icon-gas
@@ -61,14 +61,27 @@ block content
 
         div.clearfix
 
-      div.col-lg-5
-        div.col-xs-12
-          nodemap#mapHolder(data="map")
+      div.col-xs.12
+        div.col-lg-8(style="padding-top: 30px;")
+          //- div.col-xs-3.stat-holder
+          //-   div.row.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
+          //-     div.pull-left.icon-full-width
+          //-       i.icon-node
+          //-     div.pull-left
+          //-       span.small-title active nodes
+          //-       span.big-details {{nodesActive}}/{{nodesTotal}}
+          //-     div.clearfix
+
+          div.clearfix
+
+        div.col-lg-4
+          div.col-xs-12
+            nodemap#mapHolder(data="map")
 
       div.clearfix
 
-      div.col-sm-12(ng-cloak)
-        h1 Nodes in detail
+      div.col-sm-12
+        //- h1 Nodes in detail
 
         table.table.table-striped
           thead
@@ -78,7 +91,7 @@ block content
               th
                 i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type")
               th
-                i.icon-gas(data-toggle="tooltip", data-placement="top", title="Node latency")
+                i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency")
               th
                 i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining")
               th
@@ -93,7 +106,7 @@ block content
               th
                 i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time")
               th
-                i.icon-clock(data-toggle="tooltip", data-placement="top", title="Propagation time")
+                i.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time")
               th
                 i.icon-bulb(data-toggle="tooltip", data-placement="top", title="Up-time")
           tbody
