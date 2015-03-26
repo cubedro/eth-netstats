@@ -69,6 +69,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "update":
+				data.stats.block.when = (new Date()).getTime() - data.stats.block.arrival;
 				$scope.nodes[findIndex({id: data.id})].stats = data.stats;
 				break;
 
