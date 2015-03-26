@@ -116,7 +116,7 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('blockPropagationFilter', function() {
 	return function(ms) {
-		ms = (new Date()).getTime() - ms;
+		// ms = (new Date()).getTime() - ms;
 		var result = 0;
 
 		if(ms < 1000) {
