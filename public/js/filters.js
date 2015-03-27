@@ -41,12 +41,16 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('nodeVersion', function($sce) {
 	return function(version) {
-		version = version.replace('eth version ', 'v')
-						.replace("\n" + 'Network protocol version: ', ' (')
-						.replace("\n" + 'Client database version: ', ',')
-						.replace("\n" + 'Build: ', ') - ')
-						.replace('/Debug', '')
-						.replace('/.', '');
+		if(typeof version !== 'undefined') {
+			version = version.replace('eth version ', 'v')
+				.replace("\n" + 'Network protocol version: ', ' (')
+				.replace("\n" + 'Client database version: ', ',')
+				.replace("\n" + 'Build: ', ') - ')
+				.replace('/Debug', '')
+				.replace('/.', '');
+		} else
+			return '';
+
 		return $sce.trustAsHtml(version);
 	};
 })

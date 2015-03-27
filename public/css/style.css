@@ -34,12 +34,42 @@ body {
 	color: #aaa !important;
 }
 
+.big-info.chart {
+	padding-left: 15px;
+}
+
 .big-info span.big-details {
 	display: block;
 	font-weight: 200;
 	font-size: 50px;
 	line-height: 55px;
 	letter-spacing: -4px;
+}
+
+.big-info.chart span.big-details {
+	padding-top: 15px;
+}
+
+.jqstooltip {
+
+}
+
+.jqsfield {
+	position: relative;
+	padding: 5px 0;
+	width: 40px;
+	left: -20px;
+	word-wrap: wrap;
+	text-align: center;
+}
+
+.jqsfield .tooltip-arrow {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px 5px 0;
+	border-top-color: #fff;
 }
 
 table i {

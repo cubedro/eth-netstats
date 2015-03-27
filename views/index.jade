@@ -63,14 +63,10 @@ block content
 
       div.col-xs.12
         div.col-lg-8(style="padding-top: 30px;")
-          //- div.col-xs-3.stat-holder
-          //-   div.row.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
-          //-     div.pull-left.icon-full-width
-          //-       i.icon-node
-          //-     div.pull-left
-          //-       span.small-title active nodes
-          //-       span.big-details {{nodesActive}}/{{nodesTotal}}
-          //-     div.clearfix
+          div.col-xs-3.stat-holder
+            div.row.big-info.chart.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
+              span.small-title block time
+              span.big-details.spark-blocktimes {{ lastBlocksTime.join(',') }}
 
           div.clearfix
 
