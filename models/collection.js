@@ -23,9 +23,7 @@ Collection.prototype.update = function(id, stats)
 	if(!node)
 		return false;
 
-	node.stats = stats;
-
-	return node.getStats();
+	return node.setStats(stats);
 }
 
 Collection.prototype.inactive = function(id)
@@ -35,7 +33,7 @@ Collection.prototype.inactive = function(id)
 	if(!node)
 		return false;
 
-	node.stats.active = false;
+	node.setState(false);
 
 	return node.getStats();
 }
