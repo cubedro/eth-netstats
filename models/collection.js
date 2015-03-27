@@ -33,7 +33,7 @@ Collection.prototype.inactive = function(id)
 	if(!node)
 		return false;
 
-	node.stats.active = false;
+	node.setState(false);
 
 	return node.getStats();
 }

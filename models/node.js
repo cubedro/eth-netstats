@@ -28,6 +28,15 @@ var Node = function Node(data)
 		uptime: 0,
 		lastUpdate: 0
 	};
+	this.uptime = {
+		started: null,
+		history: []
+	};
+
+	if(this.id === null) {
+		this.uptime.started = (new Date()).getTime();
+		this.setState(true);
+	}
 
 	if(typeof data.id !== 'undefined')
 		this.id = data.id;
@@ -66,6 +75,9 @@ Node.prototype.setInfo = function(data)
 
 	if(typeof data.spark !== 'undefined')
 		this.spark = data.spark;
+
+	if(this.uptime.history.length > 0 && this.uptime.history[this.uptime.history.length - 1].status == 'down')
+		this.setState(true);
 }
 
 Node.prototype.getInfo = function()
@@ -77,7 +89,7 @@ Node.prototype.setStats = function(stats)
 {
 	if(typeof stats !== undefined && typeof stats.block !== undefined && typeof stats.block.number !== undefined)
 	{
-		if(stats.block.number !== this.stats.number){
+		if(stats.block.number !== this.stats.number) {
 			stats.block.received == (new Date()).getTime() - stats.block.arrival;
 		} else {
 			stats.block.received = this.stats.block.received;
@@ -94,6 +106,12 @@ Node.prototype.setStats = function(stats)
 Node.prototype.getStats = function()
 {
 	return {id: this.id, stats: this.stats};
+}
+
+Node.prototype.setState = function(active)
+{
+	this.stats.active = active;
+	this.uptime.history.push({status: (active ? 'up' : 'down'), time: (new Date()).getTime()});
 }
 
 module.exports = Node;
