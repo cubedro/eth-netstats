@@ -60,14 +60,6 @@ angular.module('netStatsApp.filters', [])
 		return (typeof gas !== 'undefined' ? parseInt(gas) : '?');
 	}
 })
-.filter('latencyFilter', function() {
-	return function(stats) {
-		if(stats.active === false)
-			return 'offline';
-		else
-			return stats.latency + ' ms';
-	}
-})
 .filter('hashFilter', function() {
 	return function(hash) {
 		return hash.substr(0, 6) + '...' + hash.substr(58, 6);
@@ -89,12 +81,23 @@ angular.module('netStatsApp.filters', [])
 		return 'text-danger'
 	};
 })
+.filter('latencyFilter', function() {
+	return function(stats) {
+		if(stats.active === false)
+			return 'offline';
+		else
+			return stats.latency + ' ms';
+	}
+})
 .filter('latencyClass', function() {
-	return function(time) {
-		if(time <= 100)
+	return function(stats) {
+		if(stats.active === false)
+			return 'text-danger';
+
+		if(stats.latency <= 100)
 			return 'text-success';
 
-		if(time <= 1000)
+		if(stats.latency <= 1000)
 			return 'text-warning';
 
 		return 'text-danger'

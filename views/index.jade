@@ -117,7 +117,7 @@ block content
               td
                 div.small(ng-bind-html="node.info.node | nodeVersion")
                 //- div.small {{node.info.os}}, {{node.info.os_v}}
-              td.small(class="{{ node.stats.latency | latencyClass }}") {{node.stats | latencyFilter}}
+              td.small(class="{{ node.stats | latencyClass }}") {{node.stats | latencyFilter}}
               td(class="{{ node.stats.mining | miningClass }}")
                 i.small(class="{{ node.stats.mining | miningIconClass }}")
               td(class="{{ node.stats.peers | peerClass }}", style="padding-left: 18px;") {{node.stats.peers}}
