@@ -5,7 +5,7 @@
   "private": true,
   "engines": {
     "node": "0.12.0",
-    "npm": "2.5.0"
+    "npm": "2.5.1"
   },
   "scripts": {
     "start": "node ./bin/www"

@@ -69,13 +69,6 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "update":
-				if(typeof $scope.nodes[findIndex({id: data.id})].stats !== 'undefined' && typeof $scope.nodes[findIndex({id: data.id})].stats.block !== 'undefined'){
-					if($scope.nodes[findIndex({id: data.id})].stats.block.number != data.stats.block.number){
-						data.stats.block.when = (new Date()).getTime() - data.stats.block.arrival;
-					} else {
-						data.stats.block.when = $scope.nodes[findIndex({id: data.id})].stats.block.when;
-					}
-				}
 				$scope.nodes[findIndex({id: data.id})].stats = data.stats;
 				break;
 

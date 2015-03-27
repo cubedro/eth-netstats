@@ -18,7 +18,8 @@ var Node = function Node(data)
 			gasLimit: 0,
 			timestamp: 0,
 			arrival: 0,
-			propagation: 0
+			propagation: 0,
+			received: 0
 		},
 		blocktimeAvg: 0,
 		blockTimes: [],
@@ -70,6 +71,24 @@ Node.prototype.setInfo = function(data)
 Node.prototype.getInfo = function()
 {
 	return {id: this.id, info: this.info, geo: this.geo, stats: this.stats};
+}
+
+Node.prototype.setStats = function(stats)
+{
+	if(typeof stats !== undefined && typeof stats.block !== undefined && typeof stats.block.number !== undefined)
+	{
+		if(stats.block.number !== this.stats.number){
+			stats.block.received == (new Date()).getTime() - stats.block.arrival;
+		} else {
+			stats.block.received = this.stats.block.received;
+		}
+
+		this.stats = stats;
+
+		return this.getStats();
+	}
+
+	return false;
 }
 
 Node.prototype.getStats = function()

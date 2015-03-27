@@ -128,5 +128,5 @@ block content
                 //- div.small Difficulty: {{node.stats.block.difficulty | gasFilter}} | Gas used: {{node.stats.block.gasUsed | gasFilter}} | Min gas price: {{node.stats.block.minGasPrice | gasFilter}} | Gas limit: {{node.stats.block.gasLimit | gasFilter}}
               td(style="padding-left: 18px;") {{node.stats.block.txCount}}
               td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.timestamp | blockTimeFilter }}
-              td(class="{{ node.stats.block.when | propagationTimeClass }}") {{node.stats.block.when | blockPropagationFilter}}
+              td(class="{{ node.stats.block.received | propagationTimeClass }}") {{node.stats.block.received | blockPropagationFilter}}
               td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}
