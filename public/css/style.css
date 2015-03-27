@@ -35,7 +35,10 @@ body {
 }
 
 .big-info.chart {
-	padding-left: 15px;
+	padding-left: 14px;
+	padding-right: 14px;
+	-webkit-box-sizing: border-box
+	box-sizing: border-box;
 }
 
 .big-info span.big-details {
@@ -57,8 +60,8 @@ body {
 .jqsfield {
 	position: relative;
 	padding: 5px 0;
-	width: 40px;
-	left: -20px;
+	width: 60px;
+	left: -30px;
 	word-wrap: wrap;
 	text-align: center;
 }

@@ -16,6 +16,8 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.avgBlockTime = 0;
 
 	$scope.lastBlocksTime = [];
+	$scope.difficultyChange = [];
+	$scope.transactionDensity = [];
 
 	$scope.nodes = [];
 	$scope.map = [];
@@ -142,6 +144,18 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			}).stats.blockTimes;
 
 			jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime, {type: 'bar', tooltipSuffix: 's'});
+
+			$scope.difficultyChange = _.max($scope.nodes, function(node) {
+				return parseInt(node.stats.block.number);
+			}).stats.difficulty;
+
+			jQuery('.spark-difficulty').sparkline($scope.difficultyChange, {type: 'bar'});
+
+			$scope.transactionDensity = _.max($scope.nodes, function(node) {
+				return parseInt(node.stats.block.number);
+			}).stats.txDensity;
+
+			jQuery('.spark-transactions').sparkline($scope.transactionDensity, {type: 'bar'});
 
 			$scope.map = _.map($scope.nodes, function(node) {
 				if(node.geo != null)

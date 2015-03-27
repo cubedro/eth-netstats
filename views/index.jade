@@ -61,18 +61,29 @@ block content
 
         div.clearfix
 
-      div.col-xs.12
-        div.col-lg-8(style="padding-top: 30px;")
-          div.col-xs-3.stat-holder
-            div.row.big-info.chart.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
-              span.small-title block time
-              span.big-details.spark-blocktimes {{ lastBlocksTime.join(',') }}
+      div.col-xs-12
+        div.row
+          div.col-lg-8(style="padding-top: 30px;")
+            div.col-xs-3.stat-holder
+              div.row.big-info.chart
+                span.small-title block time
+                span.big-details.spark-blocktimes {{ lastBlocksTime.join(',') }}
 
-          div.clearfix
+            div.col-xs-3.stat-holder
+              div.row.big-info.chart
+                span.small-title difficulty
+                span.big-details.spark-difficulty {{ difficultyChange.join(',') }}
 
-        div.col-lg-4
-          div.col-xs-12
-            nodemap#mapHolder(data="map")
+            div.col-xs-3.stat-holder
+              div.row.big-info.chart
+                span.small-title transactions
+                span.big-details.spark-transactions {{ transactionDensity.join(',') }}
+
+            //- div.clearfix
+
+          div.col-lg-4
+            div.col-xs-12
+              nodemap#mapHolder(data="map")
 
       div.clearfix
 
