@@ -19,7 +19,8 @@ var Node = function Node(data)
 			timestamp: 0,
 			arrival: 0,
 			propagation: 0,
-			received: 0
+			received: 0,
+			transactions: []
 		},
 		blocktimeAvg: 0,
 		blockTimes: [],

@@ -122,7 +122,7 @@ block content
               td(class="{{ node.stats.block.number | blockClass : bestBlock }}").hidden-sm.hidden-xs
                 span.small {{node.stats.block.hash | hashFilter}}
                 //- div.small Difficulty: {{node.stats.block.difficulty | gasFilter}} | Gas used: {{node.stats.block.gasUsed | gasFilter}} | Min gas price: {{node.stats.block.minGasPrice | gasFilter}} | Gas limit: {{node.stats.block.gasLimit | gasFilter}}
-              td(style="padding-left: 18px;") {{node.stats.block.txCount}}
+              td(style="padding-left: 18px;") {{node.stats.block.transactions.length || 0}}
               td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.timestamp | blockTimeFilter }}
               td(class="{{ node.stats.block.received | propagationTimeClass }}") {{node.stats.block.received | blockPropagationFilter}}
               td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}
