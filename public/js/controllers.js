@@ -18,6 +18,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.lastBlocksTime = [];
 	$scope.difficultyChange = [];
 	$scope.transactionDensity = [];
+	$scope.gasSpending = [];
 
 	$scope.nodes = [];
 	$scope.map = [];
@@ -156,6 +157,12 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			}).stats.txDensity;
 
 			jQuery('.spark-transactions').sparkline($scope.transactionDensity, {type: 'bar'});
+
+			$scope.gasSpending = _.max($scope.nodes, function(node) {
+				return parseInt(node.stats.block.number);
+			}).stats.gasSpending;
+
+			jQuery('.spark-gasspending').sparkline($scope.gasSpending, {type: 'bar'});
 
 			$scope.map = _.map($scope.nodes, function(node) {
 				if(node.geo != null)
