@@ -60,8 +60,8 @@ body {
 .jqsfield {
 	position: relative;
 	padding: 5px 0;
-	width: 60px;
-	left: -30px;
+	width: auto;
+	left: -50%;
 	word-wrap: wrap;
 	text-align: center;
 }
