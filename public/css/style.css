@@ -1,4 +1,5 @@
 body {
+	min-width: 1920px;
 	font-smooth: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-font-smoothing: antialiased;
@@ -117,7 +118,7 @@ table td i {
 }
 
 @media only screen and (max-width: 639px) {
-	.big-info {
+	/*.big-info {
 		padding-bottom: 15px;
 		padding-top: 15px;
 		border: 1px solid rgba(255,255,255,0.05);
@@ -148,13 +149,13 @@ table td i {
 		font-size: 46px;
 		line-height: 50px;
 		letter-spacing: -4px;
-	}
+	}*/
 }
 
 @media only screen and (max-width: 479px) {
-	.stat-holder {
+	/*.stat-holder {
 		width: 100%;
-	}
+	}*/
 }
 
 .ng-cloak {

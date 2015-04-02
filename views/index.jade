@@ -3,7 +3,7 @@ extends layout
 block content
   div.container-fluid(ng-controller='StatsCtrl')
     div.row(ng-cloak)
-      div.col-lg-12
+      div.col-xs-12
         //- div.col-sm-12
           //- h1= title
           //- p Welcome to #{title}
@@ -63,7 +63,7 @@ block content
 
       div.col-xs-12
         div.row
-          div.col-lg-8(style="padding-top: 30px;")
+          div.col-xs-8(style="padding-top: 30px;")
             div.col-xs-3.stat-holder
               div.row.big-info.chart
                 span.small-title block time
@@ -86,13 +86,13 @@ block content
 
             //- div.clearfix
 
-          div.col-lg-4
+          div.col-xs-4
             div.col-xs-12
               nodemap#mapHolder(data="map")
 
       div.clearfix
 
-      div.col-sm-12
+      div.col-xs-12
         //- h1 Nodes in detail
 
         table.table.table-striped
