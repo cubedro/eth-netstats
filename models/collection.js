@@ -26,6 +26,16 @@ Collection.prototype.update = function(id, stats)
 	return node.setStats(stats);
 }
 
+Collection.prototype.updateLatency = function(id, latency)
+{
+	var node = this.getNode({ id: id });
+
+	if(!node)
+		return false;
+
+	return node.setLatency(latency);
+}
+
 Collection.prototype.inactive = function(id)
 {
 	var node = this.getNode({ spark: id });
