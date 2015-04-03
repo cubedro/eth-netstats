@@ -104,6 +104,18 @@ Node.prototype.setStats = function(stats)
 	return false;
 }
 
+Node.prototype.setLatency = function(latency)
+{
+	if(typeof latency !== 'undefined')
+	{
+		this.stats.latency = latency;
+
+		return { id: this.id, latency: latency };
+	}
+
+	return false;
+}
+
 Node.prototype.getStats = function()
 {
 	return {id: this.id, stats: this.stats};

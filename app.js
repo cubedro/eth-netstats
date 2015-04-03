@@ -79,6 +79,23 @@ api.on('connection', function(spark) {
         }
     });
 
+    spark.on('node-ping', function(data){
+        spark.emit('node-pong');
+    });
+
+    spark.on('latency', function(data)
+    {
+        console.log('Latency: ', data.latency);
+        console.log('got ping from ' + spark.id);
+
+        if(typeof data.id !== 'undefined')
+        {
+            var stats = Nodes.updateLatency(data.id, data.latency);
+
+            client.write({action: 'latency', data: stats});
+        }
+    });
+
     spark.on('end', function(data)
     {
         var stats = Nodes.inactive(spark.id);
