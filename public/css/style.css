@@ -1,4 +1,5 @@
 body {
+	min-width: 1920px;
 	font-smooth: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-font-smoothing: antialiased;
@@ -34,12 +35,45 @@ body {
 	color: #aaa !important;
 }
 
+.big-info.chart {
+	padding-left: 14px;
+	padding-right: 14px;
+	-webkit-box-sizing: border-box
+	box-sizing: border-box;
+}
+
 .big-info span.big-details {
 	display: block;
 	font-weight: 200;
 	font-size: 50px;
 	line-height: 55px;
 	letter-spacing: -4px;
+}
+
+.big-info.chart span.big-details {
+	padding-top: 15px;
+}
+
+.jqstooltip {
+
+}
+
+.jqsfield {
+	position: relative;
+	padding: 5px 0;
+	width: auto;
+	left: -50%;
+	word-wrap: wrap;
+	text-align: center;
+}
+
+.jqsfield .tooltip-arrow {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px 5px 0;
+	border-top-color: #fff;
 }
 
 table i {
@@ -84,7 +118,7 @@ table td i {
 }
 
 @media only screen and (max-width: 639px) {
-	.big-info {
+	/*.big-info {
 		padding-bottom: 15px;
 		padding-top: 15px;
 		border: 1px solid rgba(255,255,255,0.05);
@@ -115,13 +149,13 @@ table td i {
 		font-size: 46px;
 		line-height: 50px;
 		letter-spacing: -4px;
-	}
+	}*/
 }
 
 @media only screen and (max-width: 479px) {
-	.stat-holder {
+	/*.stat-holder {
 		width: 100%;
-	}
+	}*/
 }
 
 .ng-cloak {
