@@ -117,6 +117,10 @@ table td i {
 	left: 0;
 }
 
+.th-latency {
+	width: 100px;
+}
+
 @media only screen and (max-width: 639px) {
 	/*.big-info {
 		padding-bottom: 15px;
