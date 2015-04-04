@@ -124,49 +124,54 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				return node.stats.active == true;
 			}).length;
 
-			$scope.bestBlock = _.max($scope.nodes, function(node) {
+			var bestBlock = _.max($scope.nodes, function(node) {
 				return parseInt(node.stats.block.number);
 			}).stats.block.number;
 
-			$scope.lastBlock = _.max($scope.nodes, function(node) {
-				return parseInt(node.stats.block.timestamp);
-			}).stats.block.timestamp;
+			if(bestBlock > $scope.bestBlock)
+			{
+				$scope.bestBlock = bestBlock;
+
+				$scope.lastBlock = _.max($scope.nodes, function(node) {
+					return parseInt(node.stats.block.number);
+				}).stats.block.received;
+
+				$scope.lastBlocksTime = _.max($scope.nodes, function(node) {
+					return parseInt(node.stats.block.number);
+				}).stats.blockTimes;
+
+				jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime.reverse(), {type: 'bar', tooltipSuffix: 's'});
+
+				$scope.difficultyChange = _.max($scope.nodes, function(node) {
+					return parseInt(node.stats.block.number);
+				}).stats.difficulty;
+
+				jQuery('.spark-difficulty').sparkline($scope.difficultyChange.reverse(), {type: 'bar'});
+
+				$scope.transactionDensity = _.max($scope.nodes, function(node) {
+					return parseInt(node.stats.block.number);
+				}).stats.txDensity;
+
+				jQuery('.spark-transactions').sparkline($scope.transactionDensity.reverse(), {type: 'bar'});
+
+				$scope.gasSpending = _.max($scope.nodes, function(node) {
+					return parseInt(node.stats.block.number);
+				}).stats.gasSpending;
+
+				jQuery('.spark-gasspending').sparkline($scope.gasSpending.reverse(), {type: 'bar'});
+			}
 
 			$scope.lastDifficulty = _.max($scope.nodes, function(node) {
-				return parseInt(node.stats.block.timestamp);
+				return parseInt(node.stats.block.number);
 			}).stats.block.difficulty;
 
 			$scope.avgBlockTime = _.max($scope.nodes, function(node) {
-				return parseInt(node.stats.block.timestamp);
+				return parseInt(node.stats.block.number);
 			}).stats.blocktimeAvg;
 
 			$scope.upTimeTotal = _.reduce($scope.nodes, function(total, node) {
 				return total + node.stats.uptime;
 			}, 0) / $scope.nodes.length;
-
-			$scope.lastBlocksTime = _.max($scope.nodes, function(node) {
-				return parseInt(node.stats.block.number);
-			}).stats.blockTimes;
-
-			jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime, {type: 'bar', tooltipSuffix: 's'});
-
-			$scope.difficultyChange = _.max($scope.nodes, function(node) {
-				return parseInt(node.stats.block.number);
-			}).stats.difficulty;
-
-			jQuery('.spark-difficulty').sparkline($scope.difficultyChange, {type: 'bar'});
-
-			$scope.transactionDensity = _.max($scope.nodes, function(node) {
-				return parseInt(node.stats.block.number);
-			}).stats.txDensity;
-
-			jQuery('.spark-transactions').sparkline($scope.transactionDensity, {type: 'bar'});
-
-			$scope.gasSpending = _.max($scope.nodes, function(node) {
-				return parseInt(node.stats.block.number);
-			}).stats.gasSpending;
-
-			jQuery('.spark-gasspending').sparkline($scope.gasSpending, {type: 'bar'});
 
 			$scope.map = _.map($scope.nodes, function(node) {
 				if(node.geo != null)

@@ -67,22 +67,22 @@ block content
             div.col-xs-3.stat-holder
               div.row.big-info.chart
                 span.small-title block time
-                span.big-details.spark-blocktimes {{ lastBlocksTime.join(',') }}
+                span.big-details.spark-blocktimes
 
             div.col-xs-3.stat-holder
               div.row.big-info.chart
                 span.small-title difficulty
-                span.big-details.spark-difficulty {{ difficultyChange.join(',') }}
+                span.big-details.spark-difficulty
 
             div.col-xs-3.stat-holder
               div.row.big-info.chart
                 span.small-title transactions
-                span.big-details.spark-transactions {{ transactionDensity.join(',') }}
+                span.big-details.spark-transactions
 
             div.col-xs-3.stat-holder
               div.row.big-info.chart
                 span.small-title gas spending
-                span.big-details.spark-gasspending {{ gasSpending.join(',') }}
+                span.big-details.spark-gasspending
 
             //- div.clearfix
 
@@ -139,6 +139,6 @@ block content
                 span.small {{node.stats.block.hash | hashFilter}}
                 //- div.small Difficulty: {{node.stats.block.difficulty | gasFilter}} | Gas used: {{node.stats.block.gasUsed | gasFilter}} | Min gas price: {{node.stats.block.minGasPrice | gasFilter}} | Gas limit: {{node.stats.block.gasLimit | gasFilter}}
               td(style="padding-left: 18px;") {{node.stats.block.transactions.length || 0}}
-              td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.timestamp | blockTimeFilter }}
-              td(class="{{ node.stats.block.propagation | propagationTimeClass }}") {{node.stats.block.propagation | blockPropagationFilter}}
+              td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.received | blockTimeFilter }}
+              td(class="{{ node.stats.block.received | propagationTimeClass : lastBlock }}") {{node.stats.block.received | blockPropagationFilter : lastBlock}}
               td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}
