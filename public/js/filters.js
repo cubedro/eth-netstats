@@ -75,7 +75,9 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('propagationTimeClass', function() {
-	return function(propagation) {
+	return function(arrival, best) {
+		var propagation = arrival - best;
+
 		if(propagation <= 3000)
 			return 'text-success';
 
@@ -112,8 +114,9 @@ angular.module('netStatsApp.filters', [])
 		if(timestamp === 0)
 			return '∞';
 
-		var time = Math.floor((new Date()).getTime() / 1000);
-		var diff = time - timestamp;
+		// var time = Math.floor((new Date()).getTime() / 1000);
+		var time = (new Date()).getTime();
+		var diff = Math.floor((time - timestamp)/1000);
 
 		if(diff < 60)
 			return Math.round(diff) + ' s ago';
@@ -122,7 +125,8 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('blockPropagationFilter', function() {
-	return function(ms) {
+	return function(arrival, best) {
+		var ms = arrival - best;
 		var result = 0;
 
 		if(ms < 1000) {
@@ -210,7 +214,8 @@ function peerClass(peers)
 
 function timeClass(timestamp)
 {
-	var time = Math.floor((new Date()).getTime() / 1000);
+	// var time = Math.floor((new Date()).getTime() / 1000);
+	var time = (new Date()).getTime();
 	var diff = time - timestamp;
 
 	return blockTimeClass(diff);

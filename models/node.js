@@ -91,7 +91,7 @@ Node.prototype.setStats = function(stats)
 	if(typeof stats !== 'undefined' && typeof stats.block !== 'undefined' && typeof stats.block.number !== 'undefined')
 	{
 		if(stats.block.number !== this.stats.block.number) {
-			stats.block.received = (new Date()).getTime() - stats.block.arrival;
+			stats.block.received = (new Date()).getTime();
 		} else {
 			stats.block.received = this.stats.block.received;
 		}
