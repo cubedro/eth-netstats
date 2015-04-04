@@ -4,6 +4,7 @@ var Node = require('./node');
 var Collection = function Collection()
 {
 	this._list = [];
+	this._bestBlock = null;
 
 	return this;
 }
@@ -22,6 +23,35 @@ Collection.prototype.update = function(id, stats)
 
 	if(!node)
 		return false;
+
+	if(this._bestBlock === null)
+	{
+		stats.block.received = (new Date()).getTime();
+		stats.block.propagation = 0;
+		this._bestBlock = stats.block;
+	}
+	else
+ 	{
+		var oldStats = node.getStats();
+
+		if(stats.block.number !== oldStats.stats.block.number)
+		{
+			stats.block.received = (new Date()).getTime();
+
+			if(this._bestBlock.number < oldStats.stats.block.number)
+			{
+				stats.block.propagation = 0;
+				this._bestBlock = stats.block;
+			}
+			else
+			{
+				stats.block.propagation = stats.block.received - this._bestBlock.received;
+			}
+		} else {
+			stats.block.received = oldStats.stats.block.received;
+			stats.block.propagation = oldStats.stats.block.propagation;
+		}
+	}
 
 	return node.setStats(stats);
 }

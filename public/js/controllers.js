@@ -76,11 +76,11 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			case "update":
 				var index = findIndex({id: data.id});
 
-				if(data.stats.block.number > $scope.nodes[index].stats.block.number) {
-					data.stats.block.firstarrived = (data.stats.block.number > $scope.bestBlock ? data.stats.block.received : $scope.lastBlock);
-				} else {
-					data.stats.block.firstarrived = $scope.nodes[index].stats.block.firstarrived;
-				}
+				// if(data.stats.block.number > $scope.nodes[index].stats.block.number) {
+				// 	data.stats.block.firstarrived = (data.stats.block.number > $scope.bestBlock ? data.stats.block.received : $scope.lastBlock);
+				// } else {
+				// 	data.stats.block.firstarrived = $scope.nodes[index].stats.block.firstarrived;
+				// }
 
 				$scope.nodes[index].stats = data.stats;
 
