@@ -75,9 +75,7 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('propagationTimeClass', function() {
-	return function(arrival, best) {
-		var propagation = arrival - best;
-
+	return function(propagation) {
 		if(propagation <= 3000)
 			return 'text-success';
 
@@ -125,8 +123,7 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('blockPropagationFilter', function() {
-	return function(arrival, best) {
-		var ms = arrival - best;
+	return function(ms) {
 		var result = 0;
 
 		if(ms < 1000) {
