@@ -38,7 +38,7 @@ Collection.prototype.update = function(id, stats)
 		{
 			stats.block.received = (new Date()).getTime();
 
-			if(this._bestBlock.number < oldStats.stats.block.number)
+			if(this._bestBlock.number < stats.block.number)
 			{
 				stats.block.propagation = 0;
 				this._bestBlock = stats.block;
