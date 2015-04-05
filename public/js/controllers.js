@@ -74,16 +74,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "update":
-				var index = findIndex({id: data.id});
-
-				// if(data.stats.block.number > $scope.nodes[index].stats.block.number) {
-				// 	data.stats.block.firstarrived = (data.stats.block.number > $scope.bestBlock ? data.stats.block.received : $scope.lastBlock);
-				// } else {
-				// 	data.stats.block.firstarrived = $scope.nodes[index].stats.block.firstarrived;
-				// }
-
-				$scope.nodes[index].stats = data.stats;
-
+				$scope.nodes[findIndex({id: data.id})].stats = data.stats;
 				break;
 
 			case "info":
@@ -155,17 +146,23 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 					return parseInt(node.stats.block.number);
 				}).stats.difficulty;
 
+				$scope.difficultyChange.pop();
+
 				jQuery('.spark-difficulty').sparkline($scope.difficultyChange.reverse(), {type: 'bar'});
 
 				$scope.transactionDensity = _.max($scope.nodes, function(node) {
 					return parseInt(node.stats.block.number);
 				}).stats.txDensity;
 
+				$scope.transactionDensity.pop();
+
 				jQuery('.spark-transactions').sparkline($scope.transactionDensity.reverse(), {type: 'bar'});
 
 				$scope.gasSpending = _.max($scope.nodes, function(node) {
 					return parseInt(node.stats.block.number);
 				}).stats.gasSpending;
+
+				$scope.gasSpending.pop();
 
 				jQuery('.spark-gasspending').sparkline($scope.gasSpending.reverse(), {type: 'bar'});
 			}

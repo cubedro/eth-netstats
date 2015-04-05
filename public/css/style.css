@@ -1,8 +1,17 @@
+html {
+	width: 100%;
+}
+
 body {
+	width: 100%;
 	min-width: 1900px;
 	font-smooth: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-font-smoothing: antialiased;
+}
+
+.stat-holder {
+
 }
 
 .big-info {
@@ -10,6 +19,10 @@ body {
 	padding-top: 15px;
 	background: #090909;
 	border: 1px solid rgba(255,255,255,0.05);
+}
+
+.stats-boxes .big-info {
+	margin-right: -30px;
 }
 
 .big-info .icon-full-width i {
@@ -117,8 +130,28 @@ table td i {
 	left: 0;
 }
 
+table td {
+	white-space: nowrap !important;
+}
+.table>tbody>tr>td,
+.table>thead>tr>th {
+	padding: 5px;
+}
+
+.th-nodename {
+	width: 400px;
+}
+
 .th-latency {
 	width: 100px;
+}
+
+.th-blockhash {
+	width: 460px;
+}
+
+.th-blocktime {
+	width: 110px;
 }
 
 @media only screen and (max-width: 639px) {
