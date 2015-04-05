@@ -14,11 +14,13 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.lastDifficulty = 0;
 	$scope.upTimeTotal = 0;
 	$scope.avgBlockTime = 0;
+	$scope.bestStats = {};
 
 	$scope.lastBlocksTime = [];
 	$scope.difficultyChange = [];
 	$scope.transactionDensity = [];
 	$scope.gasSpending = [];
+	$scope.miners = [];
 
 	$scope.nodes = [];
 	$scope.map = [];
@@ -131,39 +133,24 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			if(bestBlock > $scope.bestBlock)
 			{
 				$scope.bestBlock = bestBlock;
-
-				$scope.lastBlock = _.max($scope.nodes, function(node) {
+				$scope.bestStats = _.max($scope.nodes, function(node) {
 					return parseInt(node.stats.block.number);
-				}).stats.block.received;
+				}).stats;
 
-				$scope.lastBlocksTime = _.max($scope.nodes, function(node) {
-					return parseInt(node.stats.block.number);
-				}).stats.blockTimes;
+				$scope.lastBlock = $scope.bestStats.block.received;
+				$scope.lastBlocksTime = $scope.bestStats.blockTimes;
+				$scope.difficultyChange = $scope.bestStats.difficulty;
+				$scope.transactionDensity = $scope.bestStats.txDensity;
+				$scope.gasSpending = $scope.bestStats.gasSpending;
+				$scope.miners = $scope.bestStats.miners;
+
+				$scope.getNumber = function(num) {
+					return new Array(num);
+				}
 
 				jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime.reverse(), {type: 'bar', tooltipSuffix: 's'});
-
-				$scope.difficultyChange = _.max($scope.nodes, function(node) {
-					return parseInt(node.stats.block.number);
-				}).stats.difficulty;
-
-				$scope.difficultyChange.pop();
-
 				jQuery('.spark-difficulty').sparkline($scope.difficultyChange.reverse(), {type: 'bar'});
-
-				$scope.transactionDensity = _.max($scope.nodes, function(node) {
-					return parseInt(node.stats.block.number);
-				}).stats.txDensity;
-
-				$scope.transactionDensity.pop();
-
 				jQuery('.spark-transactions').sparkline($scope.transactionDensity.reverse(), {type: 'bar'});
-
-				$scope.gasSpending = _.max($scope.nodes, function(node) {
-					return parseInt(node.stats.block.number);
-				}).stats.gasSpending;
-
-				$scope.gasSpending.pop();
-
 				jQuery('.spark-gasspending').sparkline($scope.gasSpending.reverse(), {type: 'bar'});
 			}
 

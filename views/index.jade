@@ -3,142 +3,148 @@ extends layout
 block content
   div.container-fluid(ng-controller='StatsCtrl')
     div.row(ng-cloak)
-      div.col-xs-12
-        //- div.col-sm-12
-          //- h1= title
-          //- p Welcome to #{title}
-
-        //- div.clearfix
-
-        div.col-xs-2.stat-holder
-          div.row.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
-            div.pull-left.icon-full-width
-              i.icon-node
-            div.pull-left
-              span.small-title active nodes
-              span.big-details {{nodesActive}}/{{nodesTotal}}
-            div.clearfix
-        div.col-xs-2.stat-holder
-          div.row.big-info.uptime(class="{{ upTimeTotal | upTimeClass }}")
-            div.pull-left.icon-full-width
-              i.icon-bulb
-            div.pull-left
-              span.small-title up-time
-              span.big-details {{ upTimeTotal | upTimeFilter }}
-            div.clearfix
-        div.col-xs-2.stat-holder
-          div.row.big-info.difficulty.text-info
-            div.pull-left.icon-full-width
-              i.icon-difficulty
-            div.pull-left
-              span.small-title difficulty
-              span.big-details {{ lastDifficulty }}
-            div.clearfix
-        div.col-xs-2.stat-holder
-          div.row.big-info.bestblock.text-info
-            div.pull-left.icon-full-width
-              i.icon-block
-            div.pull-left
-              span.small-title best block
-              span.big-details {{"#" + bestBlock}}
-            div.clearfix
-        div.col-xs-2.stat-holder
-          div.row.big-info.blocktime(class="{{ lastBlock | timeClass }}")
-            div.pull-left.icon-full-width
-              i.icon-time
-            div.pull-left
-              span.small-title last block
-              span.big-details {{ lastBlock | blockTimeFilter }}
-            div.clearfix
-        div.col-xs-2.stat-holder
-          div.row.big-info.avgblocktime(class="{{ avgBlockTime | timeClass }}")
-            div.pull-left.icon-full-width
-              i.icon-gas
-            div.pull-left
-              span.small-title avg block time
-              span.big-details {{ avgBlockTime | avgTimeFilter }}
-            div.clearfix
-
-        div.clearfix
-
-      div.col-xs-12
-        div.row
-          div.col-xs-4.stats-boxes(style="padding-top: 30px;")
-            div.row
-              div.col-xs-6.stat-holder
-                div.big-info.chart
-                  span.small-title block time
-                  span.big-details.spark-blocktimes
-
-              div.col-xs-6.stat-holder
-                div.big-info.chart
-                  span.small-title difficulty
-                  span.big-details.spark-difficulty
-
-              div.col-xs-6.stat-holder
-                div.big-info.chart
-                  span.small-title transactions
-                  span.big-details.spark-transactions
-
-              div.col-xs-6.stat-holder
-                div.big-info.chart
-                  span.small-title gas spending
-                  span.big-details.spark-gasspending
-
-          div.col-xs-4
-
-          div.col-xs-4
-            div.col-xs-12
-              nodemap#mapHolder(data="map")
+      div.col-xs-2.stat-holder
+        div.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
+          div.pull-left.icon-full-width
+            i.icon-node
+          div.pull-left
+            span.small-title active nodes
+            span.big-details {{nodesActive}}/{{nodesTotal}}
+          div.clearfix
+      div.col-xs-2.stat-holder
+        div.big-info.uptime(class="{{ upTimeTotal | upTimeClass }}")
+          div.pull-left.icon-full-width
+            i.icon-bulb
+          div.pull-left
+            span.small-title up-time
+            span.big-details {{ upTimeTotal | upTimeFilter }}
+          div.clearfix
+      div.col-xs-2.stat-holder
+        div.big-info.difficulty.text-info
+          div.pull-left.icon-full-width
+            i.icon-difficulty
+          div.pull-left
+            span.small-title difficulty
+            span.big-details {{ lastDifficulty }}
+          div.clearfix
+      div.col-xs-2.stat-holder
+        div.big-info.bestblock.text-info
+          div.pull-left.icon-full-width
+            i.icon-block
+          div.pull-left
+            span.small-title best block
+            span.big-details {{"#" + bestBlock}}
+          div.clearfix
+      div.col-xs-2.stat-holder
+        div.big-info.blocktime(class="{{ lastBlock | timeClass }}")
+          div.pull-left.icon-full-width
+            i.icon-time
+          div.pull-left
+            span.small-title last block
+            span.big-details {{ lastBlock | blockTimeFilter }}
+          div.clearfix
+      div.col-xs-2.stat-holder
+        div.big-info.avgblocktime(class="{{ avgBlockTime | timeClass }}")
+          div.pull-left.icon-full-width
+            i.icon-gas
+          div.pull-left
+            span.small-title avg block time
+            span.big-details {{ avgBlockTime | avgTimeFilter }}
+          div.clearfix
 
       div.clearfix
 
-      div.col-xs-12
-        //- h1 Nodes in detail
+    div.row
+      div.col-xs-4.stats-boxes(style="padding-top: 30px;")
+        div.row
+          div.col-xs-6.stat-holder
+            div.big-info.chart
+              span.small-title block time
+              span.big-details.spark-blocktimes
 
-        table.table.table-striped
-          thead
-            tr.text-info
-              th
-                i.icon-node(data-toggle="tooltip", data-placement="top", title="Node")
-              th.th-nodename
-                i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type")
-              th.th-latency
-                i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency")
-              th
-                i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining")
-              th
-                i.icon-group(data-toggle="tooltip", data-placement="top", title="Peers")
-              th
-                i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions")
-              th
-                i.icon-block(data-toggle="tooltip", data-placement="top", title="Last node block")
-              th.th-blockhash &nbsp;
-              th
-                i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions")
-              th.th-blocktime
-                i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time")
-              th
-                i.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time")
-              th
-                i.icon-bulb(data-toggle="tooltip", data-placement="top", title="Up-time")
-          tbody
-            tr(ng-repeat='node in nodes', class="{{ node.stats | mainClass : bestBlock }}")
-              td(rel="{{node.id}}")
-                span.small(data-toggle="tooltip", data-placement="top", data-original-title="{{node.geo | geoTooltip}}") {{node.info.name}}
-                span.small &nbsp({{node.info.ip}})
-              td
-                div.small(ng-bind-html="node.info.node | nodeVersion")
-                //- div.small {{node.info.os}}, {{node.info.os_v}}
-              td.small(class="{{ node.stats | latencyClass }}") {{node.stats | latencyFilter}}
-              td(class="{{ node.stats.mining | miningClass }}")
-                i.small(class="{{ node.stats.mining | miningIconClass }}")
-              td(class="{{ node.stats.peers | peerClass }}", style="padding-left: 11px;") {{node.stats.peers}}
-              td(style="padding-left: 15px;") {{node.stats.pending}}
-              td(class="{{ node.stats.block.number | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
-              td(class="{{ node.stats.block.number | blockClass : bestBlock }}")
-                span.small {{node.stats.block.hash}}
-              td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
-              td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.received | blockTimeFilter }}
-              td(class="{{ node.stats.block.propagation | propagationTimeClass }}") {{node.stats.block.propagation | blockPropagationFilter}}
-              td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}
+          div.col-xs-6.stat-holder
+            div.big-info.chart
+              span.small-title difficulty
+              span.big-details.spark-difficulty
+
+          div.col-xs-6.stat-holder
+            div.big-info.chart
+              span.small-title transactions
+              span.big-details.spark-transactions
+
+          div.col-xs-6.stat-holder
+            div.big-info.chart
+              span.small-title gas spending
+              span.big-details.spark-gasspending
+
+      div.col-xs-2.stats-boxes(style="padding-top: 30px;")
+        div.row
+          div.col-xs-12.stat-holder
+            div.big-info.chart.double-chart
+              span.small-title last blocks miners
+              div.blocks-holder(ng-repeat='miner in miners', data-toggle="tooltip", data-placement="right", title="{{miner.blocks}}")
+                div.block-count ({{miner.blocks}})
+                div.small-title-miner {{miner.miner | minerNameFilter}}
+                div.block(ng-repeat="i in getNumber(miner.blocks) track by $index", class="{{miner.blocks | minerBlocksClass}}")
+                div.clearfix
+
+      div.col-xs-2.stats-boxes(style="padding-top: 30px;")
+        div.row
+          //- div.col-xs-12.stat-holder
+          //-   div.big-info.chart
+          //-     span.small-title miners
+          //-     span.big-details test
+
+      div.col-xs-4
+        div.col-xs-12
+          nodemap#mapHolder(data="map")
+
+      div.clearfix
+
+    div.row
+      table.table.table-striped
+        thead
+          tr.text-info
+            th
+              i.icon-node(data-toggle="tooltip", data-placement="top", title="Node")
+            th.th-nodename
+              i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type")
+            th.th-latency
+              i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency")
+            th
+              i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining")
+            th
+              i.icon-group(data-toggle="tooltip", data-placement="top", title="Peers")
+            th
+              i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions")
+            th
+              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last node block")
+            th.th-blockhash &nbsp;
+            th
+              i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions")
+            th.th-blocktime
+              i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time")
+            th
+              i.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time")
+            th
+              i.icon-bulb(data-toggle="tooltip", data-placement="top", title="Up-time")
+        tbody
+          tr(ng-repeat='node in nodes', class="{{ node.stats | mainClass : bestBlock }}")
+            td(rel="{{node.id}}")
+              span.small(data-toggle="tooltip", data-placement="top", data-original-title="{{node.geo | geoTooltip}}") {{node.info.name}}
+              span.small &nbsp({{node.info.ip}})
+            td
+              div.small(ng-bind-html="node.info.node | nodeVersion")
+              //- div.small {{node.info.os}}, {{node.info.os_v}}
+            td.small(class="{{ node.stats | latencyClass }}") {{node.stats | latencyFilter}}
+            td(class="{{ node.stats.mining | miningClass }}")
+              i.small(class="{{ node.stats.mining | miningIconClass }}")
+            td(class="{{ node.stats.peers | peerClass }}", style="padding-left: 11px;") {{node.stats.peers}}
+            td(style="padding-left: 15px;") {{node.stats.pending}}
+            td(class="{{ node.stats.block.number | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
+            td(class="{{ node.stats.block.number | blockClass : bestBlock }}")
+              span.small {{node.stats.block.hash}}
+            td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
+            td(class="{{ node.stats.block.timestamp | timeClass }}") {{node.stats.block.received | blockTimeFilter }}
+            td(class="{{ node.stats.block.propagation | propagationTimeClass }}") {{node.stats.block.propagation | blockPropagationFilter}}
+            td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}

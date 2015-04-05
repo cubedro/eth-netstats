@@ -10,19 +10,35 @@ body {
 	-moz-font-smoothing: antialiased;
 }
 
-.stat-holder {
+.bg-success {
+	background: #7bcc3a;
+}
 
+.bg-info {
+	background: #10a0de;
+}
+
+.bg-warning {
+	background: #FFD162;
+}
+
+.bg-danger {
+	background: #F74B4B;
+}
+
+.container-fluid {
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.stat-holder {
+	background: #090909;
+	border: 1px solid rgba(255,255,255,0.05);
 }
 
 .big-info {
 	padding-bottom: 15px;
 	padding-top: 15px;
-	background: #090909;
-	border: 1px solid rgba(255,255,255,0.05);
-}
-
-.stats-boxes .big-info {
-	margin-right: -30px;
 }
 
 .big-info .icon-full-width i {
@@ -32,27 +48,22 @@ body {
 	font-size: 70px;
 	line-height: 70px;
 	margin-right: 15px;
+	margin-left: -15px;
 }
 
 .big-info span {
 	opacity: 0.7;
 }
 
-.big-info span.small-title {
+.big-info span.small-title,
+.big-info div.small-title-miner {
 	display: block;
 	font-weight: 700;
 	font-size: 14px;
 	line-height: 20px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
-	color: #aaa !important;
-}
-
-.big-info.chart {
-	padding-left: 14px;
-	padding-right: 14px;
-	-webkit-box-sizing: border-box
-	box-sizing: border-box;
+	color: #aaa;
 }
 
 .big-info span.big-details {
@@ -65,6 +76,45 @@ body {
 
 .big-info.chart span.big-details {
 	padding-top: 15px;
+}
+
+.big-info.chart {
+	height: 120px;
+	-webkit-box-sizing: border-box
+	box-sizing: border-box;
+}
+
+.big-info.chart.double-chart {
+	height: 242px;
+}
+
+.blocks-holder {
+	padding-top: 5px;
+}
+
+.blocks-holder div.small-title-miner {
+	font-size: 12px;
+	font-weight: normal;
+	letter-spacing: 0px;
+	text-transform: none;
+	white-space: nowrap;
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-font-smoothing: subpixel-antialiased;
+}
+
+.blocks-holder .block-count {
+	float: right;
+	line-height: 18px;
+	color: #aaa;
+}
+
+.blocks-holder .block {
+	width: 6px;
+	height: 6px;
+	margin: 2px 1px 6px 1px;
+	float: left;
+	-webkit-border-radius: 1px;
+	border-radius: 1px;
 }
 
 .jqstooltip {
@@ -195,6 +245,6 @@ table td {
 	}*/
 }
 
-.ng-cloak {
-    display: none !important;
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }
