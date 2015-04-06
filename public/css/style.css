@@ -229,6 +229,10 @@ table td {
 	width: 110px;
 }
 
+.th-peerPropagationChart {
+	width: 140px;
+}
+
 @media only screen and (max-width: 639px) {
 	/*.big-info {
 		padding-bottom: 15px;

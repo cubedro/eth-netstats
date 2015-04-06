@@ -71,7 +71,6 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('timeClass', function() {
 	return function(timestamp) {
-		console.log(timestamp);
 		return timeClass(timestamp);
 	};
 })
