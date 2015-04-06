@@ -103,7 +103,18 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "update":
-				$scope.nodes[findIndex({id: data.id})].stats = data.stats;
+				var index = findIndex({id: data.id});
+				$scope.nodes[index].stats = data.stats;
+				$scope.nodes[index].history = data.history;
+				$scope.nodes[index].propagation = _.map(data.history, function(block) {
+					return block.propagation;
+				});
+				jQuery('.' + data.id).sparkline($scope.nodes[index].propagation, {
+					type: 'bar',
+					height: 20,
+					barWidth : 2,
+					barSpacing : 1,
+				});
 				break;
 
 			case "info":
@@ -143,6 +154,10 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 		}
 
 		$scope.nodes[index] = data;
+		$scope.nodes[index].history = data.history;
+		$scope.nodes[index].propagation = _.map(data.history, function(block) {
+			return block.propagation;
+		});
 
 		return false;
 	}
@@ -211,8 +226,6 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 						longitude: 0
 					};
 			});
-
-			// console.log($scope.map);
 		}
 
 		$scope.$apply();

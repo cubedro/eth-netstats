@@ -129,6 +129,7 @@ block content
               i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time", ng-click="orderTable('-stats.block.received', false)")
             th
               i.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time", ng-click="orderTable('stats.block.propagation', false)")
+            th.th-peerPropagationChart
             th
               i.icon-bulb(data-toggle="tooltip", data-placement="top", title="Up-time", ng-click="orderTable('-stats.uptime', false)")
         tbody
@@ -146,8 +147,9 @@ block content
             td(style="padding-left: 15px;") {{node.stats.pending}}
             td(class="{{ node.stats.block.number | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
             td(class="{{ node.stats.block.number | blockClass : bestBlock }}")
-              span.small {{node.stats.block.hash}}
+              span.small {{node.stats.block.hash | hashFilter}}
             td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
             td(class="{{ node.stats.block.received | timeClass }}") {{node.stats.block.received | blockTimeFilter }}
             td(class="{{ node.stats.block | propagationTimeClass : bestBlock }}") {{node.stats.block.propagation | blockPropagationFilter}}
+            td.peerPropagationChart(class="{{node.id}}")
             td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}

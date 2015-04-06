@@ -222,11 +222,15 @@ table td {
 }
 
 .th-blockhash {
-	width: 460px;
+	width: 140px;
 }
 
 .th-blocktime {
 	width: 110px;
+}
+
+.th-peerPropagationChart {
+	width: 140px;
 }
 
 @media only screen and (max-width: 639px) {
