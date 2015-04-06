@@ -26,6 +26,10 @@ body {
 	background: #F74B4B;
 }
 
+.text-gray {
+	color: #777 !important;
+}
+
 .container-fluid {
 	padding-left: 30px;
 	padding-right: 30px;

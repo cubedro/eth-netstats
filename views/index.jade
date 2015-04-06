@@ -47,7 +47,7 @@ block content
             span.big-details {{ lastBlock | blockTimeFilter }}
           div.clearfix
       div.col-xs-2.stat-holder
-        div.big-info.avgblocktime(class="{{ avgBlockTime | timeClass }}")
+        div.big-info.avgblocktime(class="{{ avgBlockTime | avgTimeClass }}")
           div.pull-left.icon-full-width
             i.icon-gas
           div.pull-left
@@ -149,5 +149,5 @@ block content
               span.small {{node.stats.block.hash}}
             td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
             td(class="{{ node.stats.block.received | timeClass }}") {{node.stats.block.received | blockTimeFilter }}
-            td(class="{{ node.stats.block.propagation | propagationTimeClass }}") {{node.stats.block.propagation | blockPropagationFilter}}
+            td(class="{{ node.stats.block | propagationTimeClass : bestBlock }}") {{node.stats.block.propagation | blockPropagationFilter}}
             td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}
