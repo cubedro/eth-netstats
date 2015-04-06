@@ -31,7 +31,7 @@ var Node = function Node(data)
 		uptime: 0,
 		lastUpdate: 0
 	};
-	this.blockHistory = Array(MAX_HISTORY);
+	this.blockHistory = [];
 	this.uptime = {
 		started: null,
 		history: []
