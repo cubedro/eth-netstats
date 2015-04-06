@@ -106,7 +106,7 @@ block content
         thead
           tr.text-info
             th
-              i.icon-node(data-toggle="tooltip", data-placement="top", title="Node")
+              i.icon-node(data-toggle="tooltip", data-placement="top", title="Node name", ng-click="predicate = 'info.name'; reverse=!reverse")
             th.th-nodename
               i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type")
             th.th-latency
@@ -118,7 +118,7 @@ block content
             th
               i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions")
             th
-              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last node block")
+              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="predicate = ['-stats.block.number', 'stats.block.propagation']; reverse=!reverse")
             th.th-blockhash &nbsp;
             th
               i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions")
@@ -129,7 +129,7 @@ block content
             th
               i.icon-bulb(data-toggle="tooltip", data-placement="top", title="Up-time")
         tbody
-          tr(ng-repeat='node in nodes', class="{{ node.stats | mainClass : bestBlock }}")
+          tr(ng-repeat='node in nodes | orderBy:predicate:reverse', class="{{ node.stats | mainClass : bestBlock }}")
             td(rel="{{node.id}}")
               span.small(data-toggle="tooltip", data-placement="top", data-original-title="{{node.geo | geoTooltip}}") {{node.info.name}}
               span.small &nbsp({{node.info.ip}})
