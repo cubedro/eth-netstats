@@ -240,8 +240,7 @@ table td {
 }
 
 .th-peerPropagationChart {
-	text-align: center;
-	width: 125px;
+	width: 140px;
 }
 
 @media only screen and (max-width: 639px) {

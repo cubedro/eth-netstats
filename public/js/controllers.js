@@ -106,23 +106,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				var index = findIndex({id: data.id});
 				$scope.nodes[index].stats = data.stats;
 				$scope.nodes[index].history = data.history;
-				$scope.nodes[index].propagation = _.map(data.history, function(block) {
-					return block.propagation;
-				});
-				jQuery('.' + data.id).sparkline($scope.nodes[index].propagation, {
-					type: 'bar',
-					height: 18,
-					barWidth : 2,
-					barSpacing : 1,
-					tooltipSuffix: 'ms',
-					colorMap: jQuery.range_map({
-						'0:1': '#10a0de',
-						'1:5000': '#7bcc3a',
-						'5001:12000': '#FFD162',
-						'12001:20000': '#ff8a00',
-						'20001:': '#F74B4B'
-					})
-				});
+				makePeerPropagationChart(index);
 				break;
 
 			case "info":
@@ -151,6 +135,28 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 		return _.findIndex($scope.nodes, search);
 	}
 
+	function makePeerPropagationChart(index)
+	{
+		$scope.nodes[index].propagation = _.map($scope.nodes[index].history, function(block) {
+			return block.propagation;
+		});
+
+		jQuery('.' + $scope.nodes[index].id).sparkline($scope.nodes[index].propagation, {
+			type: 'bar',
+			height: 18,
+			barWidth : 2,
+			barSpacing : 1,
+			tooltipSuffix: 'ms',
+			colorMap: jQuery.range_map({
+				'0:1': '#10a0de',
+				'1:1000': '#7bcc3a',
+				'1001:3000': '#FFD162',
+				'3001:7000': '#ff8a00',
+				'7001:': '#F74B4B'
+			})
+		});
+	}
+
 	function addNewNode(data)
 	{
 		var index = findIndex({id: data.id});
@@ -163,9 +169,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 		$scope.nodes[index] = data;
 		$scope.nodes[index].history = data.history;
-		$scope.nodes[index].propagation = _.map(data.history, function(block) {
-			return block.propagation;
-		});
+		makePeerPropagationChart(index);
 
 		return false;
 	}

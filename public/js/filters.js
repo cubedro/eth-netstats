@@ -201,8 +201,11 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('minerNameFilter', function() {
-	return function(name) {
-		return name.replace('0x', '');
+	return function(address, name) {
+		if(typeof name !== 'undefined' && name !== false && name.length > 0)
+			return name;
+
+		return address.replace('0x', '');
 	};
 })
 .filter('minerBlocksClass', function() {
