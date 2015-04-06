@@ -106,28 +106,28 @@ block content
         thead
           tr.text-info
             th
-              i.icon-node(data-toggle="tooltip", data-placement="top", title="Node name", ng-click="predicate = '-info.name'; reverse=!reverse")
+              i.icon-node(data-toggle="tooltip", data-placement="top", title="Node name", ng-click="orderTable('-info.name', false)")
             th.th-nodename
-              i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type", ng-click="predicate = 'info.node'; reverse=false")
+              i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type", ng-click="orderTable('info.node', false)")
             th.th-latency
-              i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency", ng-click="predicate = 'stats.latency'; reverse=false")
+              i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency", ng-click="orderTable('stats.latency', false)")
             th
-              i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining", ng-click="predicate = '-stats.mining'; reverse=false")
+              i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining", ng-click="orderTable('-stats.mining', false)")
             th
-              i.icon-group(data-toggle="tooltip", data-placement="top", title="Peers", ng-click="predicate = '-stats.peers'; reverse=false")
+              i.icon-group(data-toggle="tooltip", data-placement="top", title="Peers", ng-click="orderTable('-stats.peers', false)")
             th
-              i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions", ng-click="predicate = '-stats.pending'; reverse=false")
+              i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions", ng-click="orderTable('-stats.pending', false)")
             th
-              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="predicate = ['-stats.block.number', 'stats.block.propagation']; reverse=false")
+              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
             th.th-blockhash &nbsp;
             th
-              i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions", ng-click="predicate = '-stats.block.transactions.length'; reverse=false")
+              i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions", ng-click="orderTable('-stats.block.transactions.length', false)")
             th.th-blocktime
-              i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time", ng-click="predicate = '-stats.block.received'; reverse=false")
+              i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time", ng-click="orderTable('-stats.block.received', false)")
             th
-              i.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time", ng-click="predicate = '-stats.block.propagation'; reverse=false")
+              i.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time", ng-click="orderTable('stats.block.propagation', false)")
             th
-              i.icon-bulb(data-toggle="tooltip", data-placement="top", title="Up-time", ng-click="predicate = '-stats.uptime'; reverse=false")
+              i.icon-bulb(data-toggle="tooltip", data-placement="top", title="Up-time", ng-click="orderTable('-stats.uptime', false)")
         tbody
           tr(ng-repeat='node in nodes | orderBy:predicate:reverse', class="{{ node.stats | mainClass : bestBlock }}")
             td(rel="{{node.id}}")

@@ -28,6 +28,19 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.predicate = 'info.name';
 	$scope.reverse = false;
 
+	$scope.orderTable = function(predicate, reverse)
+	{
+		if(predicate != $scope.predicate)
+		{
+			$scope.reverse = reverse;
+			$scope.predicate = predicate;
+		}
+		else
+		{
+			$scope.reverse = !$scope.reverse;
+		}
+	}
+
 	$scope.timeout = setInterval(function(){
 		$scope.$apply();
 	}, 1000);
