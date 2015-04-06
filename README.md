@@ -15,7 +15,7 @@ Make sure you have node.js and npm installed.
 
 Clone the repository and install the dependencies
 
-```
+```bash
 git clone https://github.com/cubedro/eth-netstats
 cd eth-netstats
 npm install
@@ -23,7 +23,7 @@ npm install
 
 ##Run
 
-```
+```bash
 npm start
 ```
 

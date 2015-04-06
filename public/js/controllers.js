@@ -45,6 +45,10 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 		$scope.$apply();
 	}, 1000);
 
+	$scope.getNumber = function(num) {
+		return new Array(num);
+	}
+
 	// Socket listeners
 	// ----------------
 
@@ -158,10 +162,9 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				$scope.difficultyChange = $scope.bestStats.difficulty;
 				$scope.transactionDensity = $scope.bestStats.txDensity;
 				$scope.gasSpending = $scope.bestStats.gasSpending;
-				$scope.miners = $scope.bestStats.miners;
 
-				$scope.getNumber = function(num) {
-					return new Array(num);
+				if(typeof $scope.bestStats.miners !== 'undefined') {
+					$scope.miners = $scope.bestStats.miners;
 				}
 
 				jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime.reverse(), {type: 'bar', tooltipSuffix: 's'});
