@@ -101,7 +101,9 @@ div.small-title-miner {
 }
 
 .blocks-holder {
+	width: 288px;
 	padding-top: 5px;
+	margin-left: -2px;
 }
 
 .blocks-holder div.small-title-miner {
@@ -129,6 +131,14 @@ div.small-title-miner {
 	-webkit-border-radius: 1px;
 	border-radius: 1px;
 	opacity: .8;
+}
+
+.blocks-holder .block:first-child {
+	margin-left: 0px;
+}
+
+.blocks-holder .block:last-child {
+	margin-right: 0px;
 }
 
 .page-latency {
