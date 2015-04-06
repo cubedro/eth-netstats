@@ -248,10 +248,10 @@ function blockTimeClass(diff)
 		return 'text-success';
 
 	if(diff <= 20)
-		return 'text-info';
+		return 'text-warning';
 
 	if(diff <= 30)
-		return 'text-warning';
+		return 'text-orange';
 
 	return 'text-danger'
 }
