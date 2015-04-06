@@ -80,14 +80,17 @@ angular.module('netStatsApp.filters', [])
 		if(block.number < bestBlock)
 			return 'text-gray';
 
+		if(block.propagation == 0)
+			return 'text-info';
+
 		if(block.propagation < 1000)
 			return 'text-success';
 
 		if(block.propagation < 3000)
-			return 'text-info';
+			return 'text-warning';
 
 		if(block.propagation < 7000)
-			return 'text-warning';
+			return 'text-orange';
 
 		return 'text-danger'
 	};
