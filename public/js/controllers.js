@@ -111,9 +111,17 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				});
 				jQuery('.' + data.id).sparkline($scope.nodes[index].propagation, {
 					type: 'bar',
-					height: 20,
+					height: 18,
 					barWidth : 2,
 					barSpacing : 1,
+					tooltipSuffix: 'ms',
+					colorMap: jQuery.range_map({
+						'0:1': '#10a0de',
+						'1:5000': '#7bcc3a',
+						'6000:12000': '#FFD162',
+						'13000:19000': '#ff8a00',
+						'20000:': '#F74B4B'
+					})
 				});
 				break;
 
