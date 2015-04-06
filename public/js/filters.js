@@ -71,15 +71,22 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('timeClass', function() {
 	return function(timestamp) {
+		console.log(timestamp);
 		return timeClass(timestamp);
 	};
 })
 .filter('propagationTimeClass', function() {
-	return function(propagation) {
-		if(propagation <= 3000)
+	return function(block, bestBlock) {
+		if(block.number < bestBlock)
+			return 'text-gray';
+
+		if(block.propagation < 1000)
 			return 'text-success';
 
-		if(propagation <= 7000)
+		if(block.propagation < 3000)
+			return 'text-info';
+
+		if(block.propagation < 7000)
 			return 'text-warning';
 
 		return 'text-danger'
@@ -230,9 +237,7 @@ function peerClass(peers)
 
 function timeClass(timestamp)
 {
-	// var time = Math.floor((new Date()).getTime() / 1000);
-	var time = (new Date()).getTime();
-	var diff = time - timestamp;
+	var diff = ((new Date()).getTime() - timestamp)/1000;
 
 	return blockTimeClass(diff);
 }
