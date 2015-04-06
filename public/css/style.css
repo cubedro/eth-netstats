@@ -30,6 +30,10 @@ body {
 	color: #777 !important;
 }
 
+.text-orange {
+	color: #ff8a00;
+}
+
 .container-fluid {
 	padding-left: 30px;
 	padding-right: 30px;
