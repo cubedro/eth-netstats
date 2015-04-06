@@ -25,7 +25,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.nodes = [];
 	$scope.map = [];
 
-	$scope.predicate = ['-stats.block.number', 'stats.block.propagation'];
+	$scope.predicate = 'info.name';
 	$scope.reverse = false;
 
 	$scope.timeout = setInterval(function(){

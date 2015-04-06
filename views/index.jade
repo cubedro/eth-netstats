@@ -106,7 +106,7 @@ block content
         thead
           tr.text-info
             th
-              i.icon-node(data-toggle="tooltip", data-placement="top", title="Node name", ng-click="predicate = 'info.name'; reverse=!reverse")
+              i.icon-node(data-toggle="tooltip", data-placement="top", title="Node name", ng-click="predicate = 'info.name'; reverse=false")
             th.th-nodename
               i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type")
             th.th-latency
@@ -118,7 +118,7 @@ block content
             th
               i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions")
             th
-              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="predicate = ['-stats.block.number', 'stats.block.propagation']; reverse=!reverse")
+              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="predicate = ['-stats.block.number', 'stats.block.propagation']; reverse=false")
             th.th-blockhash &nbsp;
             th
               i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions")
