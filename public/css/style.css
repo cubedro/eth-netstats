@@ -58,6 +58,10 @@ body {
 .big-info span.small-title,
 .big-info div.small-title-miner {
 	display: block;
+}
+
+span.small-title,
+div.small-title-miner {
 	font-weight: 700;
 	font-size: 14px;
 	line-height: 20px;
@@ -116,6 +120,18 @@ body {
 	float: left;
 	-webkit-border-radius: 1px;
 	border-radius: 1px;
+	opacity: .8;
+}
+
+.page-latency {
+	position: absolute;
+	top: 400px;
+	left: 15px;
+}
+
+.page-latency .small-title {
+	letter-spacing: 0px;
+	opacity: .8;
 }
 
 .jqstooltip {

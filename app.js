@@ -30,6 +30,8 @@ var client = new Primus(server, {
     parser: 'JSON'
 });
 
+var clientLatency = 0;
+
 client.use('emit', require('primus-emit'));
 
 api.on('connection', function(spark) {
@@ -115,7 +117,17 @@ client.on('connection', function(spark) {
 
         spark.emit('init', {nodes: Nodes.all()});
     });
+
+    spark.on('client-pong', function(data) {
+        var latency = Math.ceil(((new Date()).getTime() - clientLatency)/2);
+        spark.emit('client-latency', { latency: latency });
+    });
 });
+
+var latencyTimeout = setInterval(function(){
+    clientLatency = (new Date()).getTime();
+    client.write({action: 'client-ping'});
+}, 5000);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
