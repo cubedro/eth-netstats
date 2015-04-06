@@ -25,6 +25,8 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.nodes = [];
 	$scope.map = [];
 
+	$scope.latency = 0;
+
 	$scope.predicate = 'info.name';
 	$scope.reverse = false;
 
@@ -76,6 +78,11 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 		socketAction("init", data.nodes);
 	});
 
+	socket.on('client-latency', function(data)
+	{
+		$scope.latency = data.latency;
+	})
+
 	function socketAction(action, data)
 	{
 		console.log('Action: ', action);
@@ -110,6 +117,10 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 			case "latency":
 				$scope.nodes[findIndex({id: data.id})].stats.latency = data.latency;
+				break;
+
+			case "client-ping":
+				socket.emit('client-pong');
 				break;
 		}
 
