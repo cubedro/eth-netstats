@@ -118,9 +118,9 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 					colorMap: jQuery.range_map({
 						'0:1': '#10a0de',
 						'1:5000': '#7bcc3a',
-						'6000:12000': '#FFD162',
-						'13000:19000': '#ff8a00',
-						'20000:': '#F74B4B'
+						'5001:12000': '#FFD162',
+						'12001:20000': '#ff8a00',
+						'20001:': '#F74B4B'
 					})
 				});
 				break;
