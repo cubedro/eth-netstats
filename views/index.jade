@@ -146,7 +146,7 @@ block content
             td(style="padding-left: 15px;") {{node.stats.pending}}
             td(class="{{ node.stats.block.number | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
             td(class="{{ node.stats.block.number | blockClass : bestBlock }}")
-              span.small {{node.stats.block.hash}}
+              span.small {{node.stats.block.hash | hashFilter}}
             td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
             td(class="{{ node.stats.block.received | timeClass }}") {{node.stats.block.received | blockTimeFilter }}
             td(class="{{ node.stats.block | propagationTimeClass : bestBlock }}") {{node.stats.block.propagation | blockPropagationFilter}}

@@ -66,7 +66,7 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('hashFilter', function() {
 	return function(hash) {
-		return hash.substr(0, 6) + '...' + hash.substr(58, 6);
+		return hash.substr(0, 8) + '...' + hash.substr(56, 8);
 	}
 })
 .filter('timeClass', function() {
