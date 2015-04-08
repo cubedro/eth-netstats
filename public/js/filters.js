@@ -25,12 +25,15 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('peerClass', function() {
-	return function(peers) {
-		return peerClass(peers);
+	return function(peers, active) {
+		return peerClass(peers, active);
 	};
 })
 .filter('miningClass', function() {
-	return function(mining) {
+	return function(mining, active) {
+		if(! active)
+			return 'text-gray';
+
 		return (! mining ? 'text-danger' : 'text-success');
 	};
 })
@@ -56,7 +59,10 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('blockClass', function() {
 	return function(current, best) {
-		return (best - current <= 1 ? 'text-success' : (best - current > 1 && best - current < 4 ? 'text-warning' : 'text-danger'));
+		if( ! current.active)
+			return 'text-gray';
+
+		return (best - current.block.number <= 1 ? 'text-success' : (best - current.block.number > 1 && best - current.block.number < 4 ? 'text-warning' : 'text-danger'));
 	};
 })
 .filter('gasFilter', function() {
@@ -70,25 +76,31 @@ angular.module('netStatsApp.filters', [])
 	}
 })
 .filter('timeClass', function() {
-	return function(timestamp) {
+	return function(timestamp, active) {
+		if( ! active)
+			return 'text-gray';
+
 		return timeClass(timestamp);
 	};
 })
 .filter('propagationTimeClass', function() {
-	return function(block, bestBlock) {
-		if(block.number < bestBlock)
+	return function(stats, bestBlock) {
+		if( ! stats.active)
 			return 'text-gray';
 
-		if(block.propagation == 0)
+		if(stats.block.number < bestBlock)
+			return 'text-gray';
+
+		if(stats.block.propagation == 0)
 			return 'text-info';
 
-		if(block.propagation < 1000)
+		if(stats.block.propagation < 1000)
 			return 'text-success';
 
-		if(block.propagation < 3000)
+		if(stats.block.propagation < 3000)
 			return 'text-warning';
 
-		if(block.propagation < 7000)
+		if(stats.block.propagation < 7000)
 			return 'text-orange';
 
 		return 'text-danger'
@@ -105,7 +117,7 @@ angular.module('netStatsApp.filters', [])
 .filter('latencyClass', function() {
 	return function(stats) {
 		if(stats.active === false)
-			return 'text-gray';
+			return 'text-danger';
 
 		if(stats.latency <= 100)
 			return 'text-success';
@@ -177,7 +189,10 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('upTimeClass', function() {
-	return function(uptime) {
+	return function(uptime, active) {
+		if( ! active )
+			return 'text-gray';
+
 		if(uptime >= 90)
 			return 'text-success';
 
@@ -232,11 +247,14 @@ function mainClass(node, bestBlock)
 		return 'text-danger';
 
 	// return timeClass(node.block.timestamp);
-	return peerClass(node.peers);
+	return peerClass(node.peers, node.active);
 }
 
-function peerClass(peers)
+function peerClass(peers, active)
 {
+	if( ! active)
+		return 'text-gray';
+
 	return (peers <= 1 ? 'text-danger' : (peers > 1 && peers < 4 ? 'text-warning' : 'text-success'));
 }
 
