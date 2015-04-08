@@ -15,7 +15,7 @@ block content
             span.big-details {{nodesActive}}/{{nodesTotal}}
           div.clearfix
       div.col-xs-2.stat-holder
-        div.big-info.uptime(class="{{ upTimeTotal | upTimeClass }}")
+        div.big-info.uptime(class="{{ upTimeTotal | upTimeClass : true }}")
           div.pull-left.icon-full-width
             i.icon-bulb
           div.pull-left
@@ -39,7 +39,7 @@ block content
             span.big-details {{"#" + bestBlock}}
           div.clearfix
       div.col-xs-2.stat-holder
-        div.big-info.blocktime(class="{{ lastBlock | timeClass }}")
+        div.big-info.blocktime(class="{{ lastBlock | timeClass : true }}")
           div.pull-left.icon-full-width
             i.icon-time
           div.pull-left
@@ -141,15 +141,15 @@ block content
               div.small(ng-bind-html="node.info.node | nodeVersion")
               //- div.small {{node.info.os}}, {{node.info.os_v}}
             td.small(class="{{ node.stats | latencyClass }}") {{node.stats | latencyFilter}}
-            td(class="{{ node.stats.mining | miningClass }}")
+            td(class="{{ node.stats.mining | miningClass : node.stats.active }}")
               i.small(class="{{ node.stats.mining | miningIconClass }}")
-            td(class="{{ node.stats.peers | peerClass }}", style="padding-left: 11px;") {{node.stats.peers}}
+            td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
             td(style="padding-left: 15px;") {{node.stats.pending}}
-            td(class="{{ node.stats.block.number | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
-            td(class="{{ node.stats.block.number | blockClass : bestBlock }}")
+            td(class="{{ node.stats | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
+            td(class="{{ node.stats | blockClass : bestBlock }}")
               span.small {{node.stats.block.hash | hashFilter}}
             td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
-            td(class="{{ node.stats.block.received | timeClass }}") {{node.stats.block.received | blockTimeFilter }}
-            td(class="{{ node.stats.block | propagationTimeClass : bestBlock }}") {{node.stats.block.propagation | blockPropagationFilter}}
+            td(class="{{ node.stats.block.received | timeClass : node.stats.active }}") {{node.stats.block.received | blockTimeFilter }}
+            td(class="{{ node.stats | propagationTimeClass : bestBlock }}") {{node.stats.block.propagation | blockPropagationFilter}}
             td.peerPropagationChart(class="{{node.id}}")
-            td(class="{{ node.stats.uptime | upTimeClass }}") {{ node.stats.uptime | upTimeFilter }}
+            td(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}
