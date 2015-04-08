@@ -27,7 +27,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 	$scope.latency = 0;
 
-	$scope.predicate = 'info.name';
+	$scope.predicate = ['-stats.block.number', 'stats.block.propagation'];
 	$scope.reverse = false;
 
 	$scope.orderTable = function(predicate, reverse)

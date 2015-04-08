@@ -105,7 +105,7 @@ angular.module('netStatsApp.filters', [])
 .filter('latencyClass', function() {
 	return function(stats) {
 		if(stats.active === false)
-			return 'text-danger';
+			return 'text-gray';
 
 		if(stats.latency <= 100)
 			return 'text-success';
@@ -226,7 +226,7 @@ angular.module('netStatsApp.filters', [])
 function mainClass(node, bestBlock)
 {
 	if( ! node.active)
-		return 'text-danger';
+		return 'text-gray';
 
 	if(node.peers === 0)
 		return 'text-danger';
