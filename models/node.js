@@ -37,6 +37,8 @@ var Node = function Node(data)
 		history: []
 	};
 
+	this.initBlockHistory();
+
 	if(this.id === null) {
 		this.uptime.started = (new Date()).getTime();
 		this.setState(true);
@@ -87,6 +89,18 @@ Node.prototype.setInfo = function(data)
 Node.prototype.getInfo = function()
 {
 	return {id: this.id, info: this.info, geo: this.geo, stats: this.stats, history: this.blockHistory};
+}
+
+Node.prototype.initBlockHistory = function()
+{
+	for(var i=0; i < MAX_HISTORY; i++)
+	{
+		this.blockHistory.push({
+			number: 0,
+			received: 0,
+			propagation: 0
+		});
+	}
 }
 
 Node.prototype.setStats = function(stats)
