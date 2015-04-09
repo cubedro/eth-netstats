@@ -22,8 +22,20 @@ body {
 	background: #FFD162;
 }
 
+.bg-orange {
+	background: #ff8a00;
+}
+
 .bg-danger {
 	background: #F74B4B;
+}
+
+.bg-success,
+.bg-info,
+.bg-warning,
+.bg-orange,
+.bg-danger {
+	color: #000;
 }
 
 .text-gray {
