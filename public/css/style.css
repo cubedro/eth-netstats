@@ -47,6 +47,7 @@ body {
 }
 
 .text-gray .propagationBox {
+	background: none !important;
 	border: 1px solid #777;
 }
 
