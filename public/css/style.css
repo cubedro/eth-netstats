@@ -17,6 +17,8 @@ body {
 	float: left;
 	top: 8px;
 	margin-right: 5px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
 }
 
 .bg-success,
