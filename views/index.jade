@@ -151,5 +151,6 @@ block content
             td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
             td(class="{{ node.stats.block.received | timeClass : node.stats.active }}") {{node.stats.block.received | blockTimeFilter }}
             td(class="{{ node.stats | propagationTimeClass : bestBlock }}") {{node.stats.block.propagation | blockPropagationFilter}}
+              div.propagationBox
             td.peerPropagationChart(class="{{node.id}}")
             td(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}

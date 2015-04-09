@@ -10,24 +10,42 @@ body {
 	-moz-font-smoothing: antialiased;
 }
 
-.bg-success {
+.propagationBox {
+	position: relative;
+	width: 8px;
+	height: 8px;
+	float: left;
+	top: 8px;
+	margin-right: 5px;
+}
+
+.bg-success,
+.text-success .propagationBox {
 	background: #7bcc3a;
 }
 
-.bg-info {
+.bg-info,
+.text-info .propagationBox {
 	background: #10a0de;
 }
 
-.bg-warning {
+.bg-warning,
+.text-warning .propagationBox {
 	background: #FFD162;
 }
 
-.bg-orange {
+.bg-orange,
+.text-orange .propagationBox {
 	background: #ff8a00;
 }
 
-.bg-danger {
+.bg-danger,
+.text-danger .propagationBox {
 	background: #F74B4B;
+}
+
+.text-gray .propagationBox {
+	border: 1px solid #777;
 }
 
 .bg-success,
