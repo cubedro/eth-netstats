@@ -92,18 +92,18 @@ angular.module('netStatsApp.filters', [])
 			return 'text-gray';
 
 		if(stats.block.propagation == 0)
-			return 'bg-info';
+			return 'text-info';
 
 		if(stats.block.propagation < 1000)
-			return 'bg-success';
+			return 'text-success';
 
 		if(stats.block.propagation < 3000)
-			return 'bg-warning';
+			return 'text-warning';
 
 		if(stats.block.propagation < 7000)
-			return 'bg-orange';
+			return 'text-orange';
 
-		return 'bg-danger'
+		return 'text-danger'
 	};
 })
 .filter('latencyFilter', function() {
