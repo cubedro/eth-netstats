@@ -226,7 +226,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			$scope.map = _.map($scope.nodes, function(node) {
 				if(node.geo != null)
 					return {
-						radius: 3,
+						radius: 2,
 						latitude: node.geo.ll[0],
 						longitude: node.geo.ll[1],
 						fillKey: $filter('bubbleClass')(node.stats, $scope.bestBlock)
