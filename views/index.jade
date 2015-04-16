@@ -135,8 +135,8 @@ block content
         tbody
           tr(ng-repeat='node in nodes | orderBy:predicate:reverse', class="{{ node.stats | mainClass : bestBlock }}")
             td(rel="{{node.id}}")
-              span.small(data-toggle="tooltip", data-placement="top", data-original-title="{{node.geo | geoTooltip}}") {{node.info.name}}
-              span.small #[&nbsp;]({{node.info.ip}})
+              span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{node | geoTooltip}}") {{node.info.name}}
+              span.small #[&nbsp;]({{node.info.ip}}:{{node.info.port || 30303}})
             td
               div.small(ng-bind-html="node.info.node | nodeVersion")
               //- div.small {{node.info.os}}, {{node.info.os_v}}
