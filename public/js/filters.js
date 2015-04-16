@@ -203,11 +203,68 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('geoTooltip', function() {
-	return function(geo) {
-		if(geo !== null)
-			return geo.city + ", " + geo.country;
+	return function(node) {
+		var tooltip = [];
+		var string = '';
 
-		return '';
+		if(node.geo !== null)
+		{
+			string = "Location: <b>";
+
+			if(node.geo.city !== '')
+				string += node.geo.city + ", ";
+			string += node.geo.country + "</b>";
+
+			tooltip.push(string);
+		}
+
+		if(node.info.contact !== '') {
+			string = "Contact: <b>" + node.info.contact + "</b>";
+
+			tooltip.push(string);
+		}
+
+		if(node.info.node !== '') {
+			var eth_version = node.info.node.split('/');
+
+			if(eth_version[1][0] !== 'v' && eth_version[1][2] !== '.')
+			{
+				eth_version.splice(1,1);
+			}
+
+			string = "Ethereum: <b>" + (eth_version[0]) + "</b>";
+
+			tooltip.push(string);
+
+			string = "Version: <b>" + (eth_version[1]) + "</b>";
+			tooltip.push(string);
+		}
+
+		if(node.info.net !== '') {
+			string = "Network: <b>" + node.info.net + "</b>";
+
+			tooltip.push(string);
+		}
+
+		if(node.info.protocol !== '') {
+			string = "Protocol: <b>" + node.info.protocol + "</b>";
+
+			tooltip.push(string);
+		}
+
+		if(node.info.api !== '') {
+			string = "Web3: <b>" + node.info.api + "</b>";
+
+			tooltip.push(string);
+		}
+
+		if(node.info.client !== '') {
+			string = "API: <b>" + node.info.client + "</b>";
+
+			tooltip.push(string);
+		}
+
+		return tooltip.join("<br>");
 	};
 })
 .filter('bubbleClass', function() {
