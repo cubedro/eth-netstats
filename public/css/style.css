@@ -10,12 +10,18 @@ body {
 	-moz-font-smoothing: antialiased;
 }
 
+td {
+	font-size: 14px;
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-font-smoothing: subpixel-antialiased;
+}
+
 .propagationBox {
 	position: relative;
 	width: 8px;
 	height: 8px;
 	float: left;
-	top: 8px;
+	top: 7px;
 	margin-right: 5px;
 	-webkit-border-radius: 2px;
 	border-radius: 2px;
@@ -139,21 +145,26 @@ div.small-title-miner {
 	margin-left: -2px;
 }
 
-.blocks-holder div.small-title-miner {
-	font-size: 12px;
-	font-weight: normal;
-	letter-spacing: 0px;
-	text-transform: none;
-	white-space: nowrap;
+.blocks-holder {
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-font-smoothing: subpixel-antialiased;
-	color: #777;
+}
+
+.blocks-holder div.small-title-miner {
+	font-family: "Lucida Console", "Courier New", Courier, monospace;
+	font-size: 11px;
+	letter-spacing: -0.1px;
+	text-transform: none;
+	white-space: nowrap;
+	color: #666;
 }
 
 .blocks-holder .block-count {
+	font-family: 'Lucida Console', monaco, "Courier New", Courier, monospace;
+	font-weight: bold;
+	font-size: 10px;
+	padding-top: 3px;
 	float: right;
-	line-height: 18px;
-	color: #aaa;
 }
 
 .blocks-holder .block {
