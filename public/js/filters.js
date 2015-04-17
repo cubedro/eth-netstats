@@ -221,23 +221,6 @@ angular.module('netStatsApp.filters', [])
 		var tooltip = [];
 		var string = '';
 
-		if(node.geo !== null)
-		{
-			string = "Location: <b>";
-
-			if(node.geo.city !== '')
-				string += node.geo.city + ", ";
-			string += node.geo.country + "</b>";
-
-			tooltip.push(string);
-		}
-
-		if(node.info.contact !== '') {
-			string = "Contact: <b>" + (typeof node.info.contact !== 'undefined' ? node.info.contact : '-') + "</b>";
-
-			tooltip.push(string);
-		}
-
 		if(node.info.node !== '') {
 			var eth_version = node.info.node.split('/');
 
@@ -246,16 +229,10 @@ angular.module('netStatsApp.filters', [])
 				eth_version.splice(1,1);
 			}
 
-			string = "Ethereum: <b>" + node.info.node + "</b>";
+			string = "<b>" + node.info.node + "</b>";
 			tooltip.push(string);
 
 			string = "Version: <b>" + (eth_version[1]) + "</b>";
-			tooltip.push(string);
-		}
-
-		if(node.info.port !== '') {
-			string = "Port: <b>" + (typeof node.info.port !== 'undefined' ? node.info.port : '30303') + "</b>";
-
 			tooltip.push(string);
 		}
 
@@ -267,6 +244,12 @@ angular.module('netStatsApp.filters', [])
 
 		if(node.info.protocol !== '') {
 			string = "Protocol: <b>" + (typeof node.info.protocol !== 'undefined' ? node.info.protocol : '-') + "</b>";
+
+			tooltip.push(string);
+		}
+
+		if(node.info.port !== '') {
+			string = "Port: <b>" + (typeof node.info.port !== 'undefined' ? node.info.port : '30303') + "</b>";
 
 			tooltip.push(string);
 		}
@@ -285,6 +268,23 @@ angular.module('netStatsApp.filters', [])
 
 		if(node.info.os !== '') {
 			string = "OS: <b>" + (typeof node.info.os !== 'undefined' ? node.info.os + ' ' + node.info.os_v : '?') + "</b>";
+
+			tooltip.push(string);
+		}
+
+		if(node.geo !== null)
+		{
+			string = "Location: <b>";
+
+			if(node.geo.city !== '')
+				string += node.geo.city + ", ";
+			string += node.geo.country + "</b>";
+
+			tooltip.push(string);
+		}
+
+		if(node.info.contact !== '') {
+			string = "Contact: <b>" + (typeof node.info.contact !== 'undefined' ? node.info.contact : '-') + "</b>";
 
 			tooltip.push(string);
 		}
