@@ -164,7 +164,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			barWidth : 2,
 			barSpacing : 1,
 			tooltipSuffix: ' ms',
-			chartRangeMax: 12000,
+			chartRangeMax: 8000,
 			colorMap: jQuery.range_map({
 				'0:1': '#10a0de',
 				'1:1000': '#7bcc3a',
@@ -189,7 +189,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			barWidth : 2,
 			barSpacing : 1,
 			tooltipSuffix: ' ms',
-			chartRangeMax: 12000,
+			chartRangeMax: 8000,
 			colorMap: jQuery.range_map({
 				'0:1': '#10a0de',
 				'1:1000': '#7bcc3a',
