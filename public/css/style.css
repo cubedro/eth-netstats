@@ -193,25 +193,88 @@ div.small-title-miner {
 	opacity: .8;
 }
 
-.hoverinfo {
+table i {
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-font-smoothing: subpixel-antialiased;
+}
+
+table th,
+table td {
+	border-color: #222 !important;
+}
+
+table td {
+	line-height: 18px;
+}
+
+table th {
+	color: #888;
+}
+
+table th i {
+	font-size: 20px;
+}
+table td i {
 	position: relative;
-	width: auto;
-	left: -50%;
-	text-align: center;
-	color: #333;
-	border: none !important;
-	box-shadow: none !important;
-	border-radius: 3px !important;
-	padding: 5px !important;
-	line-height: 14px !important;
+	line-height: 16px;
+}
+table td i:before {
+	position: absolute;
+	top: 10px;
+	left: 5px;
 }
 
-.hoverinfo .propagationBox {
-	top: 3px;
+.table>tbody>tr>td,
+.table>thead>tr>th {
+	padding: 5px;
 }
 
-.jqstooltip {
+.th-nodename {
+	width: 400px;
+}
 
+.th-latency {
+	width: 100px;
+}
+
+.th-blockhash {
+	width: 150px;
+}
+
+.th-blocktime {
+	width: 110px;
+}
+
+.th-peerPropagationChart {
+	width: 140px;
+}
+
+.nodeInfo .tooltip .tooltip-inner {
+	max-width: 400px;
+	text-align: left;
+	font-size: 12px;
+}
+
+#mapHolder {
+	display: block;
+	position: relative;
+	padding-bottom: 56.25%;
+	height: 0;
+	overflow: hidden;
+	max-width: 100%;
+	height: auto;
+	margin: 10px auto;
+}
+
+#mapHolder > svg {
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 .jqsfield {
@@ -241,127 +304,19 @@ div.small-title-miner {
 	border-bottom-color: #fff;
 }
 
-table i {
-	-webkit-font-smoothing: subpixel-antialiased;
-	-moz-font-smoothing: subpixel-antialiased;
-}
-
-table th,
-table td {
-	border-color: #222 !important;
-}
-
-table th {
-	color: #888;
-}
-
-table th i {
-	font-size: 20px;
-}
-table td i {
+.hoverinfo {
 	position: relative;
-	line-height: 16px;
-}
-table td i:before {
-	position: absolute;
-	top: 10px;
-	left: 5px;
-}
-
-#mapHolder {
-	display: block;
-	position: relative;
-	padding-bottom: 56.25%;
-	height: 0;
-	overflow: hidden;
-	max-width: 100%;
-	height: auto;
-	margin: 10px auto;
+	width: auto;
+	left: -50%;
+	text-align: center;
+	color: #333;
+	border: none !important;
+	box-shadow: none !important;
+	border-radius: 3px !important;
+	padding: 5px !important;
+	line-height: 14px !important;
 }
 
-#mapHolder > svg {
-	right: 0;
-	bottom: 0;
-	width: 100%;
-	height: 100%;
-	display: inline-block;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
-.nodeInfo .tooltip .tooltip-inner {
-	max-width: 400px;
-	text-align: left;
-	font-size: 12px;
-}
-
-.table>tbody>tr>td,
-.table>thead>tr>th {
-	padding: 5px;
-}
-
-.th-nodename {
-	width: 400px;
-}
-
-.th-latency {
-	width: 100px;
-}
-
-.th-blockhash {
-	width: 150px;
-}
-
-.th-blocktime {
-	width: 110px;
-}
-
-.th-peerPropagationChart {
-	width: 140px;
-}
-
-@media only screen and (max-width: 639px) {
-	/*.big-info {
-		padding-bottom: 15px;
-		padding-top: 15px;
-		border: 1px solid rgba(255,255,255,0.05);
-	}
-
-	.big-info .icon-full-width i {
-		width: 70px;
-		height: 60px;
-		font-size: 60px;
-		line-height: 60px;
-		margin-right: 20px;
-	}
-
-	.big-info span {
-		opacity: 0.7;
-	}
-
-	.big-info span.small-title {
-		font-size: 13px;
-		line-height: 14px;
-		letter-spacing: 1px;
-		padding-top: 0px;
-	}
-
-	.big-info span.big-details {
-		display: block;
-		font-weight: 200;
-		font-size: 46px;
-		line-height: 50px;
-		letter-spacing: -4px;
-	}*/
-}
-
-@media only screen and (max-width: 479px) {
-	/*.stat-holder {
-		width: 100%;
-	}*/
-}
-
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
+.hoverinfo .propagationBox {
+	top: 3px;
 }

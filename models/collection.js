@@ -1,9 +1,11 @@
 var _ = require('lodash');
+var Blockchain = require('./history');
 var Node = require('./node');
 
 var Collection = function Collection()
 {
 	this._list = [];
+	this._history = new Blockchain();
 	this._bestBlock = null;
 
 	return this;
@@ -24,36 +26,14 @@ Collection.prototype.update = function(id, stats)
 	if(!node)
 		return false;
 
-	if(this._bestBlock === null)
-	{
-		stats.block.received = (new Date()).getTime();
-		stats.block.propagation = 0;
-		this._bestBlock = stats.block;
-	}
-	else
- 	{
-		var oldStats = node.getStats();
+	var block = this._history.add(stats.block, id);
+	var propagationHistory = this._history.getNodePropagation(id);
 
-		if(stats.block.number !== oldStats.stats.block.number)
-		{
-			stats.block.received = (new Date()).getTime();
+	stats.block.arrived = block.arrived;
+	stats.block.received = block.received;
+	stats.block.propagation = block.propagation;
 
-			if(this._bestBlock.number < stats.block.number)
-			{
-				stats.block.propagation = 0;
-				this._bestBlock = stats.block;
-			}
-			else
-			{
-				stats.block.propagation = stats.block.received - this._bestBlock.received;
-			}
-		} else {
-			stats.block.received = oldStats.stats.block.received;
-			stats.block.propagation = oldStats.stats.block.propagation;
-		}
-	}
-
-	return node.setStats(stats);
+	return node.setStats(stats, propagationHistory);
 }
 
 Collection.prototype.updateLatency = function(id, latency)
@@ -116,6 +96,11 @@ Collection.prototype.getNodeOrNew = function(search, data)
 Collection.prototype.all = function()
 {
 	return this._list;
+}
+
+Collection.prototype.blockPropagationChart = function()
+{
+	return this._history.getBlockPropagation();
 }
 
 module.exports = Collection;

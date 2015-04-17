@@ -1,4 +1,5 @@
 var geoip = require('geoip-lite');
+var _ = require('lodash');
 
 var MAX_HISTORY = 36;
 
@@ -31,13 +32,13 @@ var Node = function Node(data)
 		uptime: 0,
 		lastUpdate: 0
 	};
-	this.blockHistory = [];
+	this.history = new Array(MAX_HISTORY);
 	this.uptime = {
 		started: null,
 		history: []
 	};
 
-	this.initBlockHistory();
+	_.fill(this.history, -1);
 
 	if(this.id === null) {
 		this.uptime.started = (new Date()).getTime();
@@ -90,41 +91,14 @@ Node.prototype.setInfo = function(data)
 
 Node.prototype.getInfo = function()
 {
-	return {id: this.id, info: this.info, geo: this.geo, stats: this.stats, history: this.blockHistory};
+	return {id: this.id, info: this.info, geo: this.geo, stats: this.stats, history: this.history};
 }
 
-Node.prototype.initBlockHistory = function()
-{
-	for(var i=0; i < MAX_HISTORY; i++)
-	{
-		this.blockHistory.push({
-			number: 0,
-			received: 0,
-			propagation: 0
-		});
-	}
-}
-
-Node.prototype.setStats = function(stats)
+Node.prototype.setStats = function(stats, history)
 {
 	if(typeof stats !== 'undefined' && typeof stats.block !== 'undefined' && typeof stats.block.number !== 'undefined')
 	{
-		stats.block.hash = stats.block.hash.replace('0x', '');
-
-		if(stats.block.number > this.stats.block.number)
-		{
-			if(this.blockHistory.length === MAX_HISTORY )
-				this.blockHistory.shift();
-
-			var history = {
-				number: stats.block.number,
-				received: stats.block.received,
-				propagation: stats.block.propagation
-			};
-
-			this.blockHistory.push(history);
-		}
-
+		this.history = history;
 		this.stats = stats;
 
 		return this.getStats();
@@ -147,7 +121,7 @@ Node.prototype.setLatency = function(latency)
 
 Node.prototype.getStats = function()
 {
-	return {id: this.id, stats: this.stats, history: this.blockHistory};
+	return {id: this.id, stats: this.stats, history: this.history};
 }
 
 Node.prototype.setState = function(active)

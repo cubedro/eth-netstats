@@ -91,8 +91,15 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 		switch(action) {
 			case "init":
 				$scope.nodes = data;
+				$scope.$apply();
 
-				if($scope.nodes.length > 0) toastr['success']("Got nodes list", "Got nodes!");
+				_.forEach($scope.nodes, function(node, index) {
+					makePeerPropagationChart($scope.nodes[index]);
+				});
+
+				if($scope.nodes.length > 0)
+					toastr['success']("Got nodes list", "Got nodes!");
+
 				break;
 
 			case "add":
@@ -100,30 +107,42 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 					toastr['success']("New node "+ $scope.nodes[findIndex({id: data.id})].info.name +" connected!", "New node!");
 				else
 					toastr['info']("Node "+ $scope.nodes[findIndex({id: data.id})].info.name +" reconnected!", "Node is back!");
+
 				break;
 
 			case "update":
 				var index = findIndex({id: data.id});
 				$scope.nodes[index].stats = data.stats;
 				$scope.nodes[index].history = data.history;
-				makePeerPropagationChart(index);
+				makePeerPropagationChart($scope.nodes[index]);
+
 				break;
 
 			case "info":
 				$scope.nodes[findIndex({id: data.id})].info = data.info;
+
+				break;
+
+			case "blockPropagationChart":
+				$scope.blockPropagationChart = data;
+				makeBlockPropagationChart();
+
 				break;
 
 			case "inactive":
 				$scope.nodes[findIndex({id: data.id})].stats = data.stats;
 				toastr['error']("Node "+ $scope.nodes[findIndex({id: data.id})].info.name +" went away!", "Node connection was lost!");
+
 				break;
 
 			case "latency":
 				$scope.nodes[findIndex({id: data.id})].stats.latency = data.latency;
+
 				break;
 
 			case "client-ping":
 				socket.emit('client-pong');
+
 				break;
 		}
 
@@ -135,15 +154,37 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 		return _.findIndex($scope.nodes, search);
 	}
 
-	function makePeerPropagationChart(index)
+	function makePeerPropagationChart(node)
 	{
-		$scope.nodes[index].propagation = _.map($scope.nodes[index].history, function(block) {
-			return block.propagation;
-		});
-
-		jQuery('.' + $scope.nodes[index].id).sparkline($scope.nodes[index].propagation, {
+		jQuery('.' + node.id).sparkline(node.history, {
 			type: 'bar',
+			negBarColor: '#7f7f7f',
+			zeroAxis: false,
 			height: 18,
+			barWidth : 2,
+			barSpacing : 1,
+			tooltipSuffix: ' ms',
+			colorMap: jQuery.range_map({
+				'0:1': '#10a0de',
+				'1:1000': '#7bcc3a',
+				'1001:3000': '#FFD162',
+				'3001:7000': '#ff8a00',
+				'7001:': '#F74B4B'
+			})
+		});
+	}
+
+	function makeBlockPropagationChart()
+	{
+		jQuery('.spark-blockpropagation').sparkline(_.map($scope.blockPropagationChart, function(history) {
+			if(typeof history.propagation === 'undefined')
+				return -1;
+
+			return history.propagation;
+		}), {
+			type: 'bar',
+			negBarColor: '#7f7f7f',
+			zeroAxis: false,
 			barWidth : 2,
 			barSpacing : 1,
 			tooltipSuffix: ' ms',
@@ -168,8 +209,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 		}
 
 		$scope.nodes[index] = data;
-		$scope.nodes[index].history = data.history;
-		makePeerPropagationChart(index);
+		makePeerPropagationChart($scope.nodes[index]);
 
 		return false;
 	}

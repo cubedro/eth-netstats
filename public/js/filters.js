@@ -86,6 +86,9 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('hashFilter', function() {
 	return function(hash) {
+		if(hash.substr(0,2) === '0x')
+			hash = hash.substr(2,64);
+
 		return hash.substr(0, 8) + '...' + hash.substr(56, 8);
 	}
 })
