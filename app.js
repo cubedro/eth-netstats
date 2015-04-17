@@ -63,6 +63,9 @@ api.on('connection', function(spark) {
             spark.emit('ready');
 
             client.write({action: 'add', data: info});
+
+            var blockPropagationChart = Nodes.blockPropagationChart();
+            client.write({action: 'blockPropagationChart', data: blockPropagationChart});
         }
     });
 
@@ -70,14 +73,16 @@ api.on('connection', function(spark) {
     {
         console.log('Latency: ', spark.latency);
         console.log('got update from ' + spark.id);
-        console.log(data);
 
         if(typeof data.id !== 'undefined' && typeof data.stats !== 'undefined')
         {
             data.stats.latency = spark.latency;
-            var stats = Nodes.update(data.id, data.stats);
 
+            var stats = Nodes.update(data.id, data.stats);
             client.write({action: 'update', data: stats});
+
+            var blockPropagationChart = Nodes.blockPropagationChart();
+            client.write({action: 'blockPropagationChart', data: blockPropagationChart});
         }
     });
 
@@ -116,6 +121,9 @@ client.on('connection', function(spark) {
         console.log(data);
 
         spark.emit('init', {nodes: Nodes.all()});
+
+        var blockPropagationChart = Nodes.blockPropagationChart();
+        spark.write({action: 'blockPropagationChart', data: blockPropagationChart});
     });
 
     spark.on('client-pong', function(data) {
