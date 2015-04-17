@@ -2,7 +2,7 @@ extends layout
 
 block content
   div.container-fluid(ng-controller='StatsCtrl')
-    div.page-latency
+    div.page-latency(ng-cloak)
       span.small-title page latency:#[&nbsp;]
       span(class="{{ {active: true, latency: latency} | latencyClass }}") {{latency}} ms
     div.row(ng-cloak)
