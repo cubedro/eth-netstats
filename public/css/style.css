@@ -99,10 +99,6 @@ table td {
 	margin-left: -15px;
 }
 
-.big-info span {
-	opacity: 0.7;
-}
-
 .big-info span.small-title,
 .big-info div.small-title-miner {
 	display: block;
@@ -157,7 +153,7 @@ div.small-title-miner {
 	letter-spacing: -0.1px;
 	text-transform: none;
 	white-space: nowrap;
-	color: #666;
+	color: #777;
 }
 
 .blocks-holder .block-count {
