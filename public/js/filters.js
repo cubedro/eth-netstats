@@ -303,7 +303,6 @@ function mainClass(node, bestBlock)
 	if(node.peers === 0)
 		return 'text-danger';
 
-	// return timeClass(node.block.timestamp);
 	return peerClass(node.peers, node.active);
 }
 

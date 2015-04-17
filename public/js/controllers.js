@@ -146,7 +146,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			height: 18,
 			barWidth : 2,
 			barSpacing : 1,
-			tooltipSuffix: 'ms',
+			tooltipSuffix: ' ms',
 			colorMap: jQuery.range_map({
 				'0:1': '#10a0de',
 				'1:1000': '#7bcc3a',
@@ -205,7 +205,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 					$scope.miners = $scope.bestStats.miners;
 				}
 
-				jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime.reverse(), {type: 'bar', tooltipSuffix: 's'});
+				jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime.reverse(), {type: 'bar', tooltipSuffix: ' s'});
 				jQuery('.spark-difficulty').sparkline($scope.difficultyChange.reverse(), {type: 'bar'});
 				jQuery('.spark-transactions').sparkline($scope.transactionDensity.reverse(), {type: 'bar'});
 				jQuery('.spark-gasspending').sparkline($scope.gasSpending.reverse(), {type: 'bar'});
@@ -224,12 +224,16 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			}, 0) / $scope.nodes.length;
 
 			$scope.map = _.map($scope.nodes, function(node) {
+				var fill = $filter('bubbleClass')(node.stats, $scope.bestBlock);
+
 				if(node.geo != null)
 					return {
-						radius: 2,
+						radius: 3,
 						latitude: node.geo.ll[0],
 						longitude: node.geo.ll[1],
-						fillKey: $filter('bubbleClass')(node.stats, $scope.bestBlock)
+						nodeName: node.info.name,
+						fillClass: "text-" + fill,
+						fillKey: fill,
 					};
 				else
 					return {
