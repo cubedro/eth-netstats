@@ -262,9 +262,14 @@ table th {
 table th i {
 	font-size: 20px;
 }
+table td i {
+	position: relative;
+	line-height: 16px;
+}
 table td i:before {
-	line-height: inherit !important;
-	margin-top: 1px;
+	position: absolute;
+	top: 10px;
+	left: 5px;
 }
 
 #mapHolder {
