@@ -221,23 +221,6 @@ angular.module('netStatsApp.filters', [])
 		var tooltip = [];
 		var string = '';
 
-		if(node.geo !== null)
-		{
-			string = "Location: <b>";
-
-			if(node.geo.city !== '')
-				string += node.geo.city + ", ";
-			string += node.geo.country + "</b>";
-
-			tooltip.push(string);
-		}
-
-		if(node.info.contact !== '') {
-			string = "Contact: <b>" + (typeof node.info.contact !== 'undefined' ? node.info.contact : '-') + "</b>";
-
-			tooltip.push(string);
-		}
-
 		if(node.info.node !== '') {
 			var eth_version = node.info.node.split('/');
 
@@ -285,6 +268,23 @@ angular.module('netStatsApp.filters', [])
 
 		if(node.info.os !== '') {
 			string = "OS: <b>" + (typeof node.info.os !== 'undefined' ? node.info.os + ' ' + node.info.os_v : '?') + "</b>";
+
+			tooltip.push(string);
+		}
+
+		if(node.geo !== null)
+		{
+			string = "Location: <b>";
+
+			if(node.geo.city !== '')
+				string += node.geo.city + ", ";
+			string += node.geo.country + "</b>";
+
+			tooltip.push(string);
+		}
+
+		if(node.info.contact !== '') {
+			string = "Contact: <b>" + (typeof node.info.contact !== 'undefined' ? node.info.contact : '-') + "</b>";
 
 			tooltip.push(string);
 		}
