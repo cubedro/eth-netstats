@@ -57,7 +57,7 @@ block content
 
       div.clearfix
 
-    div.row
+    div.row(ng-cloak)
       div.col-xs-6.stats-boxes(style="padding-top: 30px;")
         div.row
           div.col-xs-4.stat-holder
@@ -130,7 +130,7 @@ block content
             th.th-peerPropagationChart
             th
               i.icon-bulb(data-toggle="tooltip", data-placement="top", title="Up-time", ng-click="orderTable(['-stats.active', '-stats.uptime'], false)")
-        tbody
+        tbody(ng-cloak)
           tr(ng-repeat='node in nodes | orderBy:predicate:reverse', class="{{ node.stats | mainClass : bestBlock }}")
             td.nodeInfo(rel="{{node.id}}")
               span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{node | geoTooltip}}") {{node.info.name}}
