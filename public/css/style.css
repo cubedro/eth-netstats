@@ -259,9 +259,12 @@ table th {
 	color: #888;
 }
 
-table th i,
-table td i {
+table th i {
 	font-size: 20px;
+}
+table td i:before {
+	line-height: inherit !important;
+	margin-top: 1px;
 }
 
 #mapHolder {
