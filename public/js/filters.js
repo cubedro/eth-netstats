@@ -253,6 +253,12 @@ angular.module('netStatsApp.filters', [])
 			tooltip.push(string);
 		}
 
+		if(node.info.port !== '') {
+			string = "Port: <b>" + (typeof node.info.port !== 'undefined' ? node.info.port : '30303') + "</b>";
+
+			tooltip.push(string);
+		}
+
 		if(node.info.net !== '') {
 			string = "Network: <b>" + (typeof node.info.net !== 'undefined' ? node.info.net : '-') + "</b>";
 
