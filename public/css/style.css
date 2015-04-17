@@ -10,8 +10,9 @@ body {
 	-moz-font-smoothing: antialiased;
 }
 
-td {
+table td {
 	font-size: 14px;
+	white-space: nowrap !important;
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-font-smoothing: subpixel-antialiased;
 }
@@ -285,9 +286,12 @@ table td i {
 	left: 0;
 }
 
-table td {
-	white-space: nowrap !important;
+.nodeInfo .tooltip .tooltip-inner {
+	max-width: 400px;
+	text-align: left;
+	font-size: 12px;
 }
+
 .table>tbody>tr>td,
 .table>thead>tr>th {
 	padding: 5px;
