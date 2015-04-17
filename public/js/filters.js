@@ -44,10 +44,31 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('nodeVersion', function($sce) {
 	return function(version) {
-		if(typeof version !== 'undefined') {
-			return $sce.trustAsHtml(version);
-		} else
-			return '';
+		if(typeof version !== 'undefined')
+		{
+			var tmp = version.split('/');
+
+			tmp[0] = tmp[0].replace('Ethereum(++)', 'Eth');
+
+			if(tmp[1][0] !== 'v' && tmp[1][2] !== '.')
+			{
+				tmp.splice(1,1);
+			}
+
+			if(tmp[2] === 'Release'){
+				tmp.splice(2,1);
+			}
+
+			if(tmp[2].indexOf('Linux') === 0)
+				tmp[2] = 'linux';
+
+			if(tmp[2].indexOf('Darwin') === 0)
+				tmp[2] = 'darwin';
+
+			return $sce.trustAsHtml(tmp.join('/'));
+		}
+
+		return '';
 	};
 })
 .filter('blockClass', function() {
@@ -225,8 +246,7 @@ angular.module('netStatsApp.filters', [])
 				eth_version.splice(1,1);
 			}
 
-			string = "Ethereum: <b>" + (eth_version[0]) + "</b>";
-
+			string = "Ethereum: <b>" + node.info.node + "</b>";
 			tooltip.push(string);
 
 			string = "Version: <b>" + (eth_version[1]) + "</b>";
@@ -253,6 +273,12 @@ angular.module('netStatsApp.filters', [])
 
 		if(node.info.client !== '') {
 			string = "API: <b>" + (typeof node.info.client !== 'undefined' ? node.info.client : '<= 0.0.3') + "</b>";
+
+			tooltip.push(string);
+		}
+
+		if(node.info.os !== '') {
+			string = "OS: <b>" + (typeof node.info.os !== 'undefined' ? node.info.os + ' ' + node.info.os_v : '?') + "</b>";
 
 			tooltip.push(string);
 		}
