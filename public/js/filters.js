@@ -252,7 +252,7 @@ angular.module('netStatsApp.filters', [])
 		}
 
 		if(node.info.client !== '') {
-			string = "API: <b>" + (typeof node.info.client !== 'undefined' ? node.info.client : '> 0.0.3') + "</b>";
+			string = "API: <b>" + (typeof node.info.client !== 'undefined' ? node.info.client : '<= 0.0.3') + "</b>";
 
 			tooltip.push(string);
 		}
