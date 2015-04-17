@@ -142,7 +142,7 @@ block content
               //- div.small {{node.info.os}}, {{node.info.os_v}}
             td.small(class="{{ node.stats | latencyClass }}") {{node.stats | latencyFilter}}
             td(class="{{ node.stats.mining | miningClass : node.stats.active }}")
-              i.small(class="{{ node.stats.mining | miningIconClass }}")
+              i(class="{{ node.stats.mining | miningIconClass }}")
             td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
             td(style="padding-left: 15px;") {{node.stats.pending}}
             td(class="{{ node.stats | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
