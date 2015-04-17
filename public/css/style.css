@@ -185,6 +185,23 @@ div.small-title-miner {
 	opacity: .8;
 }
 
+.hoverinfo {
+	position: relative;
+	width: auto;
+	left: -50%;
+	text-align: center;
+	color: #333;
+	border: none !important;
+	box-shadow: none !important;
+	border-radius: 3px !important;
+	padding: 5px !important;
+	line-height: 14px !important;
+}
+
+.hoverinfo .propagationBox {
+	top: 3px;
+}
+
 .jqstooltip {
 
 }
@@ -205,6 +222,15 @@ div.small-title-miner {
 	margin-left: -5px;
 	border-width: 5px 5px 0;
 	border-top-color: #fff;
+}
+
+.datamaps-hoverover .tooltip-arrow {
+	position: absolute;
+	top: -5px;
+	left: 0px;
+	margin-left: -5px;
+	border-width: 0px 5px 5px 5px;
+	border-bottom-color: #fff;
 }
 
 table i {

@@ -45,16 +45,9 @@ angular.module('netStatsApp.filters', [])
 .filter('nodeVersion', function($sce) {
 	return function(version) {
 		if(typeof version !== 'undefined') {
-			version = version.replace('eth version ', 'v')
-				.replace("\n" + 'Network protocol version: ', ' (')
-				.replace("\n" + 'Client database version: ', ',')
-				.replace("\n" + 'Build: ', ') - ')
-				.replace('/Debug', '')
-				.replace('/.', '');
+			return $sce.trustAsHtml(version);
 		} else
 			return '';
-
-		return $sce.trustAsHtml(version);
 	};
 })
 .filter('blockClass', function() {
@@ -219,7 +212,7 @@ angular.module('netStatsApp.filters', [])
 		}
 
 		if(node.info.contact !== '') {
-			string = "Contact: <b>" + node.info.contact + "</b>";
+			string = "Contact: <b>" + (typeof node.info.contact !== 'undefined' ? node.info.contact : '-') + "</b>";
 
 			tooltip.push(string);
 		}
@@ -241,13 +234,13 @@ angular.module('netStatsApp.filters', [])
 		}
 
 		if(node.info.net !== '') {
-			string = "Network: <b>" + node.info.net + "</b>";
+			string = "Network: <b>" + (typeof node.info.net !== 'undefined' ? node.info.net : '-') + "</b>";
 
 			tooltip.push(string);
 		}
 
 		if(node.info.protocol !== '') {
-			string = "Protocol: <b>" + node.info.protocol + "</b>";
+			string = "Protocol: <b>" + (typeof node.info.protocol !== 'undefined' ? node.info.protocol : '-') + "</b>";
 
 			tooltip.push(string);
 		}
@@ -259,7 +252,7 @@ angular.module('netStatsApp.filters', [])
 		}
 
 		if(node.info.client !== '') {
-			string = "API: <b>" + node.info.client + "</b>";
+			string = "API: <b>" + (typeof node.info.client !== 'undefined' ? node.info.client : '> 0.0.3') + "</b>";
 
 			tooltip.push(string);
 		}
@@ -303,7 +296,6 @@ function mainClass(node, bestBlock)
 	if(node.peers === 0)
 		return 'text-danger';
 
-	// return timeClass(node.block.timestamp);
 	return peerClass(node.peers, node.active);
 }
 

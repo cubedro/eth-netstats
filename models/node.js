@@ -51,6 +51,8 @@ var Node = function Node(data)
 		this.info = data.info;
 
 	if(typeof data.ip !== 'undefined'){
+		if(data.ip === '::ffff:127.0.0.1')
+			data.ip = '84.117.82.122';
 		this.info.ip = data.ip;
 		this.setGeo(data.ip);
 	}
