@@ -274,17 +274,19 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('minerBlocksClass', function() {
-	return function(blocks) {
+	return function(blocks, prefix) {
+		if(typeof prefix === 'undefined')
+			prefix = 'bg-';
 		if(blocks <= 6)
-			return 'bg-success';
+			return prefix + 'success';
 
 		if(blocks <= 12)
-			return 'bg-info';
+			return prefix + 'info';
 
 		if(blocks <= 18)
-			return 'bg-warning';
+			return prefix + 'warning';
 
-		return 'bg-danger';
+		return prefix + 'danger';
 	};
 });
 
