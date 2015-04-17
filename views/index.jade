@@ -28,7 +28,7 @@ block content
             i.icon-difficulty
           div.pull-left
             span.small-title difficulty
-            span.big-details {{ lastDifficulty }}
+            span.big-details {{ lastDifficulty | number }}
           div.clearfix
       div.col-xs-2.stat-holder
         div.big-info.bestblock.text-info
@@ -36,7 +36,7 @@ block content
             i.icon-block
           div.pull-left
             span.small-title best block
-            span.big-details {{"#" + bestBlock}}
+            span.big-details {{'#'}}{{ bestBlock | number}}
           div.clearfix
       div.col-xs-2.stat-holder
         div.big-info.blocktime(class="{{ lastBlock | timeClass : true }}")
@@ -143,7 +143,7 @@ block content
               i(class="{{ node.stats.mining | miningIconClass }}")
             td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
             td(style="padding-left: 15px;") {{node.stats.pending}}
-            td(class="{{ node.stats | blockClass : bestBlock }}") {{'#' + node.stats.block.number}}
+            td(class="{{ node.stats | blockClass : bestBlock }}") {{'#'}}{{ node.stats.block.number | number }}
             td(class="{{ node.stats | blockClass : bestBlock }}")
               span.small {{node.stats.block.hash | hashFilter}}
             td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
