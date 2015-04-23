@@ -111,9 +111,16 @@ angular.module('netStatsApp.directives', []).
 					.tickFormat(d3.format("%"));
 
 				var line = d3.svg.line()
-					.x(function(d) { return x(d.x + d.dx/2); })
+					.x(function(d) { return x(d.x + d.dx/2) - 1; })
 					.y(function(d) { return y(d.y); })
 					.interpolate('basis');
+
+				var tip = d3.tip()
+					.attr('class', 'd3-tip')
+					.offset([-10, 0])
+					.html(function(d) {
+						return '<div class="tooltip-arrow"></div><div class="tooltip-inner"><b>' + (d.x/1000) + 's - ' + ((d.x + d.dx)/1000) + 's</b>: ' + Math.round(d.y * 100) + "%" + "</div>";
+					})
 
 				scope.init = function()
 				{
@@ -136,6 +143,8 @@ angular.module('netStatsApp.directives', []).
 					  .append("g")
 						.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+					svg.call(tip);
+
 					svg.append("g")
 						.attr("class", "x axis")
 						.attr("transform", "translate(0," + height + ")")
@@ -143,16 +152,35 @@ angular.module('netStatsApp.directives', []).
 
 					svg.append("g")
 						.attr("class", "y axis")
-						// .attr("transform", "translate(0, 0)")
 						.attr("transform", "translate(" + width + ", 0)")
 						.call(yAxis);
 
 
-					svg.selectAll(".bar")
-						.data(data)
-					  .enter().insert("rect", ".axis")
+					var bar = svg.insert("g", ".axis")
+						.attr("class", "bars")
+					  .selectAll("g")
+					  .data(data)
+					  .enter().append("g")
+						.attr("transform", function(d) { return "translate(" + x(d.x) + ",0)"; })
+						.on('mouseover', function(d) { tip.show(d, d3.select(this).select('.bar')[0][0]); })
+						.on('mouseout', tip.hide);
+
+					bar.insert("rect")
+						.attr("class", "handle")
+						.attr("y", 0)
+						.attr("width", x(data[0].dx + data[0].x) - x(data[0].x))
+						.attr("height", function(d) { return height; });
+
+					bar.insert("rect")
 						.attr("class", "bar")
-						.attr("x", function(d) { return x(d.x) + 1; })
+						.attr("y", function(d) { return y(d.y); })
+						.attr("rx", 1.2)
+						.attr("ry", 1.2)
+						.attr("width", x(data[0].dx + data[0].x) - x(data[0].x) - 1)
+						.attr("height", function(d) { return height - y(d.y) + 1; });
+
+					bar.insert("rect")
+						.attr("class", "highlight")
 						.attr("y", function(d) { return y(d.y); })
 						.attr("rx", 1)
 						.attr("ry", 1)

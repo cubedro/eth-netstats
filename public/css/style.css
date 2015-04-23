@@ -291,7 +291,12 @@ table td i:before {
 	text-align: center;
 }
 
-.jqsfield .tooltip-arrow {
+.d3-tip {
+	padding: 5px 0;
+}
+
+.jqsfield .tooltip-arrow,
+.d3-tip .tooltip-arrow {
 	position: absolute;
 	bottom: 0;
 	left: 50%;
@@ -330,18 +335,30 @@ svg {
 	overflow: visible !important;
 }
 
-svg .bar {
-	fill: #1f77b4;
-	shape-rendering: crispEdges;
+svg .bars .bar {
+	fill: #10a0de;
+	opacity: 0.8;
+	shape-rendering: auto;
 }
 
-svg .bar:hover {
-	opacity: 0.8;
+svg .bars .handle {
+	fill: #10a0de;
+	opacity: 0;
+}
+
+svg .bars .highlight {
+	fill: #fff;
+	opacity: 0;
+}
+
+svg .bars g:hover .bar {
+	opacity: 1;
 }
 
 svg .line {
 	fill: none;
 	stroke: #ff0000;
+	opacity: 0.8;
 	stroke-width: 2px;
 	shape-rendering: auto;
 }
