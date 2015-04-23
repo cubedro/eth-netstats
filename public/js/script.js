@@ -25,33 +25,4 @@
 	moment.relativeTimeThreshold('d', 28);
 	moment.relativeTimeThreshold('M', 12);
 
-
-	//   var bar = svg.insert("g", ".axis")
-	//       .attr("class", "bar")
-	//     .selectAll("g")
-	//       .data(histogram)
-	//     .enter().append("g")
-	//       .attr("transform", function(d) { return "translate(" + x(d.x) + ",0)"; });
-
-	  // bar.append("rect")
-	  //     .attr("class", "b")
-	  //     .attr("x", 1)
-	  //     .attr("y", function(d) { return y(d.b); })
-	  //     .attr("width", x(histogram[0].dx) - 1)
-	  //     .attr("height", function(d) { return height - y(d.b); });
-
-	//   bar.append("rect")
-	//       .attr("class", "a")
-	//       .attr("x", 1)
-	//       .attr("y", function(d) { return y(d.y); })
-	//       .attr("width", x(histogram[0].dx) - 1)
-	//       .attr("height", function(d) { return height - y(d.a); });
-
-	  // bar.filter(function(d) { return d.y / n >= .0095; }).append("text")
-	  //     .attr("dy", ".015em")
-	  //     .attr("transform", function(d) { return "translate(" + x(histogram[0].dx) / 2 + "," + (y(1000) + 6) + ")rotate(-90)"; })
-	  //     // .attr("transform", function(d) { return "translate(" + x(histogram[0].dx) / 2 + "," + (y(d.y) + 6) + ")rotate(-90)"; })
-	  //     .text(function(d) { return formatPercent(d.y / n); });
-	// });
-
 })();
