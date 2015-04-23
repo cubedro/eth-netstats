@@ -33,7 +33,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 	$scope.orderTable = function(predicate, reverse)
 	{
-		if(predicate != $scope.predicate)
+		if(!_.isEqual(predicate, $scope.predicate))
 		{
 			$scope.reverse = reverse;
 			$scope.predicate = predicate;
