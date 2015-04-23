@@ -125,7 +125,6 @@ angular.module('netStatsApp.directives', []).
 
 					// Adjust y axis
 					y.domain([0, d3.max(data, function(d) { return d.y; })]);
-					// y.domain([0, 1]);
 
 					// Delete previous histogram
 					element.empty();
