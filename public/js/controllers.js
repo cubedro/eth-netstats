@@ -160,7 +160,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			type: 'bar',
 			negBarColor: '#7f7f7f',
 			zeroAxis: false,
-			height: 18,
+			height: 20,
 			barWidth : 2,
 			barSpacing : 1,
 			tooltipSuffix: ' ms',

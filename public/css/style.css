@@ -22,7 +22,7 @@ table td {
 	width: 8px;
 	height: 8px;
 	float: left;
-	top: 6px;
+	top: 5px;
 	margin-right: 5px;
 	-webkit-border-radius: 2px;
 	border-radius: 2px;
@@ -204,7 +204,7 @@ table td {
 }
 
 table td {
-	line-height: 18px;
+	line-height: 18px !important;
 }
 
 table th {
@@ -217,11 +217,11 @@ table th i {
 }
 table td i {
 	position: relative;
-	line-height: 20px;
 	top: 2px;
+	left: 2px;
 }
-table td i:before {
-	margin-left: 5px;
+table td.peerPropagationChart {
+	padding: 4px 5px !important;
 }
 
 .table>tbody>tr>td,
