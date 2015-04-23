@@ -98,6 +98,10 @@ angular.module('netStatsApp.directives', []).
 					.range([height, 0])
 					.interpolate(d3.interpolateRound);
 
+				var color = d3.scale.linear()
+					.domain([1000, 3000, 7000, 10000, 20000])
+					.range(["#7bcc3a", "#FFD162", "#ff8a00", "#F74B4B", "#CC0000"]);
+
 				var xAxis = d3.svg.axis()
 					.scale(x)
 					.orient("bottom")
@@ -112,7 +116,7 @@ angular.module('netStatsApp.directives', []).
 
 				var line = d3.svg.line()
 					.x(function(d) { return x(d.x + d.dx/2) - 1; })
-					.y(function(d) { return y(d.y); })
+					.y(function(d) { return y(d.y) - 2; })
 					.interpolate('basis');
 
 				var tip = d3.tip()
@@ -156,13 +160,13 @@ angular.module('netStatsApp.directives', []).
 						.call(yAxis);
 
 
-					var bar = svg.insert("g", ".axis")
+					var bar = svg.append("g")
 						.attr("class", "bars")
 					  .selectAll("g")
 					  .data(data)
 					  .enter().append("g")
 						.attr("transform", function(d) { return "translate(" + x(d.x) + ",0)"; })
-						.on('mouseover', function(d) { tip.show(d, d3.select(this).select('.bar')[0][0]); })
+						.on('mouseover', function(d) { tip.show(d, d3.select(this).select('.bar').node()); })
 						.on('mouseout', tip.hide);
 
 					bar.insert("rect")
@@ -176,16 +180,18 @@ angular.module('netStatsApp.directives', []).
 						.attr("y", function(d) { return y(d.y); })
 						.attr("rx", 1.2)
 						.attr("ry", 1.2)
+						.attr("fill", function(d) { return color(d.x); })
 						.attr("width", x(data[0].dx + data[0].x) - x(data[0].x) - 1)
 						.attr("height", function(d) { return height - y(d.y) + 1; });
 
 					bar.insert("rect")
 						.attr("class", "highlight")
 						.attr("y", function(d) { return y(d.y); })
+						.attr("fill", function(d) { return d3.rgb(color(d.x)).brighter(.7).toString(); })
 						.attr("rx", 1)
 						.attr("ry", 1)
 						.attr("width", x(data[0].dx + data[0].x) - x(data[0].x) - 1)
-						.attr("height", function(d) { return height - y(d.y); });
+						.attr("height", function(d) { return height - y(d.y) + 1; });
 
 					svg.append("path")
 						.attr("class", "line")
