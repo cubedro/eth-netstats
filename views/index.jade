@@ -125,7 +125,7 @@ block content
               i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions", ng-click="orderTable(['-stats.active', '-stats.block.transactions.length'], false)")
             th.th-blocktime
               i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time", ng-click="orderTable(['-stats.active', '-stats.block.received'], false)")
-            th
+            th.th-peerPropagationTime
               i.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time", ng-click="orderTable(['-stats.active', '-stats.block.number', 'stats.block.propagation'], false)")
             th.th-peerPropagationChart
             th
@@ -148,7 +148,8 @@ block content
               span.small {{node.stats.block.hash | hashFilter}}
             td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
             td(class="{{ node.stats.block.arrived | timeClass : node.stats.active }}") {{node.stats.block.arrived | blockTimeFilter }}
-            td(class="{{ node.stats | propagationTimeClass : bestBlock }}") {{node.stats.block.propagation | blockPropagationFilter}}
+            td(class="{{ node.stats | propagationTimeClass : bestBlock }}")
               div.propagationBox
+              span {{node.stats.block.propagation | blockPropagationFilter}}
             td.peerPropagationChart(class="{{node.id}}")
             td(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}

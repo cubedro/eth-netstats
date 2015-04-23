@@ -250,6 +250,10 @@ table td i:before {
 	width: 110px;
 }
 
+.th-peerPropagationTime {
+	width: 120px;
+}
+
 .th-peerPropagationChart {
 	width: 140px;
 }
