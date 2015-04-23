@@ -212,16 +212,16 @@ table th {
 }
 
 table th i {
+	line-height: 1em;
 	font-size: 20px;
 }
 table td i {
 	position: relative;
-	line-height: 16px;
+	line-height: 20px;
+	top: 2px;
 }
 table td i:before {
-	position: absolute;
-	top: 10px;
-	left: 5px;
+	margin-left: 5px;
 }
 
 .table>tbody>tr>td,
