@@ -83,8 +83,8 @@ angular.module('netStatsApp.directives', []).
 				data: '='
 			},
 			link: function(scope, element, attrs) {
-				var margin = {top: 0, right: 0, bottom: 0, left: 5};
-				var width = 285 - margin.left - margin.right,
+				var margin = {top: 0, right: 0, bottom: 0, left: 0};
+				var width = 280 - margin.left - margin.right,
 					height = 173 - margin.top - margin.bottom;
 
 				var TICKS = 40;
@@ -107,24 +107,30 @@ angular.module('netStatsApp.directives', []).
 				var yAxis = d3.svg.axis()
 					.scale(y)
 					.orient("left")
-					.ticks(4);
+					.ticks(4)
+					.tickFormat(d3.format("%"));
 
 				var line = d3.svg.line()
 					.x(function(d) { return x(d.x + d.dx); })
 					.y(function(d) { return y(d.y); })
 					.interpolate('basis');
 
-				scope.init = function() {
-
+				scope.init = function()
+				{
+					// Init data
 					var data = d3.layout.histogram()
-					.frequency(true)
-					.bins(x.ticks(TICKS))
-					(scope.data);
+						.frequency(false)
+						.bins(x.ticks(TICKS))
+						(scope.data);
 
+					// Adjust y axis
 					y.domain([0, d3.max(data, function(d) { return d.y; })]);
+					// y.domain([0, 1]);
 
+					// Delete previous histogram
 					element.empty();
 
+					/* Start drawing */
 					var svg = d3.select(".d3-blockpropagation").append("svg")
 						.attr("width", width + margin.left + margin.right)
 						.attr("height", height + margin.top + margin.bottom)
@@ -134,13 +140,12 @@ angular.module('netStatsApp.directives', []).
 					svg.append("g")
 						.attr("class", "x axis")
 						.attr("transform", "translate(0," + height + ")")
-						// .attr("transform", "translate(0,0)")
 						.call(xAxis);
 
 					svg.append("g")
 						.attr("class", "y axis")
-						.attr("transform", "translate(0, 0)")
-						// .attr("transform", "translate(" + width + ", 0)")
+						// .attr("transform", "translate(0, 0)")
+						.attr("transform", "translate(" + width + ", 0)")
 						.call(yAxis);
 
 
@@ -150,8 +155,8 @@ angular.module('netStatsApp.directives', []).
 						.attr("class", "bar")
 						.attr("x", function(d) { return x(d.x) + 1; })
 						.attr("y", function(d) { return y(d.y); })
-						.attr("rx", 1.5)
-						.attr("ry", 1.5)
+						.attr("rx", 1)
+						.attr("ry", 1)
 						.attr("width", x(data[0].dx + data[0].x) - x(data[0].x) - 1)
 						.attr("height", function(d) { return height - y(d.y); });
 
