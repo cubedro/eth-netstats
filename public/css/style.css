@@ -85,8 +85,8 @@ table td {
 }
 
 .big-info {
-	padding-bottom: 15px;
 	padding-top: 15px;
+	padding-bottom: 15px;
 }
 
 .big-info .icon-full-width i {
@@ -193,6 +193,10 @@ div.small-title-miner {
 	opacity: .8;
 }
 
+.tableHolder {
+	padding-top: 20px;
+	padding-right: 20px;
+}
 table i {
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-font-smoothing: subpixel-antialiased;
@@ -272,7 +276,6 @@ table td.peerPropagationChart {
 	overflow: hidden;
 	max-width: 100%;
 	height: auto;
-	margin: 10px auto;
 }
 
 #mapHolder > svg {
