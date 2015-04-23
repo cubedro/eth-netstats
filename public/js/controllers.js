@@ -24,6 +24,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 	$scope.nodes = [];
 	$scope.map = [];
+	$scope.blockPropagationChart = [];
 
 	$scope.latency = 0;
 
@@ -125,7 +126,6 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 			case "blockPropagationChart":
 				$scope.blockPropagationChart = data;
-				makeBlockPropagationChart();
 
 				break;
 
@@ -161,31 +161,6 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			negBarColor: '#7f7f7f',
 			zeroAxis: false,
 			height: 18,
-			barWidth : 2,
-			barSpacing : 1,
-			tooltipSuffix: ' ms',
-			chartRangeMax: 8000,
-			colorMap: jQuery.range_map({
-				'0:1': '#10a0de',
-				'1:1000': '#7bcc3a',
-				'1001:3000': '#FFD162',
-				'3001:7000': '#ff8a00',
-				'7001:': '#F74B4B'
-			})
-		});
-	}
-
-	function makeBlockPropagationChart()
-	{
-		jQuery('.spark-blockpropagation').sparkline(_.map($scope.blockPropagationChart, function(history) {
-			if(typeof history.propagation === 'undefined')
-				return -1;
-
-			return history.propagation;
-		}), {
-			type: 'bar',
-			negBarColor: '#7f7f7f',
-			zeroAxis: false,
 			barWidth : 2,
 			barSpacing : 1,
 			tooltipSuffix: ' ms',

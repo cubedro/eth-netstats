@@ -2,7 +2,7 @@ extends layout
 
 block content
   div.container-fluid(ng-controller='StatsCtrl')
-    div.page-latency
+    div.page-latency(ng-cloak)
       span.small-title page latency:#[&nbsp;]
       span(class="{{ {active: true, latency: latency} | latencyClass }}") {{latency}} ms
     div.row(ng-cloak)
@@ -67,13 +67,13 @@ block content
 
           div.col-xs-4.stat-holder
             div.big-info.chart
-              span.small-title block propagation
-              span.big-details.spark-blockpropagation
-
-          div.col-xs-4.stat-holder
-            div.big-info.chart
               span.small-title difficulty
               span.big-details.spark-difficulty
+
+          div.col-xs-4.stat-holder.pull-right
+            div.big-info.chart.double-chart
+              span.small-title block propagation
+              histogram.big-details.d3-blockpropagation(data="blockPropagationChart")
 
           div.col-xs-4.stat-holder
             div.big-info.chart
@@ -106,9 +106,9 @@ block content
       table.table.table-striped
         thead
           tr.text-info
-            th
-              i.icon-node(data-toggle="tooltip", data-placement="top", title="Node name", ng-click="orderTable(['-stats.active', 'info.name'], false)")
             th.th-nodename
+              i.icon-node(data-toggle="tooltip", data-placement="top", title="Node name", ng-click="orderTable(['-stats.active', 'info.name'], false)")
+            th.th-nodetype
               i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type", ng-click="orderTable(['-stats.active', 'info.node'], false)")
             th.th-latency
               i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency", ng-click="orderTable(['-stats.active', 'stats.latency'], false)")
