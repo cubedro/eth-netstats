@@ -1,12 +1,14 @@
 var _ = require('lodash');
 
 var MAX_HISTORY = 1008;
-var MAX_PROPAGATION = 36;
+var MAX_PEER_PROPAGATION = 36;
 var MAX_BLOCK_PROPAGATION = 96;
+var MIN_PROPAGATION_RANGE = 1;
+var MAX_PROPAGATION_RANGE = 20000;
+var MAX_BINS = 40;
 
 var History = function History(data)
 {
-	// this._items = new Array(MAX_HISTORY);
 	this._items = [];
 
 	var item = {
@@ -24,8 +26,6 @@ var History = function History(data)
 		},
 		propagTimes: []
 	};
-
-	// _.fill(this._items, item);
 }
 
 History.prototype.add = function(block, id)
@@ -99,18 +99,20 @@ History.prototype.bestBlock = function(obj)
 
 History.prototype.getNodePropagation = function(id)
 {
-	var propagation = new Array(MAX_PROPAGATION);
+	var propagation = new Array(MAX_PEER_PROPAGATION);
 	var bestBlock = this.bestBlock().height;
+
 
 	_.fill(propagation, -1);
 
 	var sorted = _(this._items)
 		.sortByOrder('height', false)
-		.slice(0, MAX_PROPAGATION)
+		.slice(0, MAX_PEER_PROPAGATION)
 		.reverse()
 		.forEach(function(n, key)
 		{
-			var index = MAX_PROPAGATION - 1 - bestBlock + n.height;
+			var index = MAX_PEER_PROPAGATION - 1 - bestBlock + n.height;
+
 
 			if(index > 0)
 			{
@@ -124,27 +126,21 @@ History.prototype.getNodePropagation = function(id)
 
 History.prototype.getBlockPropagation = function()
 {
-	var propagation = new Array(MAX_BLOCK_PROPAGATION);
-	var bestBlock = this.bestBlock().height;
-	var i = 0;
-
-	_.fill(propagation, -1);
+	var propagation = [];
 
 	var sorted = _(this._items)
 		.sortByOrder('height', false)
-		.slice(0, MAX_PROPAGATION)
+		.slice(0, MAX_BLOCK_PROPAGATION)
 		.reverse()
 		.forEach(function(n, key)
 		{
-			if(i < MAX_BLOCK_PROPAGATION)
+			_.forEach(n.propagTimes, function(p, i)
 			{
-				_.forEach(n.propagTimes, function(p, i)
-				{
-					propagation.push({block: n.height, propagation: _.result(p, 'propagation', -1)});
-					propagation.shift();
-					i++;
-				});
-			}
+				var prop = _.result(p, 'propagation', -1);
+
+				if(prop >= 0)
+					propagation.push(prop);
+			});
 		})
 		.value();
 

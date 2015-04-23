@@ -114,7 +114,7 @@ div.small-title-miner {
 	color: #aaa;
 }
 
-.big-info span.big-details {
+.big-info .big-details {
 	display: block;
 	font-weight: 200;
 	font-size: 50px;
@@ -122,7 +122,7 @@ div.small-title-miner {
 	letter-spacing: -4px;
 }
 
-.big-info.chart span.big-details {
+.big-info.chart .big-details {
 	padding-top: 15px;
 }
 
@@ -157,7 +157,7 @@ div.small-title-miner {
 }
 
 .blocks-holder .block-count {
-	font-family: 'Lucida Console', monaco, "Courier New", Courier, monospace;
+	font-family: 'Lucida Console', "Courier New", Courier, monospace;
 	font-weight: bold;
 	font-size: 10px;
 	padding-top: 3px;
@@ -230,6 +230,11 @@ table td i:before {
 }
 
 .th-nodename {
+	width: 300px;
+	text-overflow: ellipsis;
+}
+
+.th-nodetype {
 	width: 200px;
 }
 
@@ -319,4 +324,49 @@ table td i:before {
 
 .hoverinfo .propagationBox {
 	top: 3px;
+}
+
+svg {
+	overflow: visible !important;
+}
+
+svg .bar {
+	fill: #1f77b4;
+	shape-rendering: crispEdges;
+}
+
+svg .bar:hover {
+	opacity: 0.8;
+}
+
+svg .line {
+	fill: none;
+	stroke: #ff0000;
+	stroke-width: 2px;
+	shape-rendering: auto;
+}
+
+svg .bar .a {
+	fill: #aec7e8;
+}
+
+svg .bar text {
+	text-anchor: end;
+	font-size: 12px;
+}
+
+svg .axis path,
+svg .axis line {
+	fill: none;
+	stroke: rgba(255,255,255,0.15);
+	shape-rendering: crispEdges;
+}
+svg .axis text {
+	fill: #777;
+	font-size: 10px;
+	letter-spacing: 0px;
+	font-family: "Source Sans Pro";
+	font-weight: 700;
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-font-smoothing: subpixel-antialiased;
 }
