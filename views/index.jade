@@ -117,6 +117,8 @@ block content
                 th
                   i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining", ng-click="orderTable(['-stats.active', '-stats.mining'], false)")
                 th
+                  i.icon-mining(data-toggle="tooltip", data-placement="top", title="Hashrate", ng-click="orderTable(['-stats.active', '-stats.mining'], false)")
+                th
                   i.icon-group(data-toggle="tooltip", data-placement="top", title="Peers", ng-click="orderTable(['-stats.active', '-stats.peers'], false)")
                 th
                   i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions", ng-click="orderTable(['-stats.active', '-stats.pending'], false)")
@@ -143,6 +145,7 @@ block content
                 td.small(class="{{ node.stats | latencyClass }}") {{node.stats | latencyFilter}}
                 td(class="{{ node.stats.mining | miningClass : node.stats.active }}")
                   i(class="{{ node.stats.mining | miningIconClass }}")
+                td.small(class="{{ node.stats.mining | hashpowerClass }}") {{node.stats.hashrate | hashrateFilter}} kH/s
                 td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
                 td(style="padding-left: 15px;") {{node.stats.pending}}
                 td(class="{{ node.stats | blockClass : bestBlock }}") {{'#'}}{{ node.stats.block.number | number }}

@@ -184,7 +184,7 @@ div.small-title-miner {
 
 .page-latency {
 	position: absolute;
-	top: 400px;
+	top: 395px;
 	left: 15px;
 }
 
@@ -239,7 +239,7 @@ table td.peerPropagationChart {
 }
 
 .th-nodetype {
-	width: 200px;
+	width: 220px;
 }
 
 .th-latency {
