@@ -342,7 +342,7 @@ svg .bar:hover {
 svg .line {
 	fill: none;
 	stroke: #ff0000;
-	stroke-width: 1.2px;
+	stroke-width: 2px;
 	shape-rendering: auto;
 }
 

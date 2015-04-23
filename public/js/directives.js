@@ -111,7 +111,7 @@ angular.module('netStatsApp.directives', []).
 					.tickFormat(d3.format("%"));
 
 				var line = d3.svg.line()
-					.x(function(d) { return x(d.x + d.dx); })
+					.x(function(d) { return x(d.x + d.dx/2); })
 					.y(function(d) { return y(d.y); })
 					.interpolate('basis');
 
