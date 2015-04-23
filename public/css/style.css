@@ -336,35 +336,28 @@ svg {
 }
 
 svg .bars .bar {
-	fill: #10a0de;
-	opacity: 0.8;
+	opacity: 1;
 	shape-rendering: auto;
 }
 
 svg .bars .handle {
-	fill: #10a0de;
 	opacity: 0;
 }
 
 svg .bars .highlight {
-	fill: #fff;
 	opacity: 0;
 }
 
-svg .bars g:hover .bar {
+svg .bars g:hover .highlight {
 	opacity: 1;
 }
 
 svg .line {
 	fill: none;
 	stroke: #ff0000;
-	opacity: 0.8;
-	stroke-width: 2px;
-	shape-rendering: auto;
-}
-
-svg .bar .a {
-	fill: #aec7e8;
+	stroke-width: 1.3px;
+	shape-rendering: geometric-precision;
+	-webkit-svg-shadow: 0 0 7px #fff;
 }
 
 svg .bar text {
@@ -386,4 +379,8 @@ svg .axis text {
 	font-weight: 700;
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-font-smoothing: subpixel-antialiased;
+}
+
+svg .y.axis .tick:first-child text {
+	opacity: 0;
 }
