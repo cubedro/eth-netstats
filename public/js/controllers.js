@@ -236,6 +236,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 				$scope.lastBlock = $scope.bestStats.block.received;
 				$scope.lastBlocksTime = $scope.bestStats.blockTimes;
+				$scope.lastDifficulty = $scope.bestStats.block.difficulty;
 				$scope.difficultyChart = $scope.bestStats.difficulty;
 				$scope.transactionDensity = $scope.bestStats.txDensity;
 				$scope.gasSpending = $scope.bestStats.gasSpending;
@@ -261,8 +262,6 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				jQuery('.spark-transactions').sparkline($scope.transactionDensity.reverse(), {type: 'bar'});
 				jQuery('.spark-gasspending').sparkline($scope.gasSpending.reverse(), {type: 'bar'});
 			}
-
-			$scope.lastDifficulty = $scope.bestStats.block.difficulty;
 
 			$scope.avgBlockTime = _.max($scope.nodes, function(node) {
 				return parseInt(node.stats.block.number);

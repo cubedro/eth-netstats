@@ -21,19 +21,27 @@ angular.module('netStatsApp.directives', []).
 					highlightOnHover: false,
 					popupOnHover: true,
 					popupTemplate: function(geo, data) {
-						return ['<div class="tooltip-arrow"></div><div class="hoverinfo ' + data.fillClass + '"><div class="propagationBox"></div><strong>',
-								data.nodeName,
-								'</strong></div>'].join('');
+						return ['<div class="tooltip-arrow"></div>',
+								'<div class="hoverinfo ' + data.fillClass + '">',
+									'<div class="propagationBox"></div>',
+									'<strong>',
+									data.nodeName,
+									'</strong>',
+								'</div>'].join('');
 					}
 				};
 
 				scope.init = function() {
 					element.empty();
 
+					var width = 628,
+						height = 244;
+
 					scope.map = new Datamap({
 						element: element[0],
 						scope: 'world',
-						responsive: true,
+						width: width,
+						height: 300,
 						fills: {
 							success: '#7BCC3A',
 							info: '#10A0DE',
@@ -52,6 +60,46 @@ angular.module('netStatsApp.directives', []).
 							borderWidth: 0,
 							highlightOnHover: false,
 							popupOnHover: true
+						},
+						done: function(datamap) {
+							var ev;
+
+							var zoomListener = d3.behavior.zoom()
+								.size([width, height])
+								.scaleExtent([1, 2])
+								.on("zoom", redraw)
+								.on("zoomend", animadraw);
+
+							function redraw() {
+								datamap.svg.select(".datamaps-subunits").attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+								datamap.svg.select(".bubbles").selectAll("circle")
+									.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
+									.attr("r", 3/d3.event.scale);
+
+								ev = d3.event;
+							}
+
+							zoomListener(datamap.svg);
+
+							function animadraw() {
+								var x = Math.min(0, Math.max(ev.translate[0], (-1) * width * (ev.scale-1)));
+								var y = Math.min(0, Math.max(ev.translate[1], (-1) * height * (ev.scale-1)));
+
+								datamap.svg.select(".datamaps-subunits")
+									.transition()
+									.delay(150)
+									.duration(750)
+									.attr("transform", "translate(" + x  + "," + y + ")scale(" + ev.scale + ")");
+
+								datamap.svg.select(".bubbles").selectAll("circle")
+									.transition()
+									.delay(150)
+									.duration(750)
+									.attr("transform", "translate(" + x  + "," + y + ")scale(" + ev.scale + ")")
+									.attr("r", 3/ev.scale);
+
+								zoomListener.translate([x,y]);
+							}
 						}
 					});
 
