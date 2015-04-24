@@ -220,10 +220,6 @@ span.small-title span.small {
 	float: right;
 }
 
-.tableHolder {
-	padding-top: 20px;
-	padding-right: 20px;
-}
 table i {
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-osx-font-smoothing: auto;
