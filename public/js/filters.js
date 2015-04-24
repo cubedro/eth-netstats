@@ -42,22 +42,22 @@ angular.module('netStatsApp.filters', [])
 		return (! mining ? 'icon-cancel' : 'icon-check');
 	};
 })
-.filter('hashpowerClass', function() {
-	return function(mining) {
-		if(! mining)
+.filter('hashrateClass', function() {
+	return function(mining, active) {
+		if(! mining || ! active)
 			return 'text-gray';
 
 		return 'text-success';
 	};
 })
-.filter('hashrateFilter', function() {
+.filter('hashrateFilter', ['$filter', function(filter) {
 	return function(hashrate) {
 		if(typeof hashrate === 'undefined' || !hashrate)
 			return 0;
 
-		return hashrate/1000;
+		return filter('number')((hashrate/1000).toFixed(2));
 	}
-})
+}])
 .filter('nodeVersion', function($sce) {
 	return function(version) {
 		if(typeof version !== 'undefined')
@@ -100,6 +100,32 @@ angular.module('netStatsApp.filters', [])
 		return (best - current.block.number <= 1 ? 'text-success' : (best - current.block.number > 1 && best - current.block.number < 4 ? 'text-warning' : 'text-danger'));
 	};
 })
+.filter('gasPriceFilter', ['$filter', function(filter) {
+	var numberFilter = filter('number');
+	return function(price) {
+		console.log("--------------------");
+		console.log(price.length);
+		if(price.length < 4)
+			return price + " wei";
+
+		if(price.length < 7)
+			return (price/1000) + " kwei";
+
+		if(price.length < 10)
+			return (price/1000000) + " mwei";
+
+		if(price.length < 13)
+			return (price/1000000000) + " gwei";
+
+		if(price.length < 16)
+			return (price/1000000000000) + " szabo";
+
+		if(price.length < 19)
+			return (price.substr(0, price.length - 15)) + " finney";
+
+		return numberFilter(price.substr(0, price.length - 18)) + " ether";
+	}
+}])
 .filter('gasFilter', function() {
 	return function(gas) {
 		return (typeof gas !== 'undefined' ? parseInt(gas) : '?');

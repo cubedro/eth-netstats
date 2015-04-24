@@ -5,7 +5,7 @@
 		$(this).tooltip('hide');
 	});
 
-	$.fn.sparkline.defaults.bar.height = 50;
+	$.fn.sparkline.defaults.bar.height = 63;
 	$.fn.sparkline.defaults.bar.barWidth = 6;
 	$.fn.sparkline.defaults.bar.barSpacing = 2;
 	$.fn.sparkline.defaults.bar.tooltipClassname = 'jqstooltip';

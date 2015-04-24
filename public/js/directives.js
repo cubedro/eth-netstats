@@ -60,19 +60,9 @@ angular.module('netStatsApp.directives', []).
 
 				scope.init();
 
-				window.onresize = function() {
-					scope.$apply();
-				};
-
 				scope.$watch('data', function() {
 					scope.map.bubbles(scope.data, bubbleConfig);
 				}, true);
-
-				scope.$watch(function() {
-					return angular.element(window)[0].innerWidth;
-				}, function() {
-					scope.init();
-				});
 			}
 		};
 }]).
@@ -85,7 +75,7 @@ angular.module('netStatsApp.directives', []).
 			link: function(scope, element, attrs) {
 				var margin = {top: 0, right: 0, bottom: 0, left: 0};
 				var width = 280 - margin.left - margin.right,
-					height = 50 - margin.top - margin.bottom;
+					height = 63 - margin.top - margin.bottom;
 
 				var TICKS = 40;
 
@@ -149,7 +139,9 @@ angular.module('netStatsApp.directives', []).
 					svg.append("g")
 						.attr("class", "x axis")
 						.attr("transform", "translate(0," + height + ")")
-						.call(xAxis);
+						.call(xAxis)
+						.selectAll("text")
+						  .attr("y", 6);
 
 					svg.append("g")
 						.attr("class", "y axis")

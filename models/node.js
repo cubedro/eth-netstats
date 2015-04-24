@@ -23,7 +23,8 @@ var Node = function Node(data)
 			arrival: 0,
 			propagation: 0,
 			received: 0,
-			transactions: []
+			transactions: [],
+			uncles: []
 		},
 		blocktimeAvg: 0,
 		blockTimes: [],
