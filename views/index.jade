@@ -2,9 +2,6 @@ extends layout
 
 block content
   div.container-fluid(ng-controller='StatsCtrl')
-    div.page-latency(ng-cloak)
-      span.small-title page latency:#[&nbsp;]
-      span(class="{{ {active: true, latency: latency} | latencyClass }}") {{latency}} ms
     div.row(ng-cloak)
       div.col-xs-2.stat-holder
         div.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
@@ -45,7 +42,7 @@ block content
           div.pull-left
             span.small-title uncles #[&nbsp;]
               span.small (current / last 50)
-            span.big-details {{ bestBlockObject.uncles.length }}/{{ uncleCount }}
+            span.big-details {{ bestStats.block.uncles.length }}/{{ uncleCount }}
           div.clearfix
       div.col-xs-2.stat-holder
         div.big-info.blocktime(class="{{ lastBlock | timeClass : true }}")
@@ -63,46 +60,55 @@ block content
             span.small-title avg block time
             span.big-details {{ avgBlockTime | avgTimeFilter }}
           div.clearfix
-
       div.clearfix
 
+
     div.row(ng-cloak)
-      div.col-xs-6.stats-boxes(style="padding-top: 30px;")
+      div.col-xs-8.stats-boxes(style="padding-top: 0px;")
+        div.row.second-row(ng-cloak)
+          //- div.col-xs-3.stat-holder.box
+          //-   div.active-nodes(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
+          //-     i.icon-node
+          //-     span.small-title active nodes
+          //-     span.small-value {{nodesActive}}/{{nodesTotal}}
+          div.col-xs-3.stat-holder.box
+            div.difficulty.text-info
+              i.icon-difficulty
+              span.small-title difficulty
+              span.small-value {{ lastDifficulty | number }}
+          div.col-xs-3.stat-holder.box
+            div.gasprice.text-info
+              i.icon-difficulty
+              span.small-title gas price
+              span.small-value {{ bestStats.gasPrice.toString() | gasPriceFilter }}
+          div.col-xs-3.stat-holder.box
+            div.page-latency(class="{{ {active: true, latency: latency} | latencyClass }}")
+              i.icon-gas
+              span.small-title page latency
+              span.small-value {{latency}} ms
+          div.col-xs-3.stat-holder.box
+            div.uptime(class="{{ upTimeTotal | upTimeClass : true }}")
+              i.icon-bulb
+              span.small-title uptime
+              span.small-value {{ upTimeTotal | upTimeFilter }}
+
         div.row
-          div.col-xs-4.stat-holder
+          div.col-xs-3.stat-holder
             div.big-info.chart
               span.small-title block time
               span.big-details.spark-blocktimes
 
-          div.col-xs-4.stat-holder
+          div.col-xs-3.stat-holder
             div.big-info.chart
               span.small-title difficulty
               span.big-details.spark-difficulty
 
-          div.col-xs-4.stat-holder.pull-right
+          div.col-xs-3.stat-holder.xpull-right
             div.big-info.chart.xdouble-chart
               span.small-title block propagation
               histogram.big-details.d3-blockpropagation(data="blockPropagationChart")
 
-          div.col-xs-4.stat-holder
-            div.big-info.chart
-              span.small-title uncle count #[&nbsp;]
-                span.small (25 blocks per bar)
-              span.big-details.spark-uncles
-
-          div.col-xs-4.stat-holder
-            div.big-info.chart
-              span.small-title transactions
-              span.big-details.spark-transactions
-
-          div.col-xs-4.stat-holder
-            div.big-info.chart
-              span.small-title gas spending
-              span.big-details.spark-gasspending
-
-      div.col-xs-2.stats-boxes(style="padding-top: 30px;")
-        div.row
-          div.col-xs-12.stat-holder
+          div.col-xs-3.stat-holder.pull-right
             div.big-info.chart.double-chart
               span.small-title last blocks miners
               div.blocks-holder(ng-repeat='miner in miners', data-toggle="tooltip", data-placement="right", title="{{miner.blocks}}")
@@ -111,9 +117,27 @@ block content
                 div.block(ng-repeat="i in getNumber(miner.blocks) track by $index", class="{{miner.blocks | minerBlocksClass}}")
                 div.clearfix
 
+          div.col-xs-3.stat-holder
+            div.big-info.chart
+              span.small-title uncle count #[&nbsp;]
+                span.small (25 blocks per bar)
+              span.big-details.spark-uncles
+
+          div.col-xs-3.stat-holder
+            div.big-info.chart
+              span.small-title transactions
+              span.big-details.spark-transactions
+
+          div.col-xs-3.stat-holder
+            div.big-info.chart
+              span.small-title gas spending
+              span.big-details.spark-gasspending
+
+
+
       div.col-xs-4
-        div.col-xs-12
-          nodemap#mapHolder(data="map")
+        //- div.col-xs-12
+        nodemap#mapHolder(data="map")
 
       div.clearfix
 

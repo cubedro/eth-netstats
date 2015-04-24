@@ -9,12 +9,6 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 	$scope.nodesTotal = 0;
 	$scope.nodesActive = 0;
-	$scope.bestBlockObject = {
-		number: 0,
-		hash: "0x?",
-		transactions: [],
-		uncles: []
-	}
 	$scope.bestBlock = 0;
 	$scope.lastBlock = 0;
 	$scope.lastDifficulty = 0;
@@ -219,12 +213,11 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 			var bestBlock = _.max($scope.nodes, function(node) {
 				return parseInt(node.stats.block.number);
-			}).stats.block;
+			}).stats.block.number;
 
-			if(bestBlock.number > $scope.bestBlock)
+			if(bestBlock > $scope.bestBlock)
 			{
-				$scope.bestBlockObject = bestBlock;
-				$scope.bestBlock = bestBlock.number;
+				$scope.bestBlock = bestBlock;
 				$scope.bestStats = _.max($scope.nodes, function(node) {
 					return parseInt(node.stats.block.number);
 				}).stats;
@@ -245,7 +238,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				jQuery('.spark-gasspending').sparkline($scope.gasSpending.reverse(), {type: 'bar'});
 			}
 
-			$scope.lastDifficulty = $scope.bestBlockObject.difficulty;
+			$scope.lastDifficulty = $scope.bestStats.block.difficulty;
 
 			$scope.avgBlockTime = _.max($scope.nodes, function(node) {
 				return parseInt(node.stats.block.number);

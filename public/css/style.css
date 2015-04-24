@@ -7,14 +7,14 @@ body {
 	min-width: 1900px;
 	font-smooth: auto;
 	-webkit-font-smoothing: antialiased;
-	-moz-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 table td {
 	font-size: 14px;
 	white-space: nowrap !important;
 	-webkit-font-smoothing: subpixel-antialiased;
-	-moz-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: auto;
 }
 
 .propagationBox {
@@ -116,10 +116,12 @@ div.small-title-miner {
 
 span.small-title span.small {
 	font-size: 11px;
-	letter-spacing: -.5px;
+	font-weight: 600;
+	line-height: 16px;
+	letter-spacing: 0px;
 	color: #666;
 	-webkit-font-smoothing: subpixel-antialiased;
-	-moz-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: auto;
 }
 
 .big-info .big-details {
@@ -156,7 +158,7 @@ span.small-title span.small {
 
 .blocks-holder {
 	-webkit-font-smoothing: subpixel-antialiased;
-	-moz-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: auto;
 }
 
 .blocks-holder div.small-title-miner {
@@ -194,15 +196,28 @@ span.small-title span.small {
 	margin-right: 0px;
 }
 
-.page-latency {
-	position: absolute;
-	top: 395px;
-	left: 15px;
+.second-row .box {
+	height: 40px;
+	line-height: 24px !important;
+	padding: 5px 15px;
 }
 
-.page-latency .small-title {
-	letter-spacing: 0px;
-	opacity: .8;
+.second-row .box i {
+	position: relative;
+	top: 2px;
+	left: -3px;
+	font-size: 24px;
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: auto;
+	margin-right: 7px;
+	float: left;
+}
+
+.second-row .box .small-value {
+	font-weight: 300;
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: auto;
+	float: right;
 }
 
 .tableHolder {
@@ -211,7 +226,7 @@ span.small-title span.small {
 }
 table i {
 	-webkit-font-smoothing: subpixel-antialiased;
-	-moz-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: auto;
 }
 
 table th,
@@ -402,7 +417,7 @@ svg .axis text {
 	font-family: "Source Sans Pro";
 	font-weight: 700;
 	-webkit-font-smoothing: subpixel-antialiased;
-	-moz-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: auto;
 }
 
 svg .y.axis .tick:first-child text {

@@ -60,19 +60,9 @@ angular.module('netStatsApp.directives', []).
 
 				scope.init();
 
-				window.onresize = function() {
-					scope.$apply();
-				};
-
 				scope.$watch('data', function() {
 					scope.map.bubbles(scope.data, bubbleConfig);
 				}, true);
-
-				scope.$watch(function() {
-					return angular.element(window)[0].innerWidth;
-				}, function() {
-					scope.init();
-				});
 			}
 		};
 }]).
