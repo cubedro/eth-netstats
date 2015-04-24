@@ -188,7 +188,9 @@ angular.module('netStatsApp.directives', []).
 				}
 
 				scope.$watch('data', function() {
-					scope.init();
+					if(scope.data.length > 0) {
+						scope.init();
+					}
 				}, true);
 			}
 		};
