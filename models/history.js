@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var d3 = require('d3');
 
 var MAX_HISTORY = 1008;
 var MAX_PEER_PROPAGATION = 36;
@@ -128,23 +129,34 @@ History.prototype.getBlockPropagation = function()
 {
 	var propagation = [];
 
-	var sorted = _(this._items)
-		.sortByOrder('height', false)
-		.slice(0, MAX_BLOCK_PROPAGATION)
-		.reverse()
-		.forEach(function(n, key)
+	_.forEach(this._items, function(n, key)
+	{
+		_.forEach(n.propagTimes, function(p, i)
 		{
-			_.forEach(n.propagTimes, function(p, i)
-			{
-				var prop = _.result(p, 'propagation', -1);
+			var prop = _.result(p, 'propagation', -1);
 
-				if(prop >= 0)
-					propagation.push(prop);
-			});
-		})
-		.value();
+			if(prop >= 0)
+				propagation.push(prop);
+		});
+	});
 
-	return propagation;
+	var x = d3.scale.linear()
+		.domain([0, 20000])
+		.interpolate(d3.interpolateRound);
+
+	var data = d3.layout.histogram()
+		.frequency(false)
+		.bins(x.ticks(MAX_BINS))
+		(propagation);
+
+	var freqCum = 0;
+	var histo = data.map(function(val) {
+		freqCum += val.length;
+		var cumPercent = (freqCum / Math.max(1, propagation.length));
+		return {x: val.x, dx: val.dx, y: val.y, frequency: val.length, cumulative: freqCum, cumpercent: cumPercent};
+	});
+
+	return histo;
 }
 
 History.prototype.history = function()

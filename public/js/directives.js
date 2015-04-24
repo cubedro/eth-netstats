@@ -121,18 +121,15 @@ angular.module('netStatsApp.directives', []).
 
 				var tip = d3.tip()
 					.attr('class', 'd3-tip')
-					.offset([-10, 0])
+					.offset([10, 0])
+					.direction('s')
 					.html(function(d) {
-						return '<div class="tooltip-arrow"></div><div class="tooltip-inner"><b>' + (d.x/1000) + 's - ' + ((d.x + d.dx)/1000) + 's</b>: ' + Math.round(d.y * 100) + "%" + "</div>";
+						return '<div class="tooltip-arrow"></div><div class="tooltip-inner"><b>' + (d.x/1000) + 's - ' + ((d.x + d.dx)/1000) + 's</b><div class="small">Percent: <b>' + Math.round(d.y * 100) + '%</b>' + '<br>Frequency: <b>' + d.frequency + '</b><br>Cumulative: <b>' + Math.floor(d.cumpercent*100) + '%</b></div></div>';
 					})
 
 				scope.init = function()
 				{
-					// Init data
-					var data = d3.layout.histogram()
-						.frequency(false)
-						.bins(x.ticks(TICKS))
-						(scope.data);
+					var data = scope.data;
 
 					// Adjust y axis
 					y.domain([0, d3.max(data, function(d) { return d.y; })]);
@@ -197,8 +194,6 @@ angular.module('netStatsApp.directives', []).
 						.attr("class", "line")
 						.attr("d", line(data));
 				}
-
-				scope.init();
 
 				scope.$watch('data', function() {
 					scope.init();
