@@ -42,6 +42,22 @@ angular.module('netStatsApp.filters', [])
 		return (! mining ? 'icon-cancel' : 'icon-check');
 	};
 })
+.filter('hashpowerClass', function() {
+	return function(mining) {
+		if(! mining)
+			return 'text-gray';
+
+		return 'text-success';
+	};
+})
+.filter('hashrateFilter', function() {
+	return function(hashrate) {
+		if(typeof hashrate === 'undefined' || !hashrate)
+			return 0;
+
+		return hashrate/1000;
+	}
+})
 .filter('nodeVersion', function($sce) {
 	return function(version) {
 		if(typeof version !== 'undefined')

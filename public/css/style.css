@@ -184,7 +184,7 @@ div.small-title-miner {
 
 .page-latency {
 	position: absolute;
-	top: 400px;
+	top: 395px;
 	left: 15px;
 }
 
@@ -239,7 +239,7 @@ table td.peerPropagationChart {
 }
 
 .th-nodetype {
-	width: 200px;
+	width: 220px;
 }
 
 .th-latency {
@@ -302,8 +302,7 @@ table td.peerPropagationChart {
 	padding: 5px 0;
 }
 
-.jqsfield .tooltip-arrow,
-.d3-tip .tooltip-arrow {
+.jqsfield .tooltip-arrow {
 	position: absolute;
 	bottom: 0;
 	left: 50%;
@@ -312,13 +311,19 @@ table td.peerPropagationChart {
 	border-top-color: #fff;
 }
 
-.datamaps-hoverover .tooltip-arrow {
+.datamaps-hoverover .tooltip-arrow,
+.d3-tip .tooltip-arrow {
 	position: absolute;
 	top: -5px;
 	left: 0px;
 	margin-left: -5px;
 	border-width: 0px 5px 5px 5px;
 	border-bottom-color: #fff;
+}
+
+.d3-tip .tooltip-arrow {
+	top: 0px;
+	left: 50%;
 }
 
 .hoverinfo {
