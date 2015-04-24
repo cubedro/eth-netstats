@@ -142,6 +142,8 @@ block content
                 th.th-blockhash #[&nbsp;]
                 th
                   i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions", ng-click="orderTable(['-stats.active', '-stats.block.transactions.length'], false)")
+                th
+                  i.icon-uncle(data-toggle="tooltip", data-placement="top", title="Uncles", ng-click="orderTable(['-stats.active', '-stats.block.uncles.length'], false)")
                 th.th-blocktime
                   i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time", ng-click="orderTable(['-stats.active', '-stats.block.received'], false)")
                 th.th-peerPropagationTime
@@ -168,6 +170,7 @@ block content
                 td(class="{{ node.stats | blockClass : bestBlock }}")
                   span.small {{node.stats.block.hash | hashFilter}}
                 td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
+                td(style="padding-left: 14px;") {{node.stats.block.uncles.length || 0}}
                 td(class="{{ node.stats.block.arrived | timeClass : node.stats.active }}") {{node.stats.block.arrived | blockTimeFilter }}
                 td(class="{{ node.stats | propagationTimeClass : bestBlock }}")
                   div.propagationBox
