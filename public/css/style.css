@@ -291,11 +291,15 @@ table td.peerPropagationChart {
 	font-size: 12px;
 }
 
+.map-holder {
+	padding: 0;
+}
+
 #mapHolder {
 	position: relative;
 	display: block;
 	width: 100%;
-	height: 284px;
+	height: 282px;
 	overflow: hidden;
 }
 
@@ -389,6 +393,8 @@ svg .line {
 	fill: none;
 	stroke: #ff0000;
 	stroke-width: 1.3px;
+	stroke-linejoin: round;
+	stroke-linecap: round;
 	shape-rendering: geometric-precision;
 	-webkit-svg-shadow: 0 0 7px #fff;
 }
