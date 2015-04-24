@@ -292,13 +292,11 @@ table td.peerPropagationChart {
 }
 
 #mapHolder {
-	display: block;
 	position: relative;
-	padding-bottom: 56.25%;
-	height: 0;
+	display: block;
+	width: 100%;
+	height: 284px;
 	overflow: hidden;
-	max-width: 100%;
-	height: auto;
 }
 
 #mapHolder > svg {
