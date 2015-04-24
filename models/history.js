@@ -2,10 +2,12 @@ var _ = require('lodash');
 var d3 = require('d3');
 
 var MAX_HISTORY = 1000;
+
 var MAX_PEER_PROPAGATION = 36;
 var MIN_PROPAGATION_RANGE = 0;
 var MAX_PROPAGATION_RANGE = 20000;
-var MAX_UNCLE_BINS = 36;
+
+var MAX_UNCLES_PER_BIN = 25;
 var MAX_BINS = 40;
 
 var History = function History(data)
@@ -170,14 +172,14 @@ History.prototype.getUncleCount = function(id)
 
 	console.log(uncles);
 
-	var uncleBins = _.fill(Array(MAX_UNCLE_BINS), 0);
+	var uncleBins = _.fill(Array(MAX_BINS), 0);
 
 	var sumMapper = function(array, key) {
 		uncleBins[key] = _.sum(array);
 		return _.sum(array);
 	};
 
-	_.map(_.chunk(uncles, MAX_BINS), sumMapper);
+	_.map(_.chunk(uncles, MAX_UNCLES_PER_BIN), sumMapper);
 
 	return uncleBins;
 }
