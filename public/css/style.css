@@ -127,8 +127,12 @@ span.small-title span.small {
 	letter-spacing: -4px;
 }
 
+.big-info.chart {
+	padding-top: 12px;
+}
+
 .big-info.chart .big-details {
-	padding-top: 15px;
+	padding-top: 8px;
 }
 
 .big-info.chart {
@@ -143,7 +147,7 @@ span.small-title span.small {
 
 .blocks-holder {
 	width: 288px;
-	padding-top: 5px;
+	padding-top: 6px;
 	margin-left: -2px;
 }
 
