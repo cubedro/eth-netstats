@@ -135,7 +135,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				$scope.uncleCount = data;
 				$scope.unclesInLast = data[0];
 
-				jQuery('.spark-uncles').sparkline($scope.uncleCount.reverse(), {type: 'bar'});
+				jQuery('.spark-uncles').sparkline($scope.uncleCount.reverse(), {type: 'bar', barSpacing: 1});
 
 				break;
 

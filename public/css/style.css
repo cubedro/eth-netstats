@@ -114,6 +114,11 @@ div.small-title-miner {
 	color: #aaa;
 }
 
+span.small-title span.small {
+	letter-spacing: 0px;
+	color: #666;
+}
+
 .big-info .big-details {
 	display: block;
 	font-weight: 200;
