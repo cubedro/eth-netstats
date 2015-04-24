@@ -99,6 +99,8 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				$scope.$apply();
 
 				_.forEach($scope.nodes, function(node, index) {
+					if(typeof node.stats.hashrate === 'undefined')
+						$scope.nodes[index].stats.hashrate = 0;
 					makePeerPropagationChart($scope.nodes[index]);
 				});
 
@@ -116,6 +118,9 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "update":
+				if(typeof data.stats.hashrate === 'undefined')
+					data.stats.hashrate = 0;
+
 				var index = findIndex({id: data.id});
 				$scope.nodes[index].stats = data.stats;
 				$scope.nodes[index].history = data.history;
@@ -142,7 +147,9 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "inactive":
-				$scope.nodes[findIndex({id: data.id})].stats = data.stats;
+				if(typeof data.stats !== 'undefined')
+					$scope.nodes[findIndex({id: data.id})].stats = data.stats;
+
 				toastr['error']("Node "+ $scope.nodes[findIndex({id: data.id})].info.name +" went away!", "Node connection was lost!");
 
 				break;
@@ -192,6 +199,9 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 		var index = findIndex({id: data.id});
 		if(index < 0)
 		{
+			if(typeof data.stats !== 'undefined' && typeof data.stats.hashrate === 'undefined')
+				data.stats.hashrate = 0;
+
 			$scope.nodes.push(data);
 
 			return true;
@@ -239,21 +249,11 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 						if(value.name !== false)
 							return;
 
-						console.error(key, value);
-
 						var name = _.result(_.find(_.pluck($scope.nodes, 'info'), 'coinbase', value.miner), 'name');
+
 						if(typeof name !== 'undefined')
 							$scope.miners[key].name = name;
-
-						console.warn("Name: ", name);
 					});
-
-					var addresses = _.pluck(_.filter($scope.miners, 'name', false), 'miner');
-					console.info('Addresses', addresses);
-
-					var coinbases = _.pluck($scope.nodes, 'info');
-					console.info('Coinbases', coinbases);
-					console.info('Nodes', $scope.nodes);
 				}
 
 				jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime.reverse(), {type: 'bar', tooltipSuffix: ' s'});
