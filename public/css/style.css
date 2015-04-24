@@ -115,8 +115,11 @@ div.small-title-miner {
 }
 
 span.small-title span.small {
-	letter-spacing: 0px;
+	font-size: 11px;
+	letter-spacing: -.5px;
 	color: #666;
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-font-smoothing: subpixel-antialiased;
 }
 
 .big-info .big-details {

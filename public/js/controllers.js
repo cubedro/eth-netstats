@@ -9,6 +9,12 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 	$scope.nodesTotal = 0;
 	$scope.nodesActive = 0;
+	$scope.bestBlockObject = {
+		number: 0,
+		hash: "0x?",
+		transactions: [],
+		uncles: []
+	}
 	$scope.bestBlock = 0;
 	$scope.lastBlock = 0;
 	$scope.lastDifficulty = 0;
@@ -18,7 +24,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.bestStats = {};
 
 	$scope.lastBlocksTime = [];
-	$scope.difficultyChange = [];
+	$scope.difficultyChart = [];
 	$scope.transactionDensity = [];
 	$scope.gasSpending = [];
 	$scope.miners = [];
@@ -213,18 +219,19 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 			var bestBlock = _.max($scope.nodes, function(node) {
 				return parseInt(node.stats.block.number);
-			}).stats.block.number;
+			}).stats.block;
 
-			if(bestBlock > $scope.bestBlock)
+			if(bestBlock.number > $scope.bestBlock)
 			{
-				$scope.bestBlock = bestBlock;
+				$scope.bestBlockObject = bestBlock;
+				$scope.bestBlock = bestBlock.number;
 				$scope.bestStats = _.max($scope.nodes, function(node) {
 					return parseInt(node.stats.block.number);
 				}).stats;
 
 				$scope.lastBlock = $scope.bestStats.block.received;
 				$scope.lastBlocksTime = $scope.bestStats.blockTimes;
-				$scope.difficultyChange = $scope.bestStats.difficulty;
+				$scope.difficultyChart = $scope.bestStats.difficulty;
 				$scope.transactionDensity = $scope.bestStats.txDensity;
 				$scope.gasSpending = $scope.bestStats.gasSpending;
 
@@ -233,14 +240,12 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				}
 
 				jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime.reverse(), {type: 'bar', tooltipSuffix: ' s'});
-				jQuery('.spark-difficulty').sparkline($scope.difficultyChange.reverse(), {type: 'bar'});
+				jQuery('.spark-difficulty').sparkline($scope.difficultyChart.reverse(), {type: 'bar'});
 				jQuery('.spark-transactions').sparkline($scope.transactionDensity.reverse(), {type: 'bar'});
 				jQuery('.spark-gasspending').sparkline($scope.gasSpending.reverse(), {type: 'bar'});
 			}
 
-			$scope.lastDifficulty = _.max($scope.nodes, function(node) {
-				return parseInt(node.stats.block.number);
-			}).stats.block.difficulty;
+			$scope.lastDifficulty = $scope.bestBlockObject.difficulty;
 
 			$scope.avgBlockTime = _.max($scope.nodes, function(node) {
 				return parseInt(node.stats.block.number);

@@ -15,13 +15,13 @@ block content
             span.big-details {{nodesActive}}/{{nodesTotal}}
           div.clearfix
       div.col-xs-2.stat-holder
-        div.big-info.uncleCount(class="{{ uncleCount | upTimeClass : true }}")
+        div.big-info.uncleCount.text-info
           div.pull-left.icon-full-width
             i.icon-uncle
           div.pull-left
             span.small-title uncles #[&nbsp;]
-              span.small (last 50 blocks)
-            span.big-details {{ uncleCount }}
+              span.small (current / last 50)
+            span.big-details {{ bestBlockObject.uncles.length + "/" + uncleCount }}
           div.clearfix
       //- div.col-xs-2.stat-holder
       //-   div.big-info.uptime(class="{{ upTimeTotal | upTimeClass : true }}")
