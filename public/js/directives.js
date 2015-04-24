@@ -85,7 +85,7 @@ angular.module('netStatsApp.directives', []).
 			link: function(scope, element, attrs) {
 				var margin = {top: 0, right: 0, bottom: 0, left: 0};
 				var width = 280 - margin.left - margin.right,
-					height = 173 - margin.top - margin.bottom;
+					height = 50 - margin.top - margin.bottom;
 
 				var TICKS = 40;
 
@@ -111,7 +111,7 @@ angular.module('netStatsApp.directives', []).
 				var yAxis = d3.svg.axis()
 					.scale(y)
 					.orient("left")
-					.ticks(4)
+					.ticks(3)
 					.tickFormat(d3.format("%"));
 
 				var line = d3.svg.line()
@@ -124,7 +124,7 @@ angular.module('netStatsApp.directives', []).
 					.offset([10, 0])
 					.direction('s')
 					.html(function(d) {
-						return '<div class="tooltip-arrow"></div><div class="tooltip-inner"><b>' + (d.x/1000) + 's - ' + ((d.x + d.dx)/1000) + 's</b><div class="small">Percent: <b>' + Math.round(d.y * 100) + '%</b>' + '<br>Frequency: <b>' + d.frequency + '</b><br>Cumulative: <b>' + Math.floor(d.cumpercent*100) + '%</b></div></div>';
+						return '<div class="tooltip-arrow"></div><div class="tooltip-inner"><b>' + (d.x/1000) + 's - ' + ((d.x + d.dx)/1000) + 's</b><div class="small">Percent: <b>' + Math.round(d.y * 100) + '%</b>' + '<br>Frequency: <b>' + d.frequency + '</b><br>Cumulative: <b>' + Math.round(d.cumpercent*100) + '%</b></div></div>';
 					})
 
 				scope.init = function()

@@ -103,4 +103,9 @@ Collection.prototype.blockPropagationChart = function()
 	return this._history.getBlockPropagation();
 }
 
+Collection.prototype.getUncleCount = function()
+{
+	return this._history.getUncleCount();
+}
+
 module.exports = Collection;

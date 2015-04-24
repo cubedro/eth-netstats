@@ -1,11 +1,11 @@
 var _ = require('lodash');
 var d3 = require('d3');
 
-var MAX_HISTORY = 1008;
+var MAX_HISTORY = 1000;
 var MAX_PEER_PROPAGATION = 36;
-var MAX_BLOCK_PROPAGATION = 96;
-var MIN_PROPAGATION_RANGE = 1;
+var MIN_PROPAGATION_RANGE = 0;
 var MAX_PROPAGATION_RANGE = 20000;
+var MAX_UNCLE_BINS = 36;
 var MAX_BINS = 40;
 
 var History = function History(data)
@@ -114,7 +114,6 @@ History.prototype.getNodePropagation = function(id)
 		{
 			var index = MAX_PEER_PROPAGATION - 1 - bestBlock + n.height;
 
-
 			if(index > 0)
 			{
 				propagation[index] = _.result(_.find(n.propagTimes, 'node', id), 'propagation', -1);
@@ -141,7 +140,7 @@ History.prototype.getBlockPropagation = function()
 	});
 
 	var x = d3.scale.linear()
-		.domain([0, 20000])
+		.domain([MIN_PROPAGATION_RANGE, MAX_PROPAGATION_RANGE])
 		.interpolate(d3.interpolateRound);
 
 	var data = d3.layout.histogram()
@@ -150,13 +149,37 @@ History.prototype.getBlockPropagation = function()
 		(propagation);
 
 	var freqCum = 0;
-	var histo = data.map(function(val) {
+	var histogram = data.map(function(val) {
 		freqCum += val.length;
 		var cumPercent = (freqCum / Math.max(1, propagation.length));
 		return {x: val.x, dx: val.dx, y: val.y, frequency: val.length, cumulative: freqCum, cumpercent: cumPercent};
 	});
 
-	return histo;
+	return histogram;
+}
+
+History.prototype.getUncleCount = function(id)
+{
+	var uncles = _(this._items)
+		.sortByOrder('height', false)
+		.map(function(item)
+		{
+			return item.block.uncles.length;
+		})
+		.value();
+
+	console.log(uncles);
+
+	var uncleBins = _.fill(Array(MAX_UNCLE_BINS), 0);
+
+	var sumMapper = function(array, key) {
+		uncleBins[key] = _.sum(array);
+		return _.sum(array);
+	};
+
+	_.map(_.chunk(uncles, MAX_BINS), sumMapper);
+
+	return uncleBins;
 }
 
 History.prototype.history = function()

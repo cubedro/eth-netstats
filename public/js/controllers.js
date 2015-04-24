@@ -14,6 +14,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.lastDifficulty = 0;
 	$scope.upTimeTotal = 0;
 	$scope.avgBlockTime = 0;
+	$scope.unclesInLast = 0;
 	$scope.bestStats = {};
 
 	$scope.lastBlocksTime = [];
@@ -25,6 +26,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.nodes = [];
 	$scope.map = [];
 	$scope.blockPropagationChart = [];
+	$scope.uncleCount = [];
 
 	$scope.latency = 0;
 
@@ -126,6 +128,14 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 			case "blockPropagationChart":
 				$scope.blockPropagationChart = data;
+
+				break;
+
+			case "uncleCount":
+				$scope.uncleCount = data;
+				$scope.unclesInLast = data[0];
+
+				jQuery('.spark-uncles').sparkline($scope.uncleCount.reverse(), {type: 'bar'});
 
 				break;
 
