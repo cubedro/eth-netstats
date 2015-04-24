@@ -142,7 +142,8 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "inactive":
-				$scope.nodes[findIndex({id: data.id})].stats = data.stats;
+				if(typeof data.stats !== 'undefined')
+					$scope.nodes[findIndex({id: data.id})].stats = data.stats;
 				toastr['error']("Node "+ $scope.nodes[findIndex({id: data.id})].info.name +" went away!", "Node connection was lost!");
 
 				break;
