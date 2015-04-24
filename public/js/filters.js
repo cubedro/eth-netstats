@@ -42,22 +42,22 @@ angular.module('netStatsApp.filters', [])
 		return (! mining ? 'icon-cancel' : 'icon-check');
 	};
 })
-.filter('hashpowerClass', function() {
-	return function(mining) {
-		if(! mining)
+.filter('hashrateClass', function() {
+	return function(mining, active) {
+		if(! mining || ! active)
 			return 'text-gray';
 
 		return 'text-success';
 	};
 })
-.filter('hashrateFilter', function() {
+.filter('hashrateFilter', ['$filter', function(filter) {
 	return function(hashrate) {
 		if(typeof hashrate === 'undefined' || !hashrate)
 			return 0;
 
-		return hashrate/1000;
+		return filter('number')((hashrate/1000).toFixed(2));
 	}
-})
+}])
 .filter('nodeVersion', function($sce) {
 	return function(version) {
 		if(typeof version !== 'undefined')
@@ -101,7 +101,7 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('gasPriceFilter', ['$filter', function(filter) {
-	var numberFilter = filter('number')
+	var numberFilter = filter('number');
 	return function(price) {
 		console.log("--------------------");
 		console.log(price.length);

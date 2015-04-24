@@ -184,7 +184,7 @@ block content
               span.small {{node.stats | latencyFilter}}
             td(class="{{ node.stats.mining | miningClass : node.stats.active }}")
               i(class="{{ node.stats.mining | miningIconClass }}")
-            td(class="{{ node.stats.mining | hashpowerClass }}")
+            td(class="{{ node.stats.mining | hashrateClass : node.stats.active }}")
               span.small {{node.stats.hashrate | hashrateFilter}} kH/s
             td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
             td(style="padding-left: 15px;") {{node.stats.pending}}
