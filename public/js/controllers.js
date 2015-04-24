@@ -23,10 +23,12 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.gasSpending = [];
 	$scope.miners = [];
 
+
 	$scope.nodes = [];
 	$scope.map = [];
 	$scope.blockPropagationChart = [];
 	$scope.uncleCountChart = [];
+	$scope.coinbases = [];
 
 	$scope.latency = 0;
 
@@ -230,6 +232,28 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 				if(typeof $scope.bestStats.miners !== 'undefined') {
 					$scope.miners = $scope.bestStats.miners;
+					console.log($scope.miners);
+
+					_.forIn($scope.miners, function(value, key)
+					{
+						if(value.name !== false)
+							return;
+
+						console.error(key, value);
+
+						var name = _.result(_.find(_.pluck($scope.nodes, 'info'), 'coinbase', value.miner), 'name');
+						if(typeof name !== 'undefined')
+							$scope.miners[key].name = name;
+
+						console.warn("Name: ", name);
+					});
+
+					var addresses = _.pluck(_.filter($scope.miners, 'name', false), 'miner');
+					console.info('Addresses', addresses);
+
+					var coinbases = _.pluck($scope.nodes, 'info');
+					console.info('Coinbases', coinbases);
+					console.info('Nodes', $scope.nodes);
 				}
 
 				jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime.reverse(), {type: 'bar', tooltipSuffix: ' s'});
