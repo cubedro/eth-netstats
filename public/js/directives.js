@@ -66,7 +66,7 @@ angular.module('netStatsApp.directives', []).
 
 							var zoomListener = d3.behavior.zoom()
 								.size([width, height])
-								.scaleExtent([1, 2])
+								.scaleExtent([1, 3])
 								.on("zoom", redraw)
 								.on("zoomend", animadraw);
 
