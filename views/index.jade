@@ -14,15 +14,6 @@ block content
             span.small-title active nodes
             span.big-details {{nodesActive}}/{{nodesTotal}}
           div.clearfix
-      div.col-xs-2.stat-holder
-        div.big-info.uncleCount.text-info
-          div.pull-left.icon-full-width
-            i.icon-uncle
-          div.pull-left
-            span.small-title uncles #[&nbsp;]
-              span.small (current / last 50)
-            span.big-details {{ bestBlockObject.uncles.length + "/" + uncleCount }}
-          div.clearfix
       //- div.col-xs-2.stat-holder
       //-   div.big-info.uptime(class="{{ upTimeTotal | upTimeClass : true }}")
       //-     div.pull-left.icon-full-width
@@ -32,6 +23,14 @@ block content
       //-       span.big-details {{ upTimeTotal | upTimeFilter }}
       //-     div.clearfix
       div.col-xs-2.stat-holder
+        div.big-info.bestblock.text-info
+          div.pull-left.icon-full-width
+            i.icon-block
+          div.pull-left
+            span.small-title best block
+            span.big-details {{'#'}}{{ bestBlock | number}}
+          div.clearfix
+      div.col-xs-2.stat-holder
         div.big-info.difficulty.text-info
           div.pull-left.icon-full-width
             i.icon-difficulty
@@ -40,12 +39,13 @@ block content
             span.big-details {{ lastDifficulty | number }}
           div.clearfix
       div.col-xs-2.stat-holder
-        div.big-info.bestblock.text-info
+        div.big-info.uncleCount.text-info
           div.pull-left.icon-full-width
-            i.icon-block
+            i.icon-uncle
           div.pull-left
-            span.small-title best block
-            span.big-details {{'#'}}{{ bestBlock | number}}
+            span.small-title uncles #[&nbsp;]
+              span.small (current / last 50)
+            span.big-details {{ bestBlockObject.uncles.length }}/{{ uncleCount }}
           div.clearfix
       div.col-xs-2.stat-holder
         div.big-info.blocktime(class="{{ lastBlock | timeClass : true }}")
