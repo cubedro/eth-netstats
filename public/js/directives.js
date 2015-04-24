@@ -40,7 +40,7 @@ angular.module('netStatsApp.directives', []).
 					scope.map = new Datamap({
 						element: element[0],
 						scope: 'world',
-						width: 600,
+						width: width,
 						height: 300,
 						fills: {
 							success: '#7BCC3A',
