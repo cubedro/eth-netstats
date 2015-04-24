@@ -66,6 +66,9 @@ api.on('connection', function(spark) {
 
             var blockPropagationChart = Nodes.blockPropagationChart();
             client.write({action: 'blockPropagationChart', data: blockPropagationChart});
+
+            var uncleCount = Nodes.getUncleCount();
+            client.write({action: 'uncleCount', data: uncleCount});
         }
     });
 
@@ -83,6 +86,9 @@ api.on('connection', function(spark) {
 
             var blockPropagationChart = Nodes.blockPropagationChart();
             client.write({action: 'blockPropagationChart', data: blockPropagationChart});
+
+            var uncleCount = Nodes.getUncleCount();
+            client.write({action: 'uncleCount', data: uncleCount});
         }
     });
 
@@ -124,6 +130,9 @@ client.on('connection', function(spark) {
 
         var blockPropagationChart = Nodes.blockPropagationChart();
         spark.write({action: 'blockPropagationChart', data: blockPropagationChart});
+
+        var uncleCount = Nodes.getUncleCount();
+        spark.write({action: 'uncleCount', data: uncleCount});
     });
 
     spark.on('client-pong', function(data) {
