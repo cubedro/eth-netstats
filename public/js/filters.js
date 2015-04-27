@@ -97,7 +97,7 @@ angular.module('netStatsApp.filters', [])
 		if( ! current.active)
 			return 'text-gray';
 
-		return (best - current.block.number <= 1 ? 'text-success' : (best - current.block.number > 1 && best - current.block.number < 4 ? 'text-warning' : 'text-danger'));
+		return (best - current.block.number < 1 ? 'text-success' : (best - current.block.number === 1 ? 'text-warning' : (best - current.block.number > 1 && best - current.block.number < 4 ? 'text-orange' : 'text-danger')));
 	};
 })
 .filter('gasPriceFilter', ['$filter', function(filter) {
