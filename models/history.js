@@ -170,8 +170,6 @@ History.prototype.getUncleCount = function(id)
 		})
 		.value();
 
-	console.log(uncles);
-
 	var uncleBins = _.fill(Array(MAX_BINS), 0);
 
 	var sumMapper = function(array, key) {
