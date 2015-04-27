@@ -33,47 +33,52 @@ var History = function History(data)
 
 History.prototype.add = function(block, id)
 {
-	var historyBlock = this.search(block.number);
-
-	var now = (new Date()).getTime();
-	block.arrived = now;
-	block.received = now;
-	block.propagation = 0;
-
-	if(historyBlock)
+	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined')
 	{
-		var propIndex = _.findIndex(historyBlock.propagTimes, {node: id});
+		var historyBlock = this.search(block.number);
 
-		if(propIndex === -1)
+		var now = (new Date()).getTime();
+		block.arrived = now;
+		block.received = now;
+		block.propagation = 0;
+
+		if(historyBlock)
 		{
-			block.arrived = historyBlock.block.arrived;
-			block.received = now;
-			block.propagation = now - historyBlock.block.received;
+			var propIndex = _.findIndex(historyBlock.propagTimes, {node: id});
 
-			historyBlock.propagTimes.push({node: id, received: now, propagation: block.propagation});
+			if(propIndex === -1)
+			{
+				block.arrived = historyBlock.block.arrived;
+				block.received = now;
+				block.propagation = now - historyBlock.block.received;
+
+				historyBlock.propagTimes.push({node: id, received: now, propagation: block.propagation});
+			}
+			else
+			{
+				block.arrived = historyBlock.block.arrived;
+				block.received = historyBlock.propagTimes[propIndex].received;
+				block.propagation = historyBlock.propagTimes[propIndex].propagation;
+			}
 		}
 		else
 		{
-			block.arrived = historyBlock.block.arrived;
-			block.received = historyBlock.propagTimes[propIndex].received;
-			block.propagation = historyBlock.propagTimes[propIndex].propagation;
-		}
-	}
-	else
-	{
-		var item = {
-			height: block.number,
-			block: block,
-			propagTimes: []
-		}
+			var item = {
+				height: block.number,
+				block: block,
+				propagTimes: []
+			}
 
-		item.propagTimes.push({node: id, received: now, propagation: block.propagation});
-		console.log('item: ', item);
-		this._save(item);
-	}
-	this.getNodePropagation(id);
+			item.propagTimes.push({node: id, received: now, propagation: block.propagation});
+			console.log('item: ', item);
+			this._save(item);
+		}
+		this.getNodePropagation(id);
 
-	return block;
+		return block;
+	}
+
+	return false;
 }
 
 History.prototype._save = function(block)

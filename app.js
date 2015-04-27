@@ -82,13 +82,16 @@ api.on('connection', function(spark) {
             data.stats.latency = spark.latency;
 
             var stats = Nodes.update(data.id, data.stats);
-            client.write({action: 'update', data: stats});
+            if(stats !== false)
+            {
+                client.write({action: 'update', data: stats});
 
-            var blockPropagationChart = Nodes.blockPropagationChart();
-            client.write({action: 'blockPropagationChart', data: blockPropagationChart});
+                var blockPropagationChart = Nodes.blockPropagationChart();
+                client.write({action: 'blockPropagationChart', data: blockPropagationChart});
 
-            var uncleCount = Nodes.getUncleCount();
-            client.write({action: 'uncleCount', data: uncleCount});
+                var uncleCount = Nodes.getUncleCount();
+                client.write({action: 'uncleCount', data: uncleCount});
+            }
         }
     });
 

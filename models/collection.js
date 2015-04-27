@@ -27,6 +27,10 @@ Collection.prototype.update = function(id, stats)
 		return false;
 
 	var block = this._history.add(stats.block, id);
+
+	if(! block)
+		return false;
+
 	var propagationHistory = this._history.getNodePropagation(id);
 
 	stats.block.arrived = block.arrived;
