@@ -63,6 +63,17 @@ History.prototype.add = function(block, id)
 		}
 		else
 		{
+			var prevBlock = this.prevMaxBlock(block.number);
+
+			if(prevBlock)
+			{
+				block.time = block.arrived - prevBlock.block.arrived;
+				block.time_old = block.timestamp - prevBlock.block.timestamp;
+			}
+			else
+			{
+				block.time = 0;
+			}
 			var item = {
 				height: block.number,
 				block: block,
@@ -72,7 +83,6 @@ History.prototype.add = function(block, id)
 			item.propagTimes.push({node: id, received: now, propagation: block.propagation});
 			this._save(item);
 		}
-		this.getNodePropagation(id);
 
 		return block;
 	}
@@ -87,11 +97,25 @@ History.prototype._save = function(block)
 	if(this._items.length > MAX_HISTORY){
 		this._items.shift();
 	}
+
+	this._items = _.sortByOrder(this._items, 'height', false);
 }
 
 History.prototype.search = function(number)
 {
 	var index = _.findIndex(this._items, {height: number});
+
+	if(index < 0)
+		return false;
+
+	return this._items[index];
+}
+
+History.prototype.prevMaxBlock = function(number)
+{
+	var index = _.findIndex(this._items, function(item) {
+		return item.height < number;
+	});
 
 	if(index < 0)
 		return false;
@@ -184,6 +208,21 @@ History.prototype.getUncleCount = function()
 	_.map(_.chunk(uncles, MAX_UNCLES_PER_BIN), sumMapper);
 
 	return uncleBins;
+}
+
+History.prototype.getBlockTimes = function()
+{
+	var blockTimes = _(this._items)
+		.sortByOrder('height', false)
+		.slice(0, MAX_BINS)
+		.reverse()
+		.map(function(item)
+		{
+			return item.block.time;
+		})
+		.value();
+
+	return blockTimes;
 }
 
 History.prototype.getTransactionsCount = function()
