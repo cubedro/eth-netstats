@@ -275,7 +275,7 @@ angular.module('netStatsApp.filters', [])
 		var tooltip = [];
 		var string = '';
 
-		if(node.info.node !== '') {
+		if(node.info.node !== '' && typeof node.info.node !== 'undefined') {
 			var eth_version = node.info.node.split('/');
 
 			if(eth_version[1][0] !== 'v' && eth_version[1][2] !== '.')
