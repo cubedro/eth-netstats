@@ -190,7 +190,7 @@ History.prototype.getTransactionsCount = function(id)
 {
 	var txCount = _(this._items)
 		.sortByOrder('height', false)
-		.slice(0, MAX_BINS - 1)
+		.slice(0, MAX_BINS)
 		.reverse()
 		.map(function(item)
 		{
@@ -205,7 +205,7 @@ History.prototype.getGasSpending = function(id)
 {
 	var gasSpending = _(this._items)
 		.sortByOrder('height', false)
-		.slice(0, MAX_BINS - 1)
+		.slice(0, MAX_BINS)
 		.reverse()
 		.map(function(item)
 		{
@@ -220,7 +220,7 @@ History.prototype.getDifficulty = function(id)
 {
 	var difficultyHistory = _(this._items)
 		.sortByOrder('height', false)
-		.slice(0, MAX_BINS - 1)
+		.slice(0, MAX_BINS)
 		.reverse()
 		.map(function(item)
 		{
