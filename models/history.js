@@ -350,7 +350,7 @@ History.prototype.getHistoryRequestInterval = function()
 		return null;
 
 	var max = _.min(this._items, 'height').height - 1;
-	var min = max - Math.min(100, (MAX_HISTORY - this._items.length + 1)) + 1;
+	var min = max - Math.min(50, (MAX_HISTORY - this._items.length + 1)) + 1;
 
 	return {max: max, min: min};
 }
