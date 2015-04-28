@@ -201,6 +201,21 @@ History.prototype.getTransactionsCount = function(id)
 	return txCount;
 }
 
+History.prototype.getGasSpending = function(id)
+{
+	var gasSpending = _(this._items)
+		.sortByOrder('height', false)
+		.slice(0, MAX_BINS - 1)
+		.reverse()
+		.map(function(item)
+		{
+			return item.block.gasUsed;
+		})
+		.value();
+
+	return gasSpending;
+}
+
 History.prototype.getDifficulty = function(id)
 {
 	var difficultyHistory = _(this._items)
