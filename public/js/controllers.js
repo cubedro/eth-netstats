@@ -14,6 +14,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.lastDifficulty = 0;
 	$scope.upTimeTotal = 0;
 	$scope.avgBlockTime = 0;
+	$scope.avgHashrate = 0;
 	$scope.uncleCount = 0;
 	$scope.bestStats = {};
 
@@ -124,9 +125,12 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 					data.stats.hashrate = 0;
 
 				var index = findIndex({id: data.id});
-				$scope.nodes[index].stats = data.stats;
-				$scope.nodes[index].history = data.history;
-				makePeerPropagationChart($scope.nodes[index]);
+
+				if(typeof $scope.nodes[index].stats !== 'undefined') {
+					$scope.nodes[index].stats = data.stats;
+					$scope.nodes[index].history = data.history;
+					makePeerPropagationChart($scope.nodes[index]);
+				}
 
 				break;
 
@@ -150,6 +154,8 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 			case "charts":
 				$scope.lastBlocksTime = data.blocktime;
+				$scope.avgBlockTime = data.avgBlocktime;
+				$scope.avgHashrate = data.avgHashrate;
 				$scope.difficultyChart = data.difficulty;
 				$scope.transactionDensity = data.transactions;
 				$scope.gasSpending = data.gasSpending;
@@ -174,7 +180,10 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "latency":
-				$scope.nodes[findIndex({id: data.id})].stats.latency = data.latency;
+				var node = $scope.nodes[findIndex({id: data.id})];
+
+				if(typeof node.stats !== 'undefined' && typeof node.stats.latency !== 'undefined')
+					$scope.nodes[findIndex({id: data.id})].stats.latency = data.latency;
 
 				break;
 
@@ -272,10 +281,6 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 					});
 				}
 			}
-
-			$scope.avgBlockTime = _.max($scope.nodes, function(node) {
-				return parseInt(node.stats.block.number);
-			}).stats.blocktimeAvg;
 
 			$scope.upTimeTotal = _.reduce($scope.nodes, function(total, node) {
 				return total + node.stats.uptime;

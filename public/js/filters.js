@@ -134,6 +134,9 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('hashFilter', function() {
 	return function(hash) {
+		if(typeof hash === 'undefined')
+			return "?";
+
 		if(hash.substr(0,2) === '0x')
 			hash = hash.substr(2,64);
 
