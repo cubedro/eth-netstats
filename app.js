@@ -65,8 +65,10 @@ api.on('connection', function(spark) {
 
             if(Nodes.getHistory().requiresUpdate() && !askedForHistory && Nodes.canNodeUpdate(data.id))
             {
+                var range = Nodes.getHistory().getHistoryRequestInterval();
                 console.log("asked " + data.id + " for history");
-                spark.emit('history', Nodes.getHistory().getHistoryRequestInterval());
+                console.log('interval', range);
+                spark.emit('history', range);
                 askedForHistory = true;
             }
 
@@ -90,8 +92,10 @@ api.on('connection', function(spark) {
 
             if(Nodes.getHistory().requiresUpdate() && !askedForHistory && Nodes.canNodeUpdate(data.id))
             {
+                var range = Nodes.getHistory().getHistoryRequestInterval();
                 console.log("asked " + data.id + " for history");
-                spark.emit('history', Nodes.getHistory().getHistoryRequestInterval());
+                console.log('interval', range);
+                spark.emit('history', range);
                 askedForHistory = true;
             }
         }
