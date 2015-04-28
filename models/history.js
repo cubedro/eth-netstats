@@ -70,7 +70,6 @@ History.prototype.add = function(block, id)
 			}
 
 			item.propagTimes.push({node: id, received: now, propagation: block.propagation});
-			console.log('item: ', item);
 			this._save(item);
 		}
 		this.getNodePropagation(id);
@@ -172,6 +171,30 @@ History.prototype.getUncleCount = function(id)
 		.map(function(item)
 		{
 			return item.block.uncles.length;
+		})
+		.value();
+
+	var uncleBins = _.fill(Array(MAX_BINS), 0);
+
+	var sumMapper = function(array, key) {
+		uncleBins[key] = _.sum(array);
+		return _.sum(array);
+	};
+
+	_.map(_.chunk(uncles, MAX_UNCLES_PER_BIN), sumMapper);
+
+	return uncleBins;
+}
+
+History.prototype.getTransactionsCount = function(id)
+{
+	var uncles = _(this._items)
+		.sortByOrder('height', false)
+		.slice(0, MAX_BINS - 1)
+		.reverse()
+		.map(function(item)
+		{
+			return item.block.transactions.length;
 		})
 		.value();
 

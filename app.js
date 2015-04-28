@@ -43,7 +43,7 @@ api.on('connection', function(spark) {
     spark.on('hello', function(data)
     {
         console.log('Latency: ', spark.latency);
-        console.log('got hello data from ', spark.id);
+        console.log('Got hello data from ', spark.id);
         console.log(data);
 
         if(typeof data.secret === 'undefined' || data.secret !== WS_SECRET)
@@ -75,7 +75,7 @@ api.on('connection', function(spark) {
     spark.on('update', function(data)
     {
         console.log('Latency: ', spark.latency);
-        console.log('got update from ' + spark.id);
+        console.log('Got update from ' + spark.id);
 
         if(typeof data.id !== 'undefined' && typeof data.stats !== 'undefined')
         {
@@ -101,9 +101,6 @@ api.on('connection', function(spark) {
 
     spark.on('latency', function(data)
     {
-        console.log('Latency: ', data.latency);
-        console.log('got ping from ' + spark.id);
-
         if(typeof data.id !== 'undefined')
         {
             var stats = Nodes.updateLatency(data.id, data.latency);
@@ -126,9 +123,6 @@ client.on('connection', function(spark) {
     console.log(spark.query);
 
     spark.on('ready', function(data){
-        console.log('got hello data from ' + spark.id);
-        console.log(data);
-
         spark.emit('init', {nodes: Nodes.all()});
 
         var blockPropagationChart = Nodes.blockPropagationChart();
