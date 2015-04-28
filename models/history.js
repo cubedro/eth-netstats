@@ -188,7 +188,7 @@ History.prototype.getUncleCount = function(id)
 
 History.prototype.getTransactionsCount = function(id)
 {
-	var uncles = _(this._items)
+	var txCount = _(this._items)
 		.sortByOrder('height', false)
 		.slice(0, MAX_BINS - 1)
 		.reverse()
@@ -198,16 +198,7 @@ History.prototype.getTransactionsCount = function(id)
 		})
 		.value();
 
-	var uncleBins = _.fill(Array(MAX_BINS), 0);
-
-	var sumMapper = function(array, key) {
-		uncleBins[key] = _.sum(array);
-		return _.sum(array);
-	};
-
-	_.map(_.chunk(uncles, MAX_UNCLES_PER_BIN), sumMapper);
-
-	return uncleBins;
+	return txCount;
 }
 
 History.prototype.history = function()
