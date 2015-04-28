@@ -74,9 +74,6 @@ api.on('connection', function(spark) {
 
     spark.on('update', function(data)
     {
-        console.log('Latency: ', spark.latency);
-        console.log('Got update from ' + spark.id);
-
         if(typeof data.id !== 'undefined' && typeof data.stats !== 'undefined')
         {
             data.stats.latency = spark.latency;
@@ -118,10 +115,6 @@ api.on('connection', function(spark) {
 });
 
 client.on('connection', function(spark) {
-    console.log(spark.id);
-    console.log(spark.address);
-    console.log(spark.query);
-
     spark.on('ready', function(data){
         spark.emit('init', {nodes: Nodes.all()});
 
