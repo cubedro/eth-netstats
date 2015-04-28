@@ -27,6 +27,7 @@ var Node = function Node(data)
 			uncles: []
 		},
 		blocktimeAvg: 0,
+		propagationAvg: 0,
 		blockTimes: [],
 		difficulty: [],
 		latency: 0,
@@ -108,6 +109,16 @@ Node.prototype.setStats = function(stats, history)
 	if(typeof stats !== 'undefined' && typeof stats.block !== 'undefined' && typeof stats.block.number !== 'undefined')
 	{
 		this.history = history;
+
+		var positives = _.filter(history, function(p) {
+			return p >= 0;
+		});
+
+		if(positives.length > 0)
+			stats.propagationAvg = Math.round(_.sum(positives)/positives.length);
+		else
+			stats.propagationAvg = 0;
+
 		this.stats = stats;
 
 		return this.getStats();

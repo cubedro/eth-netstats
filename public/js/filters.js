@@ -174,6 +174,23 @@ angular.module('netStatsApp.filters', [])
 		return 'text-danger'
 	};
 })
+.filter('propagationAvgTimeClass', function() {
+	return function(propagation) {
+		if(propagation == 0)
+			return 'text-info';
+
+		if(propagation < 1000)
+			return 'text-success';
+
+		if(propagation < 3000)
+			return 'text-warning';
+
+		if(propagation < 7000)
+			return 'text-orange';
+
+		return 'text-danger'
+	};
+})
 .filter('latencyFilter', function() {
 	return function(stats) {
 		if(stats.active === false)
