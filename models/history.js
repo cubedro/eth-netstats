@@ -33,7 +33,7 @@ var History = function History(data)
 
 History.prototype.add = function(block, id)
 {
-	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined' && typeof block.difficulty !== 'undefined' && (this._items.length === 0 || block.number >= (this.bestBlock().height - MAX_HISTORY + 1)))
+	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined' && typeof block.difficulty !== 'undefined')
 	{
 		var historyBlock = this.search(block.number);
 
@@ -82,8 +82,11 @@ History.prototype.add = function(block, id)
 				propagTimes: []
 			}
 
-			item.propagTimes.push({node: id, received: now, propagation: block.propagation});
-			this._save(item);
+			if(this._items.length === 0 || block.number >= (this.bestBlock().height - MAX_HISTORY + 1))
+			{
+				item.propagTimes.push({node: id, received: now, propagation: block.propagation});
+				this._save(item);
+			}
 		}
 
 		return block;
