@@ -225,6 +225,21 @@ History.prototype.getBlockTimes = function()
 	return blockTimes;
 }
 
+History.prototype.getDifficulty = function()
+{
+	var difficultyHistory = _(this._items)
+		.sortByOrder('height', false)
+		.slice(0, MAX_BINS)
+		.reverse()
+		.map(function(item)
+		{
+			return item.block.difficulty;
+		})
+		.value();
+
+	return difficultyHistory;
+}
+
 History.prototype.getTransactionsCount = function()
 {
 	var txCount = _(this._items)
@@ -255,19 +270,26 @@ History.prototype.getGasSpending = function()
 	return gasSpending;
 }
 
-History.prototype.getDifficulty = function()
+History.prototype.getCharts = function()
 {
-	var difficultyHistory = _(this._items)
+	var chartHistory = _(this._items)
 		.sortByOrder('height', false)
 		.slice(0, MAX_BINS)
 		.reverse()
 		.map(function(item)
 		{
-			return item.block.difficulty;
+			var chart = {
+				blocktime: item.block.time,
+				difficulty: item.block.difficulty,
+				uncles: item.block.uncles.length,
+				transactions: item.block.transactions.length,
+				gasSpending: item.block.gasUsed
+			}
+			return chart;
 		})
 		.value();
 
-	return difficultyHistory;
+	return chartHistory;
 }
 
 History.prototype.history = function()
