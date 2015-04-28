@@ -101,10 +101,10 @@ block content
               span.big-details.spark-difficulty
 
           div.col-xs-3.stat-holder.xpull-right
-            div.big-info.chart.xdouble-chart.text-info
+            div.big-info.chart.xdouble-chart(class="{{ blockPropagationAvg | propagationAvgTimeClass : true }}")
               //- i.icon-gas
               span.small-title block propagation
-              //- span.small-value {{ lastDifficulty | number }}
+              span.small-value {{ blockPropagationAvg | blockPropagationFilter : '' }}
               histogram.big-details.d3-blockpropagation(data="blockPropagationChart")
 
           div.col-xs-3.stat-holder.pull-right
@@ -205,5 +205,5 @@ block content
               div.propagationBox
               span {{node.stats.block.propagation | blockPropagationFilter}}
             td.peerPropagationChart(class="{{node.id}}")
-            td(class="{{ node.stats | propagationAvgTimeClass }}") {{ node.stats.propagationAvg | blockPropagationFilter }}
+            td(class="{{ node.stats.propagationAvg | propagationAvgTimeClass : node.stats.active }}") {{ node.stats.propagationAvg | blockPropagationFilter : '' }}
             td(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}

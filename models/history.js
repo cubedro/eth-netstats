@@ -159,6 +159,7 @@ History.prototype.getNodePropagation = function(id)
 History.prototype.getBlockPropagation = function()
 {
 	var propagation = [];
+	var avgPropagation = 0;
 
 	_.forEach(this._items, function(n, key)
 	{
@@ -170,6 +171,11 @@ History.prototype.getBlockPropagation = function()
 				propagation.push(prop);
 		});
 	});
+
+	if(propagation.length > 0)
+	{
+		var avgPropagation = Math.round(_.sum(propagation) / propagation.length);
+	}
 
 	var x = d3.scale.linear()
 		.domain([MIN_PROPAGATION_RANGE, MAX_PROPAGATION_RANGE])
@@ -187,7 +193,7 @@ History.prototype.getBlockPropagation = function()
 		return {x: val.x, dx: val.dx, y: val.y, frequency: val.length, cumulative: freqCum, cumpercent: cumPercent};
 	});
 
-	return histogram;
+	return {histogram: histogram, avg: avgPropagation};
 }
 
 History.prototype.getUncleCount = function()
