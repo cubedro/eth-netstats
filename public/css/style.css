@@ -137,7 +137,8 @@ span.small-title span.small {
 }
 
 .big-info.chart .big-details {
-	padding-top: 8px;
+	position: absolute;
+	top: 40px;
 }
 
 .big-info.chart {
@@ -202,7 +203,8 @@ span.small-title span.small {
 	padding: 5px 15px;
 }
 
-.second-row .box i {
+.second-row .box i,
+.big-info.chart i {
 	position: relative;
 	top: 2px;
 	left: -3px;
@@ -213,11 +215,25 @@ span.small-title span.small {
 	float: left;
 }
 
-.second-row .box .small-value {
+.big-info.chart i {
+	font-size: 24px;
+	top: -2px;
+}
+
+.small-value {
 	font-weight: 300;
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-osx-font-smoothing: auto;
 	float: right;
+}
+
+.second-row .box .small-value {
+	float: right;
+}
+.big-info .small-value {
+	position: absolute;
+	right: 14px;
+	top: 10px;
 }
 
 table i {

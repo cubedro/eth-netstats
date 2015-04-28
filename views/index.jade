@@ -66,16 +66,16 @@ block content
     div.row(ng-cloak)
       div.col-xs-8.stats-boxes(style="padding-top: 0px;")
         div.row.second-row
-          //- div.col-xs-3.stat-holder.box
-          //-   div.active-nodes(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
-          //-     i.icon-node
-          //-     span.small-title active nodes
-          //-     span.small-value {{nodesActive}}/{{nodesTotal}}
           div.col-xs-3.stat-holder.box
-            div.difficulty.text-info
-              i.icon-difficulty
-              span.small-title difficulty
-              span.small-value {{ lastDifficulty | number }}
+            div.active-nodes(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
+              i.icon-node
+              span.small-title active nodes
+              span.small-value {{nodesActive}}/{{nodesTotal}}
+          //- div.col-xs-3.stat-holder.box
+          //-   div.difficulty.text-info
+          //-     i.icon-difficulty
+          //-     span.small-title difficulty
+          //-     span.small-value {{ lastDifficulty | number }}
           div.col-xs-3.stat-holder.box
             div.gasprice.text-info
               i.icon-gasprice
@@ -94,18 +94,24 @@ block content
 
         div.row
           div.col-xs-3.stat-holder
-            div.big-info.chart
+            div.big-info.chart(class="{{ avgBlockTime | avgTimeClass }}")
+              //- i.icon-time
               span.small-title block time
+              span.small-value {{ avgBlockTime | avgTimeFilter }}
               span.big-details.spark-blocktimes
 
           div.col-xs-3.stat-holder
-            div.big-info.chart
+            div.big-info.chart.text-info
+              //- i.icon-difficulty
               span.small-title difficulty
+              span.small-value {{ lastDifficulty | number }}
               span.big-details.spark-difficulty
 
           div.col-xs-3.stat-holder.xpull-right
-            div.big-info.chart.xdouble-chart
+            div.big-info.chart.xdouble-chart.text-info
+              //- i.icon-gas
               span.small-title block propagation
+              //- span.small-value {{ lastDifficulty | number }}
               histogram.big-details.d3-blockpropagation(data="blockPropagationChart")
 
           div.col-xs-3.stat-holder.pull-right
@@ -118,18 +124,22 @@ block content
                 div.clearfix
 
           div.col-xs-3.stat-holder
-            div.big-info.chart
+            div.big-info.chart.text-info
+              //- i.icon-uncle
               span.small-title uncle count #[&nbsp;]
                 span.small (25 blocks per bar)
+              span.small-value {{ bestStats.block.uncles.length }}/{{ uncleCount }}
               span.big-details.spark-uncles
 
           div.col-xs-3.stat-holder
-            div.big-info.chart
+            div.big-info.chart.text-info
+              //- i.icon-uncle
               span.small-title transactions
               span.big-details.spark-transactions
 
           div.col-xs-3.stat-holder
-            div.big-info.chart
+            div.big-info.chart.text-info
+              //- i.icon-gasprice
               span.small-title gas spending
               span.big-details.spark-gasspending
 
