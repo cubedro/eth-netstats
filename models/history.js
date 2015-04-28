@@ -272,6 +272,32 @@ History.prototype.getGasSpending = function()
 	return gasSpending;
 }
 
+History.prototype.getAvgHashrate = function()
+{
+	if(this._items.length === 0)
+		return 0;
+
+	var difficultyHistory = _(this._items)
+		.map(function(item)
+		{
+			return item.block.difficulty;
+		})
+		.value();
+
+	var avgDifficulty = _.sum(difficultyHistory)/difficultyHistory.length;
+
+	var blocktimeHistory = _(this._items)
+		.map(function(item)
+		{
+			return item.block.time;
+		})
+		.value();
+
+	var avgBlocktime = _.sum(blocktimeHistory)/blocktimeHistory.length;
+
+	return avgDifficulty/1000 * 12 * (12/avgBlocktime);
+}
+
 History.prototype.getCharts = function()
 {
 	var chartHistory = _(this._items)
@@ -301,7 +327,8 @@ History.prototype.getCharts = function()
 		transactions: _.pluck(chartHistory, 'transactions'),
 		gasSpending: _.pluck(chartHistory, 'gasSpending'),
 		propagation: this.getBlockPropagation(),
-		uncleCount: this.getUncleCount()
+		uncleCount: this.getUncleCount(),
+		avgHashrate: this.getAvgHashrate()
 	}
 
 	return chart;

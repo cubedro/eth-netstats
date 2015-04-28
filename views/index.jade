@@ -28,14 +28,6 @@ block content
             span.big-details {{'#'}}{{ bestBlock | number}}
           div.clearfix
       div.col-xs-2.stat-holder
-        div.big-info.difficulty.text-orange
-          div.pull-left.icon-full-width
-            i.icon-hashrate
-          div.pull-left
-            span.small-title avg hashrate
-            span.big-details {{ avgHashrate | number : 1 }} MH/s
-          div.clearfix
-      div.col-xs-2.stat-holder
         div.big-info.uncleCount.text-info
           div.pull-left.icon-full-width
             i.icon-uncle
@@ -59,6 +51,14 @@ block content
           div.pull-left
             span.small-title avg block time
             span.big-details {{ avgBlockTime | avgTimeFilter }}
+          div.clearfix
+      div.col-xs-2.stat-holder
+        div.big-info.difficulty.text-orange
+          div.pull-left.icon-full-width
+            i.icon-hashrate
+          div.pull-left
+            span.small-title avg network hashrate
+            span.big-details {{ avgHashrate | number : 1 }} MH/s
           div.clearfix
       div.clearfix
 

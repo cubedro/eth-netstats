@@ -155,7 +155,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 			case "charts":
 				$scope.lastBlocksTime = data.blocktime;
 				$scope.avgBlockTime = data.avgBlocktime;
-				$scope.avgHashrate = $scope.lastDifficulty / 1000000 * data.avgBlocktime;
+				$scope.avgHashrate = data.avgHashrate;
 				$scope.difficultyChart = data.difficulty;
 				$scope.transactionDensity = data.transactions;
 				$scope.gasSpending = data.gasSpending;
