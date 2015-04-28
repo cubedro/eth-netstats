@@ -4,22 +4,6 @@ block content
   div.container-fluid(ng-controller='StatsCtrl')
     div.row(ng-cloak)
       div.col-xs-2.stat-holder
-        div.big-info.nodesactive(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
-          div.pull-left.icon-full-width
-            i.icon-node
-          div.pull-left
-            span.small-title active nodes
-            span.big-details {{nodesActive}}/{{nodesTotal}}
-          div.clearfix
-      //- div.col-xs-2.stat-holder
-      //-   div.big-info.uptime(class="{{ upTimeTotal | upTimeClass : true }}")
-      //-     div.pull-left.icon-full-width
-      //-       i.icon-bulb
-      //-     div.pull-left
-      //-       span.small-title up-time
-      //-       span.big-details {{ upTimeTotal | upTimeFilter }}
-      //-     div.clearfix
-      div.col-xs-2.stat-holder
         div.big-info.bestblock.text-info
           div.pull-left.icon-full-width
             i.icon-block
@@ -60,6 +44,15 @@ block content
             span.small-title avg network hashrate
             span.big-details {{ avgHashrate | number : 1 }} MH/s
           div.clearfix
+      div.col-xs-2.stat-holder
+        div.big-info.difficulty.text-danger
+          div.pull-left.icon-full-width
+            i.icon-difficulty
+          div.pull-left
+            span.small-title difficulty
+            span.big-details {{ lastDifficulty | number }}
+          div.clearfix
+
       div.clearfix
 
 
@@ -97,14 +90,14 @@ block content
             div.big-info.chart(class="{{ avgBlockTime | avgTimeClass }}")
               //- i.icon-time
               span.small-title block time
-              span.small-value {{ avgBlockTime | avgTimeFilter }}
+              //- span.small-value {{ avgBlockTime | avgTimeFilter }}
               span.big-details.spark-blocktimes
 
           div.col-xs-3.stat-holder
             div.big-info.chart.text-info
               //- i.icon-difficulty
               span.small-title difficulty
-              span.small-value {{ lastDifficulty | number }}
+              //- span.small-value {{ lastDifficulty | number }}
               span.big-details.spark-difficulty
 
           div.col-xs-3.stat-holder.xpull-right
@@ -128,7 +121,7 @@ block content
               //- i.icon-uncle
               span.small-title uncle count #[&nbsp;]
                 span.small (25 blocks per bar)
-              span.small-value {{ bestStats.block.uncles.length }}/{{ uncleCount }}
+              //- span.small-value {{ bestStats.block.uncles.length }}/{{ uncleCount }}
               span.big-details.spark-uncles
 
           div.col-xs-3.stat-holder
