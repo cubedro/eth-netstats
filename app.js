@@ -65,6 +65,7 @@ api.on('connection', function(spark) {
 
             if(Nodes.getHistory().requiresUpdate() && !askedForHistory && Nodes.canNodeUpdate(data.id))
             {
+                console.log("asked " + data.id + " for history");
                 spark.emit('history', Nodes.getHistory().getHistoryRequestInterval());
                 askedForHistory = true;
             }
@@ -89,6 +90,7 @@ api.on('connection', function(spark) {
 
             if(Nodes.getHistory().requiresUpdate() && !askedForHistory && Nodes.canNodeUpdate(data.id))
             {
+                console.log("asked " + data.id + " for history");
                 spark.emit('history', Nodes.getHistory().getHistoryRequestInterval());
                 askedForHistory = true;
             }
@@ -96,6 +98,7 @@ api.on('connection', function(spark) {
     });
 
     spark.on('history', function(data){
+        console.log("got history from " + data.id);
         client.write({action: 'charts', data: Nodes.addHistory(data.id, data.history)});
         askedForHistory = false;
     });
