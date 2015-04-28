@@ -178,6 +178,8 @@ block content
             td.nodeInfo(rel="{{node.id}}")
               span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{node | geoTooltip}}") {{node.info.name}}
               span.small #[&nbsp;]({{node.info.ip}})
+              span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="Netstats client needs update", class="{{ node.info | nodeClientClass : currentApiVersion }}")
+                i.icon-warning-o
             td
               div.small(ng-bind-html="node.info.node | nodeVersion")
             td(class="{{ node.stats | latencyClass }}")
