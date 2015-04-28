@@ -4,6 +4,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
 var askedForHistory = false;
+var askedForHistoryTime = 0;
 
 var Primus = require('primus'),
     api,
@@ -63,13 +64,14 @@ api.on('connection', function(spark) {
             var info = Nodes.add(data);
             spark.emit('ready');
 
-            if(Nodes.getHistory().requiresUpdate() && !askedForHistory && Nodes.canNodeUpdate(data.id))
+            if(Nodes.getHistory().requiresUpdate() && Nodes.canNodeUpdate(data.id) && (!askedForHistory || (new Date()).getTime() - askedForHistoryTime > 120000))
             {
                 var range = Nodes.getHistory().getHistoryRequestInterval();
                 console.log("asked " + data.id + " for history");
                 console.log('interval', range);
                 spark.emit('history', range);
                 askedForHistory = true;
+                askedForHistoryTime = (new Date()).getTime();
             }
 
             client.write({action: 'add', data: info});
@@ -90,13 +92,14 @@ api.on('connection', function(spark) {
                 client.write({action: 'charts', data: Nodes.getCharts()});
             }
 
-            if(Nodes.getHistory().requiresUpdate() && !askedForHistory && Nodes.canNodeUpdate(data.id))
+            if(Nodes.getHistory().requiresUpdate() && Nodes.canNodeUpdate(data.id) && (!askedForHistory || (new Date()).getTime() - askedForHistoryTime > 120000))
             {
                 var range = Nodes.getHistory().getHistoryRequestInterval();
                 console.log("asked " + data.id + " for history");
                 console.log('interval', range);
                 spark.emit('history', range);
                 askedForHistory = true;
+                askedForHistoryTime = (new Date()).getTime();
             }
         }
     });
