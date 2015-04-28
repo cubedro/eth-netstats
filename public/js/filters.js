@@ -371,6 +371,17 @@ angular.module('netStatsApp.filters', [])
 
 		return prefix + 'danger';
 	};
+})
+.filter('nodeClientClass', function() {
+	return function(info, current) {
+		if(typeof info === 'undefined' || typeof info.client === 'undefined' || typeof info.client === '')
+			return 'text-danger';
+
+		if(current.localeCompare(info.client) > 0)
+			return 'text-warning';
+
+		return 'hidden';
+	};
 });
 
 function mainClass(node, bestBlock)
