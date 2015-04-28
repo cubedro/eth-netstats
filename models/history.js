@@ -295,6 +295,7 @@ History.prototype.getCharts = function()
 	var chart = {
 		height: _.pluck(chartHistory, 'height'),
 		blocktime: _.pluck(chartHistory, 'blocktime'),
+		avgBlocktime: _.sum(_.pluck(chartHistory, 'blocktime')) / (chartHistory.length === 0 ? 1 : chartHistory.length),
 		difficulty: _.pluck(chartHistory, 'difficulty'),
 		uncles: _.pluck(chartHistory, 'uncles'),
 		transactions: _.pluck(chartHistory, 'transactions'),

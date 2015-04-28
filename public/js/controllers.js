@@ -153,6 +153,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 			case "charts":
 				$scope.lastBlocksTime = data.blocktime;
+				$scope.avgBlockTime = data.avgBlocktime;
 				$scope.difficultyChart = data.difficulty;
 				$scope.transactionDensity = data.transactions;
 				$scope.gasSpending = data.gasSpending;
@@ -278,10 +279,6 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 					});
 				}
 			}
-
-			$scope.avgBlockTime = _.max($scope.nodes, function(node) {
-				return parseInt(node.stats.block.number);
-			}).stats.blocktimeAvg;
 
 			$scope.upTimeTotal = _.reduce($scope.nodes, function(total, node) {
 				return total + node.stats.uptime;
