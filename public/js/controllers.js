@@ -14,6 +14,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 	$scope.lastDifficulty = 0;
 	$scope.upTimeTotal = 0;
 	$scope.avgBlockTime = 0;
+	$scope.blockPropagationAvg = 0;
 	$scope.avgHashrate = 0;
 	$scope.uncleCount = 0;
 	$scope.bestStats = {};
@@ -140,7 +141,8 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "blockPropagationChart":
-				$scope.blockPropagationChart = data;
+				$scope.blockPropagationChart = data.histogram;
+				$scope.blockPropagationAvg = data.avg;
 
 				break;
 
@@ -159,7 +161,8 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				$scope.difficultyChart = data.difficulty;
 				$scope.transactionDensity = data.transactions;
 				$scope.gasSpending = data.gasSpending;
-				$scope.blockPropagationChart = data.propagation;
+				$scope.blockPropagationChart = data.propagation.histogram;
+				$scope.blockPropagationAvg = data.propagation.avg;
 				$scope.uncleCountChart = data.uncleCount;
 				$scope.uncleCount = data.uncleCount[0] + data.uncleCount[1];
 

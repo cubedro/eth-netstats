@@ -33,7 +33,7 @@ var History = function History(data)
 
 History.prototype.add = function(block, id)
 {
-	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined' && typeof block.difficulty !== 'undefined' && (this._items.length === 0 || block.number >= (this.bestBlock().height - MAX_HISTORY + 1)))
+	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined' && typeof block.difficulty !== 'undefined')
 	{
 		var historyBlock = this.search(block.number);
 
@@ -82,8 +82,11 @@ History.prototype.add = function(block, id)
 				propagTimes: []
 			}
 
-			item.propagTimes.push({node: id, received: now, propagation: block.propagation});
-			this._save(item);
+			if(this._items.length === 0 || block.number >= (this.bestBlock().height - MAX_HISTORY + 1))
+			{
+				item.propagTimes.push({node: id, received: now, propagation: block.propagation});
+				this._save(item);
+			}
 		}
 
 		return block;
@@ -125,9 +128,19 @@ History.prototype.prevMaxBlock = function(number)
 	return this._items[index];
 }
 
-History.prototype.bestBlock = function(obj)
+History.prototype.bestBlock = function()
 {
 	return _.max(this._items, 'height');
+}
+
+History.prototype.bestBlockNumber = function()
+{
+	var best = this.bestBlock();
+
+	if(typeof best.height !== 'undefined')
+		return best.height;
+
+	return 0;
 }
 
 History.prototype.getNodePropagation = function(id)
@@ -159,6 +172,7 @@ History.prototype.getNodePropagation = function(id)
 History.prototype.getBlockPropagation = function()
 {
 	var propagation = [];
+	var avgPropagation = 0;
 
 	_.forEach(this._items, function(n, key)
 	{
@@ -170,6 +184,11 @@ History.prototype.getBlockPropagation = function()
 				propagation.push(prop);
 		});
 	});
+
+	if(propagation.length > 0)
+	{
+		var avgPropagation = Math.round(_.sum(propagation) / propagation.length);
+	}
 
 	var x = d3.scale.linear()
 		.domain([MIN_PROPAGATION_RANGE, MAX_PROPAGATION_RANGE])
@@ -187,7 +206,7 @@ History.prototype.getBlockPropagation = function()
 		return {x: val.x, dx: val.dx, y: val.y, frequency: val.length, cumulative: freqCum, cumpercent: cumPercent};
 	});
 
-	return histogram;
+	return {histogram: histogram, avg: avgPropagation};
 }
 
 History.prototype.getUncleCount = function()

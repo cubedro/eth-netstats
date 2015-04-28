@@ -174,6 +174,26 @@ angular.module('netStatsApp.filters', [])
 		return 'text-danger'
 	};
 })
+.filter('propagationAvgTimeClass', function() {
+	return function(propagationAvg, active) {
+		if( ! active)
+			return 'text-gray';
+
+		if(propagationAvg == 0)
+			return 'text-info';
+
+		if(propagationAvg < 1000)
+			return 'text-success';
+
+		if(propagationAvg < 3000)
+			return 'text-warning';
+
+		if(propagationAvg < 7000)
+			return 'text-orange';
+
+		return 'text-danger'
+	};
+})
 .filter('latencyFilter', function() {
 	return function(stats) {
 		if(stats.active === false)
@@ -212,30 +232,33 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('blockPropagationFilter', function() {
-	return function(ms) {
+	return function(ms, prefix) {
+		if(typeof prefix === 'undefined')
+			prefix = '+';
+
 		var result = 0;
 
 		if(ms < 1000) {
-			return (ms === 0 ? "" : "+") + ms + " ms";
+			return (ms === 0 ? "" : prefix) + ms + " ms";
 		}
 
 		if(ms < 1000*60) {
 			result = ms/1000;
-			return "+" + result.toFixed(1) + " s";
+			return prefix + result.toFixed(1) + " s";
 		}
 
 		if(ms < 1000*60*60) {
 			result = ms/1000/60;
-			return "+" + Math.round(result) + " min";
+			return prefix + Math.round(result) + " min";
 		}
 
 		if(ms < 1000*60*60*24) {
 			result = ms/1000/60/60;
-			return "+" + Math.round(result) + " h";
+			return prefix + Math.round(result) + " h";
 		}
 
 		result = ms/1000/60/60/24;
-		return "+" + Math.round(result) + " days";
+		return prefix + Math.round(result) + " days";
 	};
 })
 .filter('avgTimeFilter', function() {
