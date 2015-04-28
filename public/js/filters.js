@@ -175,17 +175,20 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('propagationAvgTimeClass', function() {
-	return function(propagation) {
-		if(propagation == 0)
+	return function(stats) {
+		if( ! stats.active)
+			return 'text-gray';
+
+		if(stats.propagationAvg == 0)
 			return 'text-info';
 
-		if(propagation < 1000)
+		if(stats.propagationAvg < 1000)
 			return 'text-success';
 
-		if(propagation < 3000)
+		if(stats.propagationAvg < 3000)
 			return 'text-warning';
 
-		if(propagation < 7000)
+		if(stats.propagationAvg < 7000)
 			return 'text-orange';
 
 		return 'text-danger'
