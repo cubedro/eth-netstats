@@ -28,12 +28,12 @@ block content
             span.big-details {{'#'}}{{ bestBlock | number}}
           div.clearfix
       div.col-xs-2.stat-holder
-        div.big-info.difficulty.text-info
+        div.big-info.difficulty.text-orange
           div.pull-left.icon-full-width
-            i.icon-difficulty
+            i.icon-hashrate
           div.pull-left
-            span.small-title difficulty
-            span.big-details {{ lastDifficulty | number }}
+            span.small-title avg hashrate
+            span.big-details {{ avgHashrate | number : 1 }} MH/s
           div.clearfix
       div.col-xs-2.stat-holder
         div.big-info.uncleCount.text-info
