@@ -124,9 +124,12 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 					data.stats.hashrate = 0;
 
 				var index = findIndex({id: data.id});
-				$scope.nodes[index].stats = data.stats;
-				$scope.nodes[index].history = data.history;
-				makePeerPropagationChart($scope.nodes[index]);
+
+				if(typeof $scope.nodes[index].stats !== 'undefined') {
+					$scope.nodes[index].stats = data.stats;
+					$scope.nodes[index].history = data.history;
+					makePeerPropagationChart($scope.nodes[index]);
+				}
 
 				break;
 
@@ -174,7 +177,10 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "latency":
-				$scope.nodes[findIndex({id: data.id})].stats.latency = data.latency;
+				var node = $scope.nodes[findIndex({id: data.id})];
+
+				if(typeof node.stats !== 'undefined' && typeof node.stats.latency !== 'undefined')
+					$scope.nodes[findIndex({id: data.id})].stats.latency = data.latency;
 
 				break;
 
