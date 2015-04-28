@@ -33,7 +33,7 @@ var History = function History(data)
 
 History.prototype.add = function(block, id)
 {
-	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined')
+	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined' && typeof block.difficulty !== 'undefined')
 	{
 		var historyBlock = this.search(block.number);
 
@@ -199,6 +199,21 @@ History.prototype.getTransactionsCount = function(id)
 		.value();
 
 	return txCount;
+}
+
+History.prototype.getDifficulty = function(id)
+{
+	var difficultyHistory = _(this._items)
+		.sortByOrder('height', false)
+		.slice(0, MAX_BINS - 1)
+		.reverse()
+		.map(function(item)
+		{
+			return item.block.difficulty;
+		})
+		.value();
+
+	return difficultyHistory;
 }
 
 History.prototype.history = function()
