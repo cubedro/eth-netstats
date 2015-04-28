@@ -150,6 +150,11 @@ Node.prototype.setState = function(active)
 	this.uptime.history.push({status: (active ? 'up' : 'down'), time: (new Date()).getTime()});
 }
 
+Node.prototype.getBlockNumber = function()
+{
+	return this.stats.block.number;
+}
+
 Node.prototype.canUpdate = function()
 {
 	return this.info.canUpdateHistory || false;

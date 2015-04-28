@@ -139,9 +139,19 @@ Collection.prototype.getHistory = function()
 Collection.prototype.canNodeUpdate = function(id)
 {
 	var node = this.getNode({id: id});
+
 	if(!node)
 		return false;
-	return node.canUpdate();
+
+	if(node.canUpdate())
+	{
+		var diff = this._history.bestBlockNumber() - node.getBlockNumber();
+
+		if(diff <= 0)
+			return true;
+	}
+
+	return false;
 }
 
 module.exports = Collection;

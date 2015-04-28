@@ -128,9 +128,19 @@ History.prototype.prevMaxBlock = function(number)
 	return this._items[index];
 }
 
-History.prototype.bestBlock = function(obj)
+History.prototype.bestBlock = function()
 {
 	return _.max(this._items, 'height');
+}
+
+History.prototype.bestBlockNumber = function()
+{
+	var best = this.bestBlock();
+
+	if(typeof best.height !== 'undefined')
+		return best.height;
+
+	return 0;
 }
 
 History.prototype.getNodePropagation = function(id)

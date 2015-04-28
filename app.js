@@ -64,16 +64,6 @@ api.on('connection', function(spark) {
             var info = Nodes.add(data);
             spark.emit('ready');
 
-            if(Nodes.getHistory().requiresUpdate() && Nodes.canNodeUpdate(data.id) && (!askedForHistory || (new Date()).getTime() - askedForHistoryTime > 120000))
-            {
-                var range = Nodes.getHistory().getHistoryRequestInterval();
-                console.log("asked " + data.id + " for history");
-                console.log('interval', range);
-                spark.emit('history', range);
-                askedForHistory = true;
-                askedForHistoryTime = (new Date()).getTime();
-            }
-
             client.write({action: 'add', data: info});
             client.write({action: 'charts', data: Nodes.getCharts()});
         }
@@ -110,7 +100,8 @@ api.on('connection', function(spark) {
         askedForHistory = false;
     });
 
-    spark.on('node-ping', function(data){
+    spark.on('node-ping', function(data)
+    {
         spark.emit('node-pong');
     });
 
@@ -121,6 +112,16 @@ api.on('connection', function(spark) {
             var stats = Nodes.updateLatency(data.id, data.latency);
 
             client.write({action: 'latency', data: stats});
+
+            if(Nodes.getHistory().requiresUpdate() && Nodes.canNodeUpdate(data.id) && (!askedForHistory || (new Date()).getTime() - askedForHistoryTime > 120000))
+            {
+                var range = Nodes.getHistory().getHistoryRequestInterval();
+                console.log("asked " + data.id + " for history");
+                console.log('interval', range);
+                spark.emit('history', range);
+                askedForHistory = true;
+                askedForHistoryTime = (new Date()).getTime();
+            }
         }
     });
 
