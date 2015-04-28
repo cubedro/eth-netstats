@@ -40,6 +40,20 @@ Collection.prototype.update = function(id, stats)
 	return node.setStats(stats, propagationHistory);
 }
 
+Collection.prototype.addHistory = function(id, blocks)
+{
+	var node = this.getNode({ id: id });
+
+	if(!node)
+		return false;
+
+	for (var i = blocks.length - 1; i >= 0; i--) {
+		this._history.add(blocks[i], id);
+	};
+
+	return this.getCharts();
+}
+
 Collection.prototype.updateLatency = function(id, latency)
 {
 	var node = this.getNode({ id: id });
@@ -110,6 +124,16 @@ Collection.prototype.blockPropagationChart = function()
 Collection.prototype.getUncleCount = function()
 {
 	return this._history.getUncleCount();
+}
+
+Collection.prototype.getCharts = function()
+{
+	return this._history.getCharts();
+}
+
+Collection.prototype.getHistory = function()
+{
+	return this._history;
 }
 
 module.exports = Collection;

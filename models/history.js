@@ -33,7 +33,7 @@ var History = function History(data)
 
 History.prototype.add = function(block, id)
 {
-	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined' && typeof block.difficulty !== 'undefined')
+	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined' && typeof block.difficulty !== 'undefined' && (this._items.length === 0 || block.number >= (this.bestBlock().height - MAX_HISTORY + 1)))
 	{
 		var historyBlock = this.search(block.number);
 
@@ -68,7 +68,9 @@ History.prototype.add = function(block, id)
 			if(prevBlock)
 			{
 				block.time = block.arrived - prevBlock.block.arrived;
-				block.time_old = block.timestamp - prevBlock.block.timestamp;
+
+				if(block.number < this.bestBlock().height)
+					block.time = (block.timestamp - prevBlock.block.timestamp)*1000;
 			}
 			else
 			{
@@ -92,10 +94,10 @@ History.prototype.add = function(block, id)
 
 History.prototype._save = function(block)
 {
-	this._items.push(block);
+	this._items.unshift(block);
 
 	if(this._items.length > MAX_HISTORY){
-		this._items.shift();
+		this._items.pop();
 	}
 
 	this._items = _.sortByOrder(this._items, 'height', false);
@@ -279,7 +281,8 @@ History.prototype.getCharts = function()
 		.map(function(item)
 		{
 			var chart = {
-				blocktime: item.block.time,
+				height: item.height,
+				blocktime: item.block.time/1000,
 				difficulty: item.block.difficulty,
 				uncles: item.block.uncles.length,
 				transactions: item.block.transactions.length,
@@ -289,12 +292,39 @@ History.prototype.getCharts = function()
 		})
 		.value();
 
-	return chartHistory;
+	var chart = {
+		height: _.pluck(chartHistory, 'height'),
+		blocktime: _.pluck(chartHistory, 'blocktime'),
+		difficulty: _.pluck(chartHistory, 'difficulty'),
+		uncles: _.pluck(chartHistory, 'uncles'),
+		transactions: _.pluck(chartHistory, 'transactions'),
+		gasSpending: _.pluck(chartHistory, 'gasSpending'),
+		propagation: this.getBlockPropagation(),
+		uncleCount: this.getUncleCount()
+	}
+
+	return chart;
 }
 
 History.prototype.history = function()
 {
-	return _.chain(this._items).sortBy('height').reverse().value();
+	return this._items;
+}
+
+History.prototype.requiresUpdate = function()
+{
+	return ! (this._items.length === MAX_HISTORY);
+}
+
+History.prototype.getHistoryRequestInterval = function()
+{
+	if(this._items.length === 0)
+		return null;
+
+	var max = _.min(this._items, 'height').height - 1;
+	var min = max - Math.min(100, (MAX_HISTORY - this._items.length + 1)) + 1;
+
+	return {max: max, min: min};
 }
 
 module.exports = History;

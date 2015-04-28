@@ -1,7 +1,7 @@
 var geoip = require('geoip-lite');
 var _ = require('lodash');
 
-var MAX_HISTORY = 36;
+var MAX_HISTORY = 40;
 
 var Node = function Node(data)
 {
@@ -49,8 +49,12 @@ var Node = function Node(data)
 	if(typeof data.id !== 'undefined')
 		this.id = data.id;
 
-	if(typeof data.info !== 'undefined')
+	if(typeof data.info !== 'undefined') {
 		this.info = data.info;
+
+		if(typeof data.info.canUpdateHistory === 'undefined')
+			data.info.canUpdateHistory = false;
+	}
 
 	if(typeof data.ip !== 'undefined'){
 		if(data.ip === '::ffff:127.0.0.1')
@@ -75,8 +79,12 @@ Node.prototype.setGeo = function(ip)
 
 Node.prototype.setInfo = function(data)
 {
-	if(typeof data.info !== 'undefined')
+	if(typeof data.info !== 'undefined') {
 		this.info = data.info;
+
+		if(typeof data.info.canUpdateHistory === 'undefined')
+			data.info.canUpdateHistory = false;
+	}
 
 	if(typeof data.ip !== 'undefined'){
 		this.info.ip = data.ip;
@@ -129,6 +137,11 @@ Node.prototype.setState = function(active)
 {
 	this.stats.active = active;
 	this.uptime.history.push({status: (active ? 'up' : 'down'), time: (new Date()).getTime()});
+}
+
+Node.prototype.canUpdate = function()
+{
+	return this.info.canUpdateHistory || false;
 }
 
 module.exports = Node;

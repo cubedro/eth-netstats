@@ -3,6 +3,7 @@ var app = express();
 var path = require('path');
 var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
+var askedForHistory = false;
 
 var Primus = require('primus'),
     api,
@@ -62,13 +63,14 @@ api.on('connection', function(spark) {
             var info = Nodes.add(data);
             spark.emit('ready');
 
+            if(Nodes.getHistory().requiresUpdate() && !askedForHistory && Nodes.getNode({id: data.id}).canUpdate())
+            {
+                spark.emit('history', Nodes.getHistory().getHistoryRequestInterval());
+                askedForHistory = true;
+            }
+
             client.write({action: 'add', data: info});
-
-            var blockPropagationChart = Nodes.blockPropagationChart();
-            client.write({action: 'blockPropagationChart', data: blockPropagationChart});
-
-            var uncleCount = Nodes.getUncleCount();
-            client.write({action: 'uncleCount', data: uncleCount});
+            client.write({action: 'charts', data: Nodes.getCharts()});
         }
     });
 
@@ -82,14 +84,20 @@ api.on('connection', function(spark) {
             if(stats !== false)
             {
                 client.write({action: 'update', data: stats});
+                client.write({action: 'charts', data: Nodes.getCharts()});
+            }
 
-                var blockPropagationChart = Nodes.blockPropagationChart();
-                client.write({action: 'blockPropagationChart', data: blockPropagationChart});
-
-                var uncleCount = Nodes.getUncleCount();
-                client.write({action: 'uncleCount', data: uncleCount});
+            if(Nodes.getHistory().requiresUpdate() && !askedForHistory && Nodes.getNode({id: data.id}).canUpdate())
+            {
+                spark.emit('history', Nodes.getHistory().getHistoryRequestInterval());
+                askedForHistory = true;
             }
         }
+    });
+
+    spark.on('history', function(data){
+        client.write({action: 'charts', data: Nodes.addHistory(data.id, data.history)});
+        askedForHistory = false;
     });
 
     spark.on('node-ping', function(data){
@@ -118,11 +126,7 @@ client.on('connection', function(spark) {
     spark.on('ready', function(data){
         spark.emit('init', {nodes: Nodes.all()});
 
-        var blockPropagationChart = Nodes.blockPropagationChart();
-        spark.write({action: 'blockPropagationChart', data: blockPropagationChart});
-
-        var uncleCount = Nodes.getUncleCount();
-        spark.write({action: 'uncleCount', data: uncleCount});
+        spark.write({action: 'charts', data: Nodes.getCharts()});
     });
 
     spark.on('client-pong', function(data) {

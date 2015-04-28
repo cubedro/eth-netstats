@@ -7,7 +7,7 @@
 
 	$.fn.sparkline.defaults.bar.height = 63;
 	$.fn.sparkline.defaults.bar.barWidth = 6;
-	$.fn.sparkline.defaults.bar.barSpacing = 2;
+	$.fn.sparkline.defaults.bar.barSpacing = 1;
 	$.fn.sparkline.defaults.bar.tooltipClassname = 'jqstooltip';
 	$.fn.sparkline.defaults.bar.tooltipOffsetX = 0;
 	$.fn.sparkline.defaults.bar.tooltipFormat = $.spformat('<div class="tooltip-arrow"></div><div class="tooltip-inner">{{prefix}}{{value}}{{suffix}}</div>');
