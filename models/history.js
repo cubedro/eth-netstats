@@ -33,7 +33,7 @@ var History = function History(data)
 
 History.prototype.add = function(block, id)
 {
-	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined')
+	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined' && typeof block.difficulty !== 'undefined' && (this._items.length === 0 || block.number >= (this.bestBlock().height - MAX_HISTORY + 1)))
 	{
 		var historyBlock = this.search(block.number);
 
@@ -63,6 +63,19 @@ History.prototype.add = function(block, id)
 		}
 		else
 		{
+			var prevBlock = this.prevMaxBlock(block.number);
+
+			if(prevBlock)
+			{
+				block.time = block.arrived - prevBlock.block.arrived;
+
+				if(block.number < this.bestBlock().height)
+					block.time = (block.timestamp - prevBlock.block.timestamp)*1000;
+			}
+			else
+			{
+				block.time = 0;
+			}
 			var item = {
 				height: block.number,
 				block: block,
@@ -72,7 +85,6 @@ History.prototype.add = function(block, id)
 			item.propagTimes.push({node: id, received: now, propagation: block.propagation});
 			this._save(item);
 		}
-		this.getNodePropagation(id);
 
 		return block;
 	}
@@ -82,16 +94,30 @@ History.prototype.add = function(block, id)
 
 History.prototype._save = function(block)
 {
-	this._items.push(block);
+	this._items.unshift(block);
 
 	if(this._items.length > MAX_HISTORY){
-		this._items.shift();
+		this._items.pop();
 	}
+
+	this._items = _.sortByOrder(this._items, 'height', false);
 }
 
 History.prototype.search = function(number)
 {
 	var index = _.findIndex(this._items, {height: number});
+
+	if(index < 0)
+		return false;
+
+	return this._items[index];
+}
+
+History.prototype.prevMaxBlock = function(number)
+{
+	var index = _.findIndex(this._items, function(item) {
+		return item.height < number;
+	});
 
 	if(index < 0)
 		return false;
@@ -164,7 +190,7 @@ History.prototype.getBlockPropagation = function()
 	return histogram;
 }
 
-History.prototype.getUncleCount = function(id)
+History.prototype.getUncleCount = function()
 {
 	var uncles = _(this._items)
 		.sortByOrder('height', false)
@@ -186,11 +212,41 @@ History.prototype.getUncleCount = function(id)
 	return uncleBins;
 }
 
-History.prototype.getTransactionsCount = function(id)
+History.prototype.getBlockTimes = function()
+{
+	var blockTimes = _(this._items)
+		.sortByOrder('height', false)
+		.slice(0, MAX_BINS)
+		.reverse()
+		.map(function(item)
+		{
+			return item.block.time;
+		})
+		.value();
+
+	return blockTimes;
+}
+
+History.prototype.getDifficulty = function()
+{
+	var difficultyHistory = _(this._items)
+		.sortByOrder('height', false)
+		.slice(0, MAX_BINS)
+		.reverse()
+		.map(function(item)
+		{
+			return item.block.difficulty;
+		})
+		.value();
+
+	return difficultyHistory;
+}
+
+History.prototype.getTransactionsCount = function()
 {
 	var txCount = _(this._items)
 		.sortByOrder('height', false)
-		.slice(0, MAX_BINS - 1)
+		.slice(0, MAX_BINS)
 		.reverse()
 		.map(function(item)
 		{
@@ -201,9 +257,74 @@ History.prototype.getTransactionsCount = function(id)
 	return txCount;
 }
 
+History.prototype.getGasSpending = function()
+{
+	var gasSpending = _(this._items)
+		.sortByOrder('height', false)
+		.slice(0, MAX_BINS)
+		.reverse()
+		.map(function(item)
+		{
+			return item.block.gasUsed;
+		})
+		.value();
+
+	return gasSpending;
+}
+
+History.prototype.getCharts = function()
+{
+	var chartHistory = _(this._items)
+		.sortByOrder('height', false)
+		.slice(0, MAX_BINS)
+		.reverse()
+		.map(function(item)
+		{
+			var chart = {
+				height: item.height,
+				blocktime: item.block.time/1000,
+				difficulty: item.block.difficulty,
+				uncles: item.block.uncles.length,
+				transactions: item.block.transactions.length,
+				gasSpending: item.block.gasUsed
+			}
+			return chart;
+		})
+		.value();
+
+	var chart = {
+		height: _.pluck(chartHistory, 'height'),
+		blocktime: _.pluck(chartHistory, 'blocktime'),
+		difficulty: _.pluck(chartHistory, 'difficulty'),
+		uncles: _.pluck(chartHistory, 'uncles'),
+		transactions: _.pluck(chartHistory, 'transactions'),
+		gasSpending: _.pluck(chartHistory, 'gasSpending'),
+		propagation: this.getBlockPropagation(),
+		uncleCount: this.getUncleCount()
+	}
+
+	return chart;
+}
+
 History.prototype.history = function()
 {
-	return _.chain(this._items).sortBy('number').reverse().value();
+	return this._items;
+}
+
+History.prototype.requiresUpdate = function()
+{
+	return ! (this._items.length === MAX_HISTORY);
+}
+
+History.prototype.getHistoryRequestInterval = function()
+{
+	if(this._items.length === 0)
+		return null;
+
+	var max = _.min(this._items, 'height').height - 1;
+	var min = max - Math.min(100, (MAX_HISTORY - this._items.length + 1)) + 1;
+
+	return {max: max, min: min};
 }
 
 module.exports = History;

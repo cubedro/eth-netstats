@@ -181,7 +181,7 @@ span.small-title span.small {
 .blocks-holder .block {
 	width: 6px;
 	height: 6px;
-	margin: 2px 1px 6px 1px;
+	margin: 2px 1px 6px 0px;
 	float: left;
 	-webkit-border-radius: 1px;
 	border-radius: 1px;
