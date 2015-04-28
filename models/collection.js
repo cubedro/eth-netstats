@@ -136,4 +136,12 @@ Collection.prototype.getHistory = function()
 	return this._history;
 }
 
+Collection.prototype.canNodeUpdate = function(id)
+{
+	var node = this.getNode({id: id});
+	if(!node)
+		return false;
+	return node.canUpdate();
+}
+
 module.exports = Collection;
