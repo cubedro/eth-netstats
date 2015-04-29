@@ -231,35 +231,42 @@ angular.module('netStatsApp.filters', [])
 		return moment.duration(Math.round(diff), 's').humanize() + ' ago';
 	};
 })
-.filter('networkHashrateFilter', function($sce) {
-	return function(hashes) {
+.filter('networkHashrateFilter', ['$sce', '$filter', function($sce, filter) {
+	return function(hashes, isMining) {
 		var result = 0;
+		var unit = 'K';
 
-		if(hashes < 1000) {
-			return $sce.trustAsHtml(result.toFixed(1) + ' <span class="small">H/s</span>');
+		if(hashes !== 0 && hashes < 1000) {
+			result = hashes;
+			unit = '';
 		}
 
-		if(hashes < Math.pow(1000, 2)) {
+		if(hashes >= 1000 && hashes < Math.pow(1000, 2)) {
 			result = hashes / 1000;
-			return $sce.trustAsHtml(result.toFixed(1) + ' <span class="small">KH/s</span>');
+			unit = 'K';
 		}
 
-		if(hashes < Math.pow(1000, 3)) {
+		if(hashes >= Math.pow(1000, 2) && hashes < Math.pow(1000, 3)) {
 			result = hashes / Math.pow(1000, 2);
-			return $sce.trustAsHtml(result.toFixed(1) + ' <span class="small">MH/s</span>');
+			unit = 'M';
 		}
 
-		if(hashes < Math.pow(1000, 4)) {
+		if(hashes >= Math.pow(1000, 3) && hashes < Math.pow(1000, 4)) {
 			result = hashes / Math.pow(1000, 3);
-			return $sce.trustAsHtml(result.toFixed(1) + ' <span class="small">GH/s</span>');
+			unit = 'G';
 		}
 
-		if(hashes < Math.pow(1000, 5)) {
+		if(hashes >= Math.pow(1000, 4) && hashes < Math.pow(1000, 5)) {
 			result = hashes / Math.pow(1000, 4);
-			return $sce.trustAsHtml(result.toFixed(1) + ' <span class="small">TH/s</span>');
+			unit = 'T';
 		}
+
+		if( !isMining )
+			return $sce.trustAsHtml(filter('number')(result.toFixed(1)) + ' <span class="small-hash">' + unit + 'H/s</span>');
+
+		return $sce.trustAsHtml('? <span class="small-hash">' + unit + 'KH/s</span>');
 	};
-})
+}])
 .filter('blockPropagationFilter', function() {
 	return function(ms, prefix) {
 		if(typeof prefix === 'undefined')

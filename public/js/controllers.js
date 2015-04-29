@@ -178,7 +178,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "inactive":
-				if(typeof data.stats !== 'undefined')
+				if( !_.isUndefined(data.stats) )
 					$scope.nodes[findIndex({id: data.id})].stats = data.stats;
 
 				toastr['error']("Node "+ $scope.nodes[findIndex({id: data.id})].info.name +" went away!", "Node connection was lost!");
@@ -186,9 +186,10 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "latency":
-				var node = $scope.nodes[findIndex({id: data.id})];
+				if( !_.isUndefined(data.id) )
+					var node = $scope.nodes[findIndex({id: data.id})];
 
-				if(typeof node.stats !== 'undefined' && typeof node.stats.latency !== 'undefined')
+				if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.latency))
 					$scope.nodes[findIndex({id: data.id})].stats.latency = data.latency;
 
 				break;

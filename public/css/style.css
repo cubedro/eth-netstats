@@ -133,6 +133,10 @@ span.small-title span.small {
 	word-spacing: nowrap !important;
 }
 
+.big-info .big-details .small-hash {
+	font-size: 87%;
+}
+
 .big-info .big-details-holder {
 	position: absolute;
 	top: 15px;
