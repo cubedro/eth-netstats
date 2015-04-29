@@ -42,7 +42,7 @@ block content
             i.icon-hashrate
           div.big-details-holder
             span.small-title avg network hashrate
-            span.big-details {{ avgHashrate | number : 1 }} MH/s
+            span.big-details(ng-bind-html="avgHashrate | networkHashrateFilter")
           div.clearfix
       div.col-xs-2.stat-holder
         div.big-info.difficulty.text-danger

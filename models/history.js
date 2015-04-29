@@ -334,9 +334,9 @@ History.prototype.getAvgHashrate = function()
 		})
 		.value();
 
-	var avgBlocktime = _.sum(blocktimeHistory) / blocktimeHistory.length;
+	var avgBlocktime = (_.sum(blocktimeHistory) / blocktimeHistory.length)/1000;
 
-	return avgDifficulty / 1000 * 12 * ( 12 / avgBlocktime );
+	return avgDifficulty * 12 * ( 12 / avgBlocktime );
 }
 
 History.prototype.getMinersCount = function()

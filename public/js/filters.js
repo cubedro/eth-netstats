@@ -231,6 +231,35 @@ angular.module('netStatsApp.filters', [])
 		return moment.duration(Math.round(diff), 's').humanize() + ' ago';
 	};
 })
+.filter('networkHashrateFilter', function($sce) {
+	return function(hashes) {
+		var result = 0;
+
+		if(hashes < 1000) {
+			return $sce.trustAsHtml(result.toFixed(1) + ' <span class="small">H/s</span>');
+		}
+
+		if(hashes < Math.pow(1000, 2)) {
+			result = hashes / 1000;
+			return $sce.trustAsHtml(result.toFixed(1) + ' <span class="small">KH/s</span>');
+		}
+
+		if(hashes < Math.pow(1000, 3)) {
+			result = hashes / Math.pow(1000, 2);
+			return $sce.trustAsHtml(result.toFixed(1) + ' <span class="small">MH/s</span>');
+		}
+
+		if(hashes < Math.pow(1000, 4)) {
+			result = hashes / Math.pow(1000, 3);
+			return $sce.trustAsHtml(result.toFixed(1) + ' <span class="small">GH/s</span>');
+		}
+
+		if(hashes < Math.pow(1000, 5)) {
+			result = hashes / Math.pow(1000, 4);
+			return $sce.trustAsHtml(result.toFixed(1) + ' <span class="small">TH/s</span>');
+		}
+	};
+})
 .filter('blockPropagationFilter', function() {
 	return function(ms, prefix) {
 		if(typeof prefix === 'undefined')
