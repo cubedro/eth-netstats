@@ -33,26 +33,30 @@ var History = function History(data)
 
 History.prototype.add = function(block, id)
 {
-	if(typeof block !== 'undefined' && typeof block.number !== 'undefined' && typeof block.uncles !== 'undefined' && typeof block.transactions !== 'undefined' && typeof block.difficulty !== 'undefined')
+	if( !_.isUndefined(block) && !_.isUndefined(block.number) && !_.isUndefined(block.uncles) && !_.isUndefined(block.transactions) && !_.isUndefined(block.difficulty) )
 	{
 		var historyBlock = this.search(block.number);
 
-		var now = (new Date()).getTime();
+		var now = _.now();
 		block.arrived = now;
 		block.received = now;
 		block.propagation = 0;
 
-		if(historyBlock)
+		if( historyBlock )
 		{
-			var propIndex = _.findIndex(historyBlock.propagTimes, {node: id});
+			var propIndex = _.findIndex( historyBlock.propagTimes, {node: id} );
 
-			if(propIndex === -1)
+			if( propIndex === -1 )
 			{
 				block.arrived = historyBlock.block.arrived;
 				block.received = now;
 				block.propagation = now - historyBlock.block.received;
 
-				historyBlock.propagTimes.push({node: id, received: now, propagation: block.propagation});
+				historyBlock.propagTimes.push({
+					node: id,
+					received: now,
+					propagation: block.propagation
+				});
 			}
 			else
 			{
@@ -65,26 +69,32 @@ History.prototype.add = function(block, id)
 		{
 			var prevBlock = this.prevMaxBlock(block.number);
 
-			if(prevBlock)
+			if( prevBlock )
 			{
 				block.time = block.arrived - prevBlock.block.arrived;
 
 				if(block.number < this.bestBlock().height)
-					block.time = (block.timestamp - prevBlock.block.timestamp)*1000;
+					block.time = (block.timestamp - prevBlock.block.timestamp) * 1000;
 			}
 			else
 			{
 				block.time = 0;
 			}
+
 			var item = {
 				height: block.number,
 				block: block,
 				propagTimes: []
 			}
 
-			if(this._items.length === 0 || block.number >= (this.bestBlock().height - MAX_HISTORY + 1))
+			if( this._items.length === 0 || block.number >= (this.bestBlockNumber() - MAX_HISTORY + 1) )
 			{
-				item.propagTimes.push({node: id, received: now, propagation: block.propagation});
+				item.propagTimes.push({
+					node: id,
+					received: now,
+					propagation: block.propagation
+				});
+
 				this._save(item);
 			}
 		}
@@ -99,16 +109,17 @@ History.prototype._save = function(block)
 {
 	this._items.unshift(block);
 
-	if(this._items.length > MAX_HISTORY){
+	if(this._items.length > MAX_HISTORY)
+	{
 		this._items.pop();
 	}
 
-	this._items = _.sortByOrder(this._items, 'height', false);
+	this._items = _.sortByOrder( this._items, 'height', false );
 }
 
 History.prototype.search = function(number)
 {
-	var index = _.findIndex(this._items, {height: number});
+	var index = _.findIndex( this._items, {height: number} );
 
 	if(index < 0)
 		return false;
@@ -137,7 +148,7 @@ History.prototype.bestBlockNumber = function()
 {
 	var best = this.bestBlock();
 
-	if(typeof best.height !== 'undefined')
+	if( !_.isUndefined(best.height) )
 		return best.height;
 
 	return 0;
@@ -145,23 +156,22 @@ History.prototype.bestBlockNumber = function()
 
 History.prototype.getNodePropagation = function(id)
 {
-	var propagation = new Array(MAX_PEER_PROPAGATION);
-	var bestBlock = this.bestBlock().height;
-
+	var propagation = new Array( MAX_PEER_PROPAGATION );
+	var bestBlock = this.bestBlockNumber();
 
 	_.fill(propagation, -1);
 
-	var sorted = _(this._items)
-		.sortByOrder('height', false)
-		.slice(0, MAX_PEER_PROPAGATION)
+	var sorted = _( this._items )
+		.sortByOrder( 'height', false )
+		.slice( 0, MAX_PEER_PROPAGATION )
 		.reverse()
-		.forEach(function(n, key)
+		.forEach(function (item, key)
 		{
-			var index = MAX_PEER_PROPAGATION - 1 - bestBlock + n.height;
+			var index = MAX_PEER_PROPAGATION - 1 - bestBlock + item.height;
 
 			if(index > 0)
 			{
-				propagation[index] = _.result(_.find(n.propagTimes, 'node', id), 'propagation', -1);
+				propagation[index] = _.result(_.find(item.propagTimes, 'node', id), 'propagation', -1);
 			}
 		})
 		.value();
@@ -174,9 +184,9 @@ History.prototype.getBlockPropagation = function()
 	var propagation = [];
 	var avgPropagation = 0;
 
-	_.forEach(this._items, function(n, key)
+	_.forEach(this._items, function (n, key)
 	{
-		_.forEach(n.propagTimes, function(p, i)
+		_.forEach(n.propagTimes, function (p, i)
 		{
 			var prop = _.result(p, 'propagation', -1);
 
@@ -187,57 +197,69 @@ History.prototype.getBlockPropagation = function()
 
 	if(propagation.length > 0)
 	{
-		var avgPropagation = Math.round(_.sum(propagation) / propagation.length);
+		var avgPropagation = Math.round( _.sum(propagation) / propagation.length );
 	}
 
 	var x = d3.scale.linear()
-		.domain([MIN_PROPAGATION_RANGE, MAX_PROPAGATION_RANGE])
-		.interpolate(d3.interpolateRound);
+		.domain([ MIN_PROPAGATION_RANGE, MAX_PROPAGATION_RANGE ])
+		.interpolate( d3.interpolateRound );
 
 	var data = d3.layout.histogram()
-		.frequency(false)
-		.bins(x.ticks(MAX_BINS))
-		(propagation);
+		.frequency( false )
+		.bins( x.ticks(MAX_BINS) )
+		( propagation );
 
 	var freqCum = 0;
-	var histogram = data.map(function(val) {
+	var histogram = data.map(function (val) {
 		freqCum += val.length;
-		var cumPercent = (freqCum / Math.max(1, propagation.length));
-		return {x: val.x, dx: val.dx, y: val.y, frequency: val.length, cumulative: freqCum, cumpercent: cumPercent};
+		var cumPercent = ( freqCum / Math.max(1, propagation.length) );
+
+		return {
+			x: val.x,
+			dx: val.dx,
+			y: val.y,
+			frequency: val.length,
+			cumulative: freqCum,
+			cumpercent: cumPercent
+		};
 	});
 
-	return {histogram: histogram, avg: avgPropagation};
+	return {
+		histogram: histogram,
+		avg: avgPropagation
+	};
 }
 
 History.prototype.getUncleCount = function()
 {
-	var uncles = _(this._items)
-		.sortByOrder('height', false)
-		.map(function(item)
+	var uncles = _( this._items )
+		.sortByOrder( 'height', false )
+		.map(function (item)
 		{
 			return item.block.uncles.length;
 		})
 		.value();
 
-	var uncleBins = _.fill(Array(MAX_BINS), 0);
+	var uncleBins = _.fill( Array(MAX_BINS), 0 );
 
-	var sumMapper = function(array, key) {
+	var sumMapper = function (array, key)
+	{
 		uncleBins[key] = _.sum(array);
 		return _.sum(array);
 	};
 
-	_.map(_.chunk(uncles, MAX_UNCLES_PER_BIN), sumMapper);
+	_.map(_.chunk( uncles, MAX_UNCLES_PER_BIN ), sumMapper);
 
 	return uncleBins;
 }
 
 History.prototype.getBlockTimes = function()
 {
-	var blockTimes = _(this._items)
-		.sortByOrder('height', false)
+	var blockTimes = _( this._items )
+		.sortByOrder( 'height', false )
 		.slice(0, MAX_BINS)
 		.reverse()
-		.map(function(item)
+		.map(function (item)
 		{
 			return item.block.time;
 		})
@@ -248,11 +270,11 @@ History.prototype.getBlockTimes = function()
 
 History.prototype.getDifficulty = function()
 {
-	var difficultyHistory = _(this._items)
-		.sortByOrder('height', false)
+	var difficultyHistory = _( this._items )
+		.sortByOrder( 'height', false )
 		.slice(0, MAX_BINS)
 		.reverse()
-		.map(function(item)
+		.map(function (item)
 		{
 			return item.block.difficulty;
 		})
@@ -263,11 +285,11 @@ History.prototype.getDifficulty = function()
 
 History.prototype.getTransactionsCount = function()
 {
-	var txCount = _(this._items)
-		.sortByOrder('height', false)
+	var txCount = _( this._items )
+		.sortByOrder( 'height', false )
 		.slice(0, MAX_BINS)
 		.reverse()
-		.map(function(item)
+		.map(function (item)
 		{
 			return item.block.transactions.length;
 		})
@@ -278,11 +300,11 @@ History.prototype.getTransactionsCount = function()
 
 History.prototype.getGasSpending = function()
 {
-	var gasSpending = _(this._items)
-		.sortByOrder('height', false)
+	var gasSpending = _( this._items )
+		.sortByOrder( 'height', false )
 		.slice(0, MAX_BINS)
 		.reverse()
-		.map(function(item)
+		.map(function (item)
 		{
 			return item.block.gasUsed;
 		})
@@ -293,51 +315,50 @@ History.prototype.getGasSpending = function()
 
 History.prototype.getAvgHashrate = function()
 {
-	if(this._items.length === 0)
+	if( _.isEmpty(this._items) )
 		return 0;
 
-	var difficultyHistory = _(this._items)
-		.map(function(item)
+	var difficultyHistory = _( this._items )
+		.map(function (item)
 		{
 			return item.block.difficulty;
 		})
 		.value();
 
-	var avgDifficulty = _.sum(difficultyHistory)/difficultyHistory.length;
+	var avgDifficulty = _.sum(difficultyHistory) / difficultyHistory.length;
 
-	var blocktimeHistory = _(this._items)
-		.map(function(item)
+	var blocktimeHistory = _( this._items )
+		.map(function (item)
 		{
 			return item.block.time;
 		})
 		.value();
 
-	var avgBlocktime = _.sum(blocktimeHistory)/blocktimeHistory.length;
+	var avgBlocktime = _.sum(blocktimeHistory) / blocktimeHistory.length;
 
-	return avgDifficulty/1000 * 12 * (12/avgBlocktime);
+	return avgDifficulty / 1000 * 12 * ( 12 / avgBlocktime );
 }
 
 History.prototype.getCharts = function()
 {
-	var chartHistory = _(this._items)
-		.sortByOrder('height', false)
+	var chartHistory = _( this._items )
+		.sortByOrder( 'height', false )
 		.slice(0, MAX_BINS)
 		.reverse()
-		.map(function(item)
+		.map(function (item)
 		{
-			var chart = {
+			return {
 				height: item.height,
-				blocktime: item.block.time/1000,
+				blocktime: item.block.time / 1000,
 				difficulty: item.block.difficulty,
 				uncles: item.block.uncles.length,
 				transactions: item.block.transactions.length,
 				gasSpending: item.block.gasUsed
-			}
-			return chart;
+			};
 		})
 		.value();
 
-	var chart = {
+	return {
 		height: _.pluck(chartHistory, 'height'),
 		blocktime: _.pluck(chartHistory, 'blocktime'),
 		avgBlocktime: _.sum(_.pluck(chartHistory, 'blocktime')) / (chartHistory.length === 0 ? 1 : chartHistory.length),
@@ -348,28 +369,29 @@ History.prototype.getCharts = function()
 		propagation: this.getBlockPropagation(),
 		uncleCount: this.getUncleCount(),
 		avgHashrate: this.getAvgHashrate()
-	}
-
-	return chart;
-}
-
-History.prototype.history = function()
-{
-	return this._items;
+	};
 }
 
 History.prototype.requiresUpdate = function()
 {
-	return ! (this._items.length === MAX_HISTORY);
+	return ( this._items.length < MAX_HISTORY && !_.isEmpty(this._items) );
 }
 
-History.prototype.getHistoryRequestInterval = function()
+History.prototype.getHistoryRequestRange = function()
 {
-	if(this._items.length === 0)
-		return null;
+	if( _.isEmpty(this._items) )
+		return false;
+
+	var blocks = _.pluck( this._items, 'height' );
+	var best = _.max( blocks );
+	var range = _.range( _.max([ 0, best - MAX_HISTORY ]), best + 1);
+
+	var missing = _.difference( range, blocks );
+
+	console.log('missing', missing.join(', '));
 
 	var max = _.min(this._items, 'height').height - 1;
-	var min = max - Math.min(50, (MAX_HISTORY - this._items.length + 1)) + 1;
+	var min = max - Math.min( 50, (MAX_HISTORY - this._items.length + 1) ) + 1;
 
 	return {max: max, min: min};
 }

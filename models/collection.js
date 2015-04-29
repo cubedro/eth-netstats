@@ -4,9 +4,8 @@ var Node = require('./node');
 
 var Collection = function Collection()
 {
-	this._list = [];
-	this._history = new Blockchain();
-	this._bestBlock = null;
+	this._items = [];
+	this._blockchain = new Blockchain();
 
 	return this;
 }
@@ -26,12 +25,12 @@ Collection.prototype.update = function(id, stats)
 	if(!node)
 		return false;
 
-	var block = this._history.add(stats.block, id);
+	var block = this._blockchain.add(stats.block, id);
 
 	if(! block)
 		return false;
 
-	var propagationHistory = this._history.getNodePropagation(id);
+	var propagationHistory = this._blockchain.getNodePropagation(id);
 
 	stats.block.arrived = block.arrived;
 	stats.block.received = block.received;
@@ -47,8 +46,10 @@ Collection.prototype.addHistory = function(id, blocks)
 	if(!node)
 		return false;
 
-	for (var i = blocks.length - 1; i >= 0; i--) {
-		this._history.add(blocks[i], id);
+	console.log(blocks);
+	for (var i = 0; i <= blocks.length - 1; i++)
+	{
+		this._blockchain.add(blocks[i], id);
 	};
 
 	return this.getCharts();
@@ -78,7 +79,7 @@ Collection.prototype.inactive = function(id)
 
 Collection.prototype.getIndex = function(search)
 {
-	return _.findIndex(this._list, search);
+	return _.findIndex(this._items, search);
 }
 
 Collection.prototype.getNode = function(search)
@@ -86,15 +87,15 @@ Collection.prototype.getNode = function(search)
 	var index = this.getIndex(search);
 
 	if(index >= 0)
-		return this._list[index];
+		return this._items[index];
 
 	return false;
 }
 
 Collection.prototype.getNodeByIndex = function(index)
 {
-	if(this._list[index])
-		return this._list[index];
+	if(this._items[index])
+		return this._items[index];
 
 	return false;
 }
@@ -103,7 +104,7 @@ Collection.prototype.getIndexOrNew = function(search, data)
 {
 	var index = this.getIndex(search);
 
-	return (index >= 0 ? index : this._list.push(new Node(data)) - 1);
+	return (index >= 0 ? index : this._items.push(new Node(data)) - 1);
 }
 
 Collection.prototype.getNodeOrNew = function(search, data)
@@ -113,27 +114,27 @@ Collection.prototype.getNodeOrNew = function(search, data)
 
 Collection.prototype.all = function()
 {
-	return this._list;
+	return this._items;
 }
 
 Collection.prototype.blockPropagationChart = function()
 {
-	return this._history.getBlockPropagation();
+	return this._blockchain.getBlockPropagation();
 }
 
 Collection.prototype.getUncleCount = function()
 {
-	return this._history.getUncleCount();
+	return this._blockchain.getUncleCount();
 }
 
 Collection.prototype.getCharts = function()
 {
-	return this._history.getCharts();
+	return this._blockchain.getCharts();
 }
 
 Collection.prototype.getHistory = function()
 {
-	return this._history;
+	return this._blockchain;
 }
 
 Collection.prototype.canNodeUpdate = function(id)
@@ -145,13 +146,17 @@ Collection.prototype.canNodeUpdate = function(id)
 
 	if(node.canUpdate())
 	{
-		var diff = this._history.bestBlockNumber() - node.getBlockNumber();
+		var diff = this._blockchain.bestBlockNumber() - node.getBlockNumber();
 
-		if(diff <= 0)
-			return true;
+		return (diff <= 0);
 	}
 
 	return false;
+}
+
+Collection.prototype.requiresUpdate = function(id)
+{
+	return ( this.canNodeUpdate(id) && this._blockchain.requiresUpdate() );
 }
 
 module.exports = Collection;
