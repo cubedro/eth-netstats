@@ -94,8 +94,8 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 	function socketAction(action, data)
 	{
-		console.log('Action: ', action);
-		console.log('Data: ', data);
+		// console.log('Action: ', action);
+		// console.log('Data: ', data);
 
 		switch(action) {
 			case "init":
@@ -230,9 +230,8 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 	function getMinersNames()
 	{
-		if($scope.miners.length > 0) {
-			console.log('miners', $scope.miners);
-
+		if($scope.miners.length > 0)
+		{
 			_.forIn($scope.miners, function(value, key)
 			{
 				if(value.name !== false)

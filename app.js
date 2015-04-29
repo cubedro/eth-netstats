@@ -137,8 +137,7 @@ api.on('connection', function(spark) {
 			{
 				var range = Nodes.getHistory().getHistoryRequestRange();
 
-				console.log("asked " + data.id + " for history");
-				console.log('interval', range.max + " - " + range.min);
+				console.log("asked " + data.id + " for history: " + range.min + " - " + range.max);
 
 				spark.emit('history', range);
 
