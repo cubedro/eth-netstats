@@ -174,6 +174,29 @@ angular.module('netStatsApp.filters', [])
 		return 'text-danger'
 	};
 })
+.filter('propagationNodeAvgTimeClass', function() {
+	return function(stats, bestBlock) {
+		if( ! stats.active)
+			return 'text-gray';
+
+		if(stats.block.number < bestBlock)
+			return 'text-gray';
+
+		if(stats.propagationAvg == 0)
+			return 'text-info';
+
+		if(stats.propagationAvg < 1000)
+			return 'text-success';
+
+		if(stats.propagationAvg < 3000)
+			return 'text-warning';
+
+		if(stats.propagationAvg < 7000)
+			return 'text-orange';
+
+		return 'text-danger'
+	};
+})
 .filter('propagationAvgTimeClass', function() {
 	return function(propagationAvg, active) {
 		if( ! active)
