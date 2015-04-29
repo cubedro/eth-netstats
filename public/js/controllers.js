@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-function StatsCtrl($scope, $filter, socket, _, toastr) {
+netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr) {
 
 	// Main Stats init
 	// ---------------
@@ -34,7 +34,7 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 	$scope.latency = 0;
 
-	$scope.currentApiVersion = "0.0.6";
+	$scope.currentApiVersion = "0.0.7";
 
 	$scope.predicate = ['-stats.active', '-stats.block.number', 'stats.block.propagation'];
 	$scope.reverse = false;
@@ -52,9 +52,10 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 		}
 	}
 
-	$scope.timeout = setInterval(function(){
+	$scope.timeout = setInterval(function ()
+	{
 		$scope.$apply();
-	}, 1000);
+	}, 200);
 
 	$scope.getNumber = function(num) {
 		return new Array(num);
@@ -62,8 +63,6 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 	// Socket listeners
 	// ----------------
-
-	socket = new Primus();
 
 	socket.on('open', function open() {
 		socket.emit('ready');
@@ -317,4 +316,4 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 		$scope.$apply();
 	}
-}
+});
