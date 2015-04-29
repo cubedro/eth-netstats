@@ -46,7 +46,8 @@ Collection.prototype.addHistory = function(id, blocks)
 	if(!node)
 		return false;
 
-	console.log(blocks);
+	blocks = blocks.reverse();
+
 	for (var i = 0; i <= blocks.length - 1; i++)
 	{
 		this._blockchain.add(blocks[i], id);
