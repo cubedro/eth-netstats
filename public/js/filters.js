@@ -174,6 +174,29 @@ angular.module('netStatsApp.filters', [])
 		return 'text-danger'
 	};
 })
+.filter('propagationNodeAvgTimeClass', function() {
+	return function(stats, bestBlock) {
+		if( ! stats.active)
+			return 'text-gray';
+
+		if(stats.block.number < bestBlock)
+			return 'text-gray';
+
+		if(stats.propagationAvg == 0)
+			return 'text-info';
+
+		if(stats.propagationAvg < 1000)
+			return 'text-success';
+
+		if(stats.propagationAvg < 3000)
+			return 'text-warning';
+
+		if(stats.propagationAvg < 7000)
+			return 'text-orange';
+
+		return 'text-danger'
+	};
+})
 .filter('propagationAvgTimeClass', function() {
 	return function(propagationAvg, active) {
 		if( ! active)
@@ -231,6 +254,42 @@ angular.module('netStatsApp.filters', [])
 		return moment.duration(Math.round(diff), 's').humanize() + ' ago';
 	};
 })
+.filter('networkHashrateFilter', ['$sce', '$filter', function($sce, filter) {
+	return function(hashes, isMining) {
+		var result = 0;
+		var unit = 'K';
+
+		if(hashes !== 0 && hashes < 1000) {
+			result = hashes;
+			unit = '';
+		}
+
+		if(hashes >= 1000 && hashes < Math.pow(1000, 2)) {
+			result = hashes / 1000;
+			unit = 'K';
+		}
+
+		if(hashes >= Math.pow(1000, 2) && hashes < Math.pow(1000, 3)) {
+			result = hashes / Math.pow(1000, 2);
+			unit = 'M';
+		}
+
+		if(hashes >= Math.pow(1000, 3) && hashes < Math.pow(1000, 4)) {
+			result = hashes / Math.pow(1000, 3);
+			unit = 'G';
+		}
+
+		if(hashes >= Math.pow(1000, 4) && hashes < Math.pow(1000, 5)) {
+			result = hashes / Math.pow(1000, 4);
+			unit = 'T';
+		}
+
+		if( !isMining )
+			return $sce.trustAsHtml(filter('number')(result.toFixed(1)) + ' <span class="small-hash">' + unit + 'H/s</span>');
+
+		return $sce.trustAsHtml('? <span class="small-hash">' + unit + 'KH/s</span>');
+	};
+}])
 .filter('blockPropagationFilter', function() {
 	return function(ms, prefix) {
 		if(typeof prefix === 'undefined')

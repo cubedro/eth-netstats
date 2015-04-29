@@ -42,7 +42,7 @@ block content
             i.icon-hashrate
           div.big-details-holder
             span.small-title avg network hashrate
-            span.big-details {{ avgHashrate | number : 1 }} MH/s
+            span.big-details(ng-bind-html="avgHashrate | networkHashrateFilter")
           div.clearfix
       div.col-xs-2.stat-holder
         div.big-info.difficulty.text-danger
@@ -104,7 +104,7 @@ block content
             div.big-info.chart.xdouble-chart(class="{{ blockPropagationAvg | propagationAvgTimeClass : true }}")
               //- i.icon-gas
               span.small-title block propagation
-              span.small-value {{ blockPropagationAvg | blockPropagationFilter : '' }}
+              //- span.small-value {{ blockPropagationAvg | blockPropagationFilter : '' }}
               histogram.big-details.d3-blockpropagation(data="blockPropagationChart")
 
           div.col-xs-3.stat-holder.pull-right
@@ -192,7 +192,8 @@ block content
             td(class="{{ node.stats.mining | miningClass : node.stats.active }}")
               i(class="{{ node.stats.mining | miningIconClass }}")
             td(class="{{ node.stats.mining | hashrateClass : node.stats.active }}")
-              span.small {{node.stats.hashrate | hashrateFilter}} kH/s
+              span.small(ng-bind-html="node.stats.hashrate | networkHashrateFilter")
+               //- {{node.stats.hashrate | hashrateFilter}} kH/s
             td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
             td(style="padding-left: 15px;") {{node.stats.pending}}
             td(class="{{ node.stats | blockClass : bestBlock }}") {{'#'}}{{ node.stats.block.number | number }}
@@ -205,5 +206,5 @@ block content
               div.propagationBox
               span {{node.stats.block.propagation | blockPropagationFilter}}
             td.peerPropagationChart(class="{{node.id}}")
-            td(class="{{ node.stats.propagationAvg | propagationAvgTimeClass : node.stats.active }}") {{ node.stats.propagationAvg | blockPropagationFilter : '' }}
+            td(class="{{ node.stats | propagationNodeAvgTimeClass : node.stats.active }}") {{ node.stats.propagationAvg | blockPropagationFilter : '' }}
             td(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}
