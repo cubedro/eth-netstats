@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var express = require('express');
 var app = express();
 var path = require('path');
@@ -7,8 +8,8 @@ var askedForHistory = false;
 var askedForHistoryTime = 0;
 
 var Primus = require('primus'),
-    api,
-    client;
+	api,
+	client;
 
 var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
 
@@ -18,18 +19,18 @@ var Nodes = new Collection();
 var server = require('http').createServer(app);
 
 api = new Primus(server, {
-    transformer: 'websockets',
-    pathname: '/api',
-    parser: 'JSON'
+	transformer: 'websockets',
+	pathname: '/api',
+	parser: 'JSON'
 });
 
 api.use('emit', require('primus-emit'));
 api.use('spark-latency', require('primus-spark-latency'));
 
 var client = new Primus(server, {
-    transformer: 'websockets',
-    pathname: '/primus',
-    parser: 'JSON'
+	transformer: 'websockets',
+	pathname: '/primus',
+	parser: 'JSON'
 });
 
 var clientLatency = 0;
@@ -37,118 +38,151 @@ var clientLatency = 0;
 client.use('emit', require('primus-emit'));
 
 api.on('connection', function(spark) {
-    console.log('Latency: ', spark.latency);
-    console.log(spark.id);
-    console.log(spark.address);
-    console.log(spark.query);
+	console.log('Latency: ', spark.latency);
+	console.log(spark.id);
+	console.log(spark.address);
+	console.log(spark.query);
 
-    spark.on('hello', function(data)
-    {
-        console.log('Latency: ', spark.latency);
-        console.log('Got hello data from ', spark.id);
-        console.log(data);
+	spark.on('hello', function(data)
+	{
+		console.log('Latency: ', spark.latency);
+		console.log('Got hello data from ', spark.id);
+		console.log(data);
 
-        if(typeof data.secret === 'undefined' || data.secret !== WS_SECRET)
-        {
-            spark.end(undefined, { reconnect: false });
+		if( _.isUndefined(data.secret) || data.secret !== WS_SECRET )
+		{
+			spark.end(undefined, { reconnect: false });
 
-            return false;
-        }
+			return false;
+		}
 
-        if(typeof data.id !== 'undefined' && typeof data.info !== 'undefined')
-        {
-            data.ip = spark.address.ip;
-            data.spark = spark.id;
-            data.latency = spark.latency;
+		if( !_.isUndefined(data.id) && !_.isUndefined(data.info) )
+		{
+			data.ip = spark.address.ip;
+			data.spark = spark.id;
+			data.latency = spark.latency;
 
-            var info = Nodes.add(data);
-            spark.emit('ready');
+			var info = Nodes.add( data );
+			spark.emit('ready');
 
-            client.write({action: 'add', data: info});
-            client.write({action: 'charts', data: Nodes.getCharts()});
-        }
-    });
+			client.write({
+				action: 'add',
+				data: info
+			});
 
-    spark.on('update', function(data)
-    {
-        if(typeof data.id !== 'undefined' && typeof data.stats !== 'undefined')
-        {
-            data.stats.latency = spark.latency;
+			client.write({
+				action: 'charts',
+				data: Nodes.getCharts()
+			});
+		}
+	});
 
-            var stats = Nodes.update(data.id, data.stats);
-            if(stats !== false)
-            {
-                client.write({action: 'update', data: stats});
-                client.write({action: 'charts', data: Nodes.getCharts()});
-            }
+	spark.on('update', function(data)
+	{
+		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
+		{
+			data.stats.latency = spark.latency;
 
-            if(Nodes.getHistory().requiresUpdate() && Nodes.canNodeUpdate(data.id) && (!askedForHistory || (new Date()).getTime() - askedForHistoryTime > 120000))
-            {
-                var range = Nodes.getHistory().getHistoryRequestInterval();
-                console.log("asked " + data.id + " for history");
-                console.log('interval', range);
-                spark.emit('history', range);
-                askedForHistory = true;
-                askedForHistoryTime = (new Date()).getTime();
-            }
-        }
-    });
+			var stats = Nodes.update(data.id, data.stats);
 
-    spark.on('history', function(data){
-        console.log("got history from " + data.id);
-        client.write({action: 'charts', data: Nodes.addHistory(data.id, data.history)});
-        askedForHistory = false;
-    });
+			if(stats !== false)
+			{
+				client.write({
+					action: 'update',
+					data: stats
+				});
 
-    spark.on('node-ping', function(data)
-    {
-        spark.emit('node-pong');
-    });
+				client.write({
+					action: 'charts',
+					data: Nodes.getCharts()
+				});
+			}
+		}
+	});
 
-    spark.on('latency', function(data)
-    {
-        if(typeof data.id !== 'undefined')
-        {
-            var stats = Nodes.updateLatency(data.id, data.latency);
+	spark.on('history', function(data)
+	{
+		console.log("got history from " + data.id);
 
-            client.write({action: 'latency', data: stats});
+		client.write({
+			action: 'charts',
+			data: Nodes.addHistory(data.id, data.history)
+		});
 
-            if(Nodes.getHistory().requiresUpdate() && Nodes.canNodeUpdate(data.id) && (!askedForHistory || (new Date()).getTime() - askedForHistoryTime > 120000))
-            {
-                var range = Nodes.getHistory().getHistoryRequestInterval();
-                console.log("asked " + data.id + " for history");
-                console.log('interval', range);
-                spark.emit('history', range);
-                askedForHistory = true;
-                askedForHistoryTime = (new Date()).getTime();
-            }
-        }
-    });
+		askedForHistory = false;
 
-    spark.on('end', function(data)
-    {
-        var stats = Nodes.inactive(spark.id);
+		client.write({
+			action: 'charts',
+			data: Nodes.getCharts()
+		});
+	});
 
-        client.write({action: 'inactive', data: stats});
-    });
+	spark.on('node-ping', function(data)
+	{
+		spark.emit('node-pong');
+	});
+
+	spark.on('latency', function(data)
+	{
+		if( !_.isUndefined(data.id) )
+		{
+			var stats = Nodes.updateLatency(data.id, data.latency);
+
+			client.write({
+				action: 'latency',
+				data: stats
+			});
+
+			if( Nodes.requiresUpdate(data.id) && (!askedForHistory || _.now() - askedForHistoryTime > 200000) )
+			{
+				var range = Nodes.getHistory().getHistoryRequestRange();
+
+				console.log("asked " + data.id + " for history: " + range.min + " - " + range.max);
+
+				spark.emit('history', range);
+
+				askedForHistory = true;
+				askedForHistoryTime = _.now();
+			}
+		}
+	});
+
+	spark.on('end', function(data)
+	{
+		var stats = Nodes.inactive(spark.id);
+
+		client.write({
+			action: 'inactive',
+			data: stats
+		});
+	});
 });
 
-client.on('connection', function(spark) {
-    spark.on('ready', function(data){
-        spark.emit('init', {nodes: Nodes.all()});
+client.on('connection', function(clientSpark)
+{
+	clientSpark.on('ready', function(data)
+	{
+		clientSpark.emit('init', { nodes: Nodes.all() });
 
-        spark.write({action: 'charts', data: Nodes.getCharts()});
-    });
+		clientSpark.write({
+			action: 'charts',
+			data: Nodes.getCharts()
+		});
+	});
 
-    spark.on('client-pong', function(data) {
-        var latency = Math.ceil(((new Date()).getTime() - clientLatency)/2);
-        spark.emit('client-latency', { latency: latency });
-    });
+	clientSpark.on('client-pong', function(data)
+	{
+		var latency = Math.ceil( (_.now() - clientLatency) / 2 );
+
+		clientSpark.emit('client-latency', { latency: latency });
+	});
 });
 
-var latencyTimeout = setInterval(function(){
-    clientLatency = (new Date()).getTime();
-    client.write({action: 'client-ping'});
+var latencyTimeout = setInterval( function ()
+{
+	clientLatency = _.now();
+
+	client.write({ action: 'client-ping' });
 }, 5000);
 
 // view engine setup
@@ -165,29 +199,29 @@ app.get('/', function(req, res) {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
 });
 
 // error handlers
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
+	app.use(function(err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: err
+		});
+	});
 }
 
 // production error handler
 app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+	res.status(err.status || 500);
+	res.render('error', {
+		message: err.message,
+		error: {}
+	});
 });
 
 server.listen(process.env.PORT || 3000);

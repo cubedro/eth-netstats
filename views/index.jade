@@ -7,7 +7,7 @@ block content
         div.big-info.bestblock.text-info
           div.pull-left.icon-full-width
             i.icon-block
-          div.pull-left
+          div.big-details-holder
             span.small-title best block
             span.big-details {{'#'}}{{ bestBlock | number}}
           div.clearfix
@@ -15,7 +15,7 @@ block content
         div.big-info.uncleCount.text-info
           div.pull-left.icon-full-width
             i.icon-uncle
-          div.pull-left
+          div.big-details-holder
             span.small-title uncles #[&nbsp;]
               span.small (current / last 50)
             span.big-details {{ bestStats.block.uncles.length }}/{{ uncleCount }}
@@ -24,7 +24,7 @@ block content
         div.big-info.blocktime(class="{{ lastBlock | timeClass : true }}")
           div.pull-left.icon-full-width
             i.icon-time
-          div.pull-left
+          div.big-details-holder
             span.small-title last block
             span.big-details {{ lastBlock | blockTimeFilter }}
           div.clearfix
@@ -32,7 +32,7 @@ block content
         div.big-info.avgblocktime(class="{{ avgBlockTime | avgTimeClass }}")
           div.pull-left.icon-full-width
             i.icon-gas
-          div.pull-left
+          div.big-details-holder
             span.small-title avg block time
             span.big-details {{ avgBlockTime | avgTimeFilter }}
           div.clearfix
@@ -40,7 +40,7 @@ block content
         div.big-info.difficulty.text-orange
           div.pull-left.icon-full-width
             i.icon-hashrate
-          div.pull-left
+          div.big-details-holder
             span.small-title avg network hashrate
             span.big-details {{ avgHashrate | number : 1 }} MH/s
           div.clearfix
@@ -48,7 +48,7 @@ block content
         div.big-info.difficulty.text-danger
           div.pull-left.icon-full-width
             i.icon-difficulty
-          div.pull-left
+          div.big-details-holder
             span.small-title difficulty
             span.big-details {{ lastDifficulty | number }}
           div.clearfix

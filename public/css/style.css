@@ -130,6 +130,13 @@ span.small-title span.small {
 	font-size: 50px;
 	line-height: 55px;
 	letter-spacing: -4px;
+	word-spacing: nowrap !important;
+}
+
+.big-info .big-details-holder {
+	position: absolute;
+	top: 15px;
+	left: 99px;
 }
 
 .big-info.chart {

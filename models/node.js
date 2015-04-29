@@ -20,93 +20,103 @@ var Node = function Node(data)
 			number: 0,
 			gasLimit: 0,
 			timestamp: 0,
+			time: 0,
 			arrival: 0,
 			propagation: 0,
 			received: 0,
 			transactions: [],
 			uncles: []
 		},
-		blocktimeAvg: 0,
 		propagationAvg: 0,
-		blockTimes: [],
-		difficulty: [],
 		latency: 0,
 		uptime: 0,
 		lastUpdate: 0
 	};
+
 	this.history = new Array(MAX_HISTORY);
+
 	this.uptime = {
 		started: null,
 		history: []
 	};
 
+	this.init(data);
+
+	return this;
+}
+
+Node.prototype.init = function(data)
+{
 	_.fill(this.history, -1);
 
-	if(this.id === null) {
-		this.uptime.started = (new Date()).getTime();
+	if( this.id === null )
+	{
+		this.uptime.started = _.now();
 		this.setState(true);
 	}
 
-	if(typeof data.id !== 'undefined')
+	if( !_.isUndefined(data.id) )
 		this.id = data.id;
 
-	if(typeof data.info !== 'undefined') {
-		this.info = data.info;
+	this.setInfo(data);
 
-		if(typeof data.info.canUpdateHistory === 'undefined')
-			data.info.canUpdateHistory = false;
-	}
-
-	if(typeof data.ip !== 'undefined'){
-		if(data.ip === '::ffff:127.0.0.1')
-			data.ip = '84.117.82.122';
-		this.info.ip = data.ip;
-		this.setGeo(data.ip);
-	}
-
-	if(typeof data.spark !== 'undefined')
-		this.spark = data.spark;
-
-	if(typeof data.latency !== 'undefined')
+	if( !_.isUndefined(data.latency) )
 		this.stats.latency = data.latency;
 
 	return this;
 }
 
-Node.prototype.setGeo = function(ip)
-{
-	this.geo = geoip.lookup(ip);
-}
-
 Node.prototype.setInfo = function(data)
 {
-	if(typeof data.info !== 'undefined') {
+	if( !_.isUndefined(data.info) )
+	{
 		this.info = data.info;
 
-		if(typeof data.info.canUpdateHistory === 'undefined')
+		if( _.isUndefined(data.info.canUpdateHistory) )
 			data.info.canUpdateHistory = false;
 	}
 
-	if(typeof data.ip !== 'undefined'){
+	if( !_.isUndefined(data.ip) )
+	{
+		if(data.ip === '::ffff:127.0.0.1')
+			data.ip = '84.117.82.122';
+
 		this.info.ip = data.ip;
-		this.setGeo(data.ip);
+		this.setGeo();
 	}
 
-	if(typeof data.spark !== 'undefined')
+	if( !_.isUndefined(data.spark) )
 		this.spark = data.spark;
 
-	if(this.uptime.history.length > 0 && this.uptime.history[this.uptime.history.length - 1].status == 'down')
+	var uptimeCnt = this.uptime.history.length;
+
+	if( uptimeCnt > 0 && this.uptime.history[uptimeCnt - 1].status === 'down' )
 		this.setState(true);
+
+	return this;
+}
+
+Node.prototype.setGeo = function()
+{
+	this.geo = geoip.lookup(this.info.ip);
+
+	return this;
 }
 
 Node.prototype.getInfo = function()
 {
-	return {id: this.id, info: this.info, geo: this.geo, stats: this.stats, history: this.history};
+	return {
+		id: this.id,
+		info: this.info,
+		geo: this.geo,
+		stats: this.stats,
+		history: this.history
+	};
 }
 
 Node.prototype.setStats = function(stats, history)
 {
-	if(typeof stats !== 'undefined' && typeof stats.block !== 'undefined' && typeof stats.block.number !== 'undefined')
+	if( !_.isUndefined(stats) && !_.isUndefined(stats.block) && !_.isUndefined(stats.block.number) )
 	{
 		this.history = history;
 
@@ -115,7 +125,7 @@ Node.prototype.setStats = function(stats, history)
 		});
 
 		if(positives.length > 0)
-			stats.propagationAvg = Math.round(_.sum(positives)/positives.length);
+			stats.propagationAvg = Math.round( _.sum(positives) / positives.length );
 		else
 			stats.propagationAvg = 0;
 
@@ -129,11 +139,14 @@ Node.prototype.setStats = function(stats, history)
 
 Node.prototype.setLatency = function(latency)
 {
-	if(typeof latency !== 'undefined')
+	if( !_.isUndefined(latency) )
 	{
 		this.stats.latency = latency;
 
-		return { id: this.id, latency: latency };
+		return {
+			id: this.id,
+			latency: latency
+		};
 	}
 
 	return false;
@@ -141,13 +154,20 @@ Node.prototype.setLatency = function(latency)
 
 Node.prototype.getStats = function()
 {
-	return {id: this.id, stats: this.stats, history: this.history};
+	return {
+		id: this.id,
+		stats: this.stats,
+		history: this.history
+	};
 }
 
 Node.prototype.setState = function(active)
 {
 	this.stats.active = active;
-	this.uptime.history.push({status: (active ? 'up' : 'down'), time: (new Date()).getTime()});
+	this.uptime.history.push({
+		status: (active ? 'up' : 'down'),
+		time: _.now()
+	});
 }
 
 Node.prototype.getBlockNumber = function()
