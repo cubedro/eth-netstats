@@ -27,10 +27,7 @@ var Node = function Node(data)
 			transactions: [],
 			uncles: []
 		},
-		blocktimeAvg: 0,
 		propagationAvg: 0,
-		blockTimes: [],
-		difficulty: [],
 		latency: 0,
 		uptime: 0,
 		lastUpdate: 0

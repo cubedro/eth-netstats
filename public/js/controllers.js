@@ -155,16 +155,19 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 				break;
 
 			case "charts":
-				$scope.lastBlocksTime = data.blocktime;
 				$scope.avgBlockTime = data.avgBlocktime;
 				$scope.avgHashrate = data.avgHashrate;
+				$scope.lastBlocksTime = data.blocktime;
 				$scope.difficultyChart = data.difficulty;
-				$scope.transactionDensity = data.transactions;
-				$scope.gasSpending = data.gasSpending;
 				$scope.blockPropagationChart = data.propagation.histogram;
 				$scope.blockPropagationAvg = data.propagation.avg;
 				$scope.uncleCountChart = data.uncleCount;
 				$scope.uncleCount = data.uncleCount[0] + data.uncleCount[1];
+				$scope.transactionDensity = data.transactions;
+				$scope.gasSpending = data.gasSpending;
+				$scope.miners = data.miners;
+
+				getMinersNames();
 
 				jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime, {type: 'bar', tooltipSuffix: ' s'});
 				jQuery('.spark-difficulty').sparkline($scope.difficultyChart, {type: 'bar'});
@@ -225,6 +228,24 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 		});
 	}
 
+	function getMinersNames()
+	{
+		if($scope.miners.length > 0) {
+			console.log('miners', $scope.miners);
+
+			_.forIn($scope.miners, function(value, key)
+			{
+				if(value.name !== false)
+					return;
+
+				var name = _.result(_.find(_.pluck($scope.nodes, 'info'), 'coinbase', value.miner), 'name');
+
+				if(typeof name !== 'undefined')
+					$scope.miners[key].name = name;
+			});
+		}
+	}
+
 	function addNewNode(data)
 	{
 		var index = findIndex({id: data.id});
@@ -267,22 +288,6 @@ function StatsCtrl($scope, $filter, socket, _, toastr) {
 
 				$scope.lastBlock = $scope.bestStats.block.received;
 				$scope.lastDifficulty = $scope.bestStats.block.difficulty;
-
-				if(typeof $scope.bestStats.miners !== 'undefined') {
-					$scope.miners = $scope.bestStats.miners;
-					console.log($scope.miners);
-
-					_.forIn($scope.miners, function(value, key)
-					{
-						if(value.name !== false)
-							return;
-
-						var name = _.result(_.find(_.pluck($scope.nodes, 'info'), 'coinbase', value.miner), 'name');
-
-						if(typeof name !== 'undefined')
-							$scope.miners[key].name = name;
-					});
-				}
 			}
 
 			$scope.upTimeTotal = _.reduce($scope.nodes, function(total, node) {

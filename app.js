@@ -62,7 +62,7 @@ api.on('connection', function(spark) {
 			data.spark = spark.id;
 			data.latency = spark.latency;
 
-			var info = Nodes.add(data);
+			var info = Nodes.add( data );
 			spark.emit('ready');
 
 			client.write({
@@ -138,7 +138,7 @@ api.on('connection', function(spark) {
 				var range = Nodes.getHistory().getHistoryRequestRange();
 
 				console.log("asked " + data.id + " for history");
-				console.log('interval', range);
+				console.log('interval', range.max + " - " + range.min);
 
 				spark.emit('history', range);
 

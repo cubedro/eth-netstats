@@ -33,7 +33,7 @@ var History = function History(data)
 
 History.prototype.add = function(block, id)
 {
-	if( !_.isUndefined(block) && !_.isUndefined(block.number) && !_.isUndefined(block.uncles) && !_.isUndefined(block.transactions) && !_.isUndefined(block.difficulty) )
+	if( !_.isUndefined(block) && !_.isUndefined(block.number) && !_.isUndefined(block.uncles) && !_.isUndefined(block.transactions) && !_.isUndefined(block.difficulty) && block.number > 0 )
 	{
 		var historyBlock = this.search(block.number);
 
@@ -44,7 +44,7 @@ History.prototype.add = function(block, id)
 
 		if( historyBlock )
 		{
-			var propIndex = _.findIndex( historyBlock.propagTimes, {node: id} );
+			var propIndex = _.findIndex( historyBlock.propagTimes, { node: id } );
 
 			if( propIndex === -1 )
 			{
@@ -119,7 +119,7 @@ History.prototype._save = function(block)
 
 History.prototype.search = function(number)
 {
-	var index = _.findIndex( this._items, {height: number} );
+	var index = _.findIndex( this._items, { height: number } );
 
 	if(index < 0)
 		return false;
@@ -129,7 +129,7 @@ History.prototype.search = function(number)
 
 History.prototype.prevMaxBlock = function(number)
 {
-	var index = _.findIndex(this._items, function(item) {
+	var index = _.findIndex(this._items, function (item) {
 		return item.height < number;
 	});
 
@@ -339,6 +339,30 @@ History.prototype.getAvgHashrate = function()
 	return avgDifficulty / 1000 * 12 * ( 12 / avgBlocktime );
 }
 
+History.prototype.getMinersCount = function()
+{
+	var miners = _( this._items )
+		.sortByOrder( 'height', false )
+		.slice(0, MAX_BINS)
+		.map(function (item)
+		{
+			return item.block.miner;
+		})
+		.value();
+
+	var minerCount = [];
+
+	_.forEach( _.countBy(miners), function (cnt, miner)
+	{
+		minerCount.push({ miner: miner, name: false, blocks: cnt });
+	});
+
+	return _(minerCount)
+		.sortByOrder( 'blocks', false )
+		.slice(0, 5)
+		.value();
+}
+
 History.prototype.getCharts = function()
 {
 	var chartHistory = _( this._items )
@@ -353,22 +377,24 @@ History.prototype.getCharts = function()
 				difficulty: item.block.difficulty,
 				uncles: item.block.uncles.length,
 				transactions: item.block.transactions.length,
-				gasSpending: item.block.gasUsed
+				gasSpending: item.block.gasUsed,
+				miner: item.block.miner
 			};
 		})
 		.value();
 
 	return {
-		height: _.pluck(chartHistory, 'height'),
-		blocktime: _.pluck(chartHistory, 'blocktime'),
-		avgBlocktime: _.sum(_.pluck(chartHistory, 'blocktime')) / (chartHistory.length === 0 ? 1 : chartHistory.length),
-		difficulty: _.pluck(chartHistory, 'difficulty'),
-		uncles: _.pluck(chartHistory, 'uncles'),
-		transactions: _.pluck(chartHistory, 'transactions'),
-		gasSpending: _.pluck(chartHistory, 'gasSpending'),
-		propagation: this.getBlockPropagation(),
-		uncleCount: this.getUncleCount(),
-		avgHashrate: this.getAvgHashrate()
+		height : _.pluck( chartHistory, 'height' ),
+		blocktime : _.pluck( chartHistory, 'blocktime' ),
+		avgBlocktime : _.sum(_.pluck( chartHistory, 'blocktime' )) / (chartHistory.length === 0 ? 1 : chartHistory.length),
+		difficulty : _.pluck( chartHistory, 'difficulty' ),
+		uncles : _.pluck( chartHistory, 'uncles' ),
+		transactions : _.pluck( chartHistory, 'transactions' ),
+		gasSpending : _.pluck( chartHistory, 'gasSpending' ),
+		miners : this.getMinersCount(),
+		propagation : this.getBlockPropagation(),
+		uncleCount : this.getUncleCount(),
+		avgHashrate : this.getAvgHashrate()
 	};
 }
 
@@ -391,7 +417,11 @@ History.prototype.getHistoryRequestRange = function()
 	var max = _.max(missing);
 	var min = max - Math.min( 50, (MAX_HISTORY - this._items.length + 1) ) + 1;
 
-	return {max: max, min: min};
+	return {
+		max: max,
+		min: min,
+		list: _( missing ).reverse().slice(0, 50).reverse().value()
+	};
 }
 
 module.exports = History;
