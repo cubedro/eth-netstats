@@ -318,16 +318,9 @@ History.prototype.getAvgHashrate = function()
 	if( _.isEmpty(this._items) )
 		return 0;
 
-	var difficultyHistory = _( this._items )
-		.map(function (item)
-		{
-			return item.block.difficulty;
-		})
-		.value();
-
-	var avgDifficulty = _.sum(difficultyHistory) / difficultyHistory.length;
-
 	var blocktimeHistory = _( this._items )
+		.sortByOrder( 'height', false )
+		.slice(0, 64)
 		.map(function (item)
 		{
 			return item.block.time;
@@ -336,7 +329,7 @@ History.prototype.getAvgHashrate = function()
 
 	var avgBlocktime = (_.sum(blocktimeHistory) / blocktimeHistory.length)/1000;
 
-	return this.bestBlock().block.difficulty / 12 * ( 12 / avgBlocktime );
+	return this.bestBlock().block.difficulty / avgBlocktime;
 }
 
 History.prototype.getMinersCount = function()
