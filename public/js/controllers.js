@@ -34,7 +34,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 	$scope.latency = 0;
 
-	$scope.currentApiVersion = "0.0.7";
+	$scope.currentApiVersion = "0.0.8";
 
 	$scope.predicate = ['-stats.active', '-stats.block.number', 'stats.block.propagation'];
 	$scope.reverse = false;
