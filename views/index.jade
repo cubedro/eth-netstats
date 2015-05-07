@@ -195,7 +195,7 @@ block content
               span.small {{node.stats.block.hash | hashFilter}}
             td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
             td(style="padding-left: 14px;") {{node.stats.block.uncles.length || 0}}
-            td(class="{{ node.stats.block.arrived | timeClass : node.stats.active }}") {{node.stats.block.arrived | blockTimeFilter }}
+            td(class="{{ node.stats.block.received | timeClass : node.stats.active }}") {{node.stats.block.received | blockTimeFilter }}
             td(class="{{ node.stats | propagationTimeClass : bestBlock }}")
               div.propagationBox
               span {{node.stats.block.propagation | blockPropagationFilter}}
