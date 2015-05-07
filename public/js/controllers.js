@@ -127,6 +127,20 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				var index = findIndex({id: data.id});
 
 				if(typeof $scope.nodes[index].stats !== 'undefined') {
+					
+					if($scope.nodes[index].stats.block.number < data.stats.block.number)
+					{
+						var best = _.max($scope.nodes, function(node) {
+							return parseInt(node.stats.block.number);
+						}).stats.block;
+
+						if (data.stats.block.number > best.number) {
+							data.stats.block.arrived = _.now();
+						} else {
+							data.stats.block.arrived = best.arrived;
+						}
+					}
+
 					$scope.nodes[index].stats = data.stats;
 					$scope.nodes[index].history = data.history;
 					makePeerPropagationChart($scope.nodes[index]);
@@ -285,7 +299,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 					return parseInt(node.stats.block.number);
 				}).stats;
 
-				$scope.lastBlock = $scope.bestStats.block.received;
+				$scope.lastBlock = $scope.bestStats.block.arrived;
 				$scope.lastDifficulty = $scope.bestStats.block.difficulty;
 			}
 
