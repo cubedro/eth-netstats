@@ -60,27 +60,27 @@ angular.module('netStatsApp.filters', [])
 
 		if(hashes !== 0 && hashes < 1000) {
 			result = hashes;
-			unit = '';
+			unit = 'K';
 		}
 
 		if(hashes >= 1000 && hashes < Math.pow(1000, 2)) {
 			result = hashes / 1000;
-			unit = 'K';
+			unit = 'M';
 		}
 
 		if(hashes >= Math.pow(1000, 2) && hashes < Math.pow(1000, 3)) {
 			result = hashes / Math.pow(1000, 2);
-			unit = 'M';
+			unit = 'G';
 		}
 
 		if(hashes >= Math.pow(1000, 3) && hashes < Math.pow(1000, 4)) {
 			result = hashes / Math.pow(1000, 3);
-			unit = 'G';
+			unit = 'T';
 		}
 
 		if(hashes >= Math.pow(1000, 4) && hashes < Math.pow(1000, 5)) {
 			result = hashes / Math.pow(1000, 4);
-			unit = 'T';
+			unit = 'P';
 		}
 
 		return $sce.trustAsHtml('<span class="small">' + filter('number')(result.toFixed(1)) + ' <span class="small-hash">' + unit + 'H/s</span></span>');
