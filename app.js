@@ -185,6 +185,21 @@ var latencyTimeout = setInterval( function ()
 	client.write({ action: 'client-ping' });
 }, 5000);
 
+
+// Cleanup old inactive nodes
+var nodeCleanupTimeout = setInterval( function ()
+{
+	client.write({
+		action: 'init',
+		data: Nodes.all()
+	});
+
+	client.write({
+		action: 'charts',
+		data: Nodes.getCharts()
+	});
+}, 1000*60);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

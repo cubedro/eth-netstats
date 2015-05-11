@@ -2,7 +2,7 @@ var geoip = require('geoip-lite');
 var _ = require('lodash');
 
 var MAX_HISTORY = 40;
-var MAX_INACTIVE_TIME = 1000;
+var MAX_INACTIVE_TIME = 1000*60*4;
 
 var Node = function Node(data)
 {
