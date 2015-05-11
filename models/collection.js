@@ -115,7 +115,32 @@ Collection.prototype.getNodeOrNew = function(search, data)
 
 Collection.prototype.all = function()
 {
+	this.removeOldNodes();
+
 	return this._items;
+}
+
+Collection.prototype.removeOldNodes = function()
+{
+	var deleteList = []
+
+	for(var i = this._items.length - 1; i >= 0; i--)
+	{
+		var node = this._items[i];
+
+		if( node.isInactiveAndOld() )
+		{
+			deleteList.push(i);
+		}
+	}
+
+	if(deleteList.length > 0)
+	{
+		for(var i = 0; i < deleteList.length; i++)
+		{
+			this._items.splice(deleteList[i], 1);
+		}
+	}
 }
 
 Collection.prototype.blockPropagationChart = function()
