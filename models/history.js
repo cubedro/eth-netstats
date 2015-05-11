@@ -71,10 +71,10 @@ History.prototype.add = function(block, id)
 
 			if( prevBlock )
 			{
-				block.time = block.arrived - prevBlock.block.arrived;
+				block.time = Math.max(block.arrived - prevBlock.block.arrived, 0);
 
 				if(block.number < this.bestBlock().height)
-					block.time = (block.timestamp - prevBlock.block.timestamp) * 1000;
+					block.time = Math.max((block.timestamp - prevBlock.block.timestamp) * 1000, 0);
 			}
 			else
 			{
