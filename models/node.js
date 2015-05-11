@@ -2,6 +2,7 @@ var geoip = require('geoip-lite');
 var _ = require('lodash');
 
 var MAX_HISTORY = 40;
+var MAX_INACTIVE_TIME = 1000*60*60*4;
 
 var Node = function Node(data)
 {
@@ -178,6 +179,22 @@ Node.prototype.getBlockNumber = function()
 Node.prototype.canUpdate = function()
 {
 	return this.info.canUpdateHistory || false;
+}
+
+Node.prototype.isInactiveAndOld = function()
+{
+	if(this.stats.active)
+		return false;
+
+	var lastState = this.uptime.history[this.uptime.history.length -1];
+
+	if( !_.isUndefined(lastState) && !_.isUndefined(lastState.status) && !_.isUndefined(lastState.time) )
+	{
+		if( lastState.status === 'down' && (_.now() - lastState.time) > MAX_INACTIVE_TIME )
+			return true;
+	}
+
+	return false;
 }
 
 module.exports = Node;
