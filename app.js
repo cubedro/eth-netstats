@@ -198,7 +198,7 @@ var nodeCleanupTimeout = setInterval( function ()
 		action: 'charts',
 		data: Nodes.getCharts()
 	});
-}, 1000*60);
+}, 1000*60*60);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
