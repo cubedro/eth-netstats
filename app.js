@@ -1,9 +1,5 @@
 var _ = require('lodash');
-var express = require('express');
-var app = express();
-var path = require('path');
-var favicon = require('serve-favicon');
-var bodyParser = require('body-parser');
+
 var askedForHistory = false;
 var askedForHistoryTime = 0;
 
@@ -16,7 +12,58 @@ var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
 var Collection = require('./models/collection');
 var Nodes = new Collection();
 
-var server = require('http').createServer(app);
+var env = 'production';
+
+if( process.env.NODE_ENV !== 'production' )
+{
+	var express = require('express');
+	var app = express();
+	var path = require('path');
+	var favicon = require('serve-favicon');
+	var bodyParser = require('body-parser');
+
+	// view engine setup
+	app.set('views', path.join(__dirname, 'views'));
+	app.set('view engine', 'jade');
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({ extended: false }));
+	app.use(express.static(path.join(__dirname, 'dist')));
+
+	app.get('/', function(req, res) {
+	  res.render('index');
+	});
+
+	// catch 404 and forward to error handler
+	app.use(function(req, res, next) {
+		var err = new Error('Not Found');
+		err.status = 404;
+		next(err);
+	});
+
+	// error handlers
+	app.use(function(err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: err
+		});
+	});
+
+	// production error handler
+	app.use(function(err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: {}
+		});
+	});
+
+	var server = require('http').createServer(app);
+}
+else
+{
+	var server = require('http').createServer();
+}
 
 api = new Primus(server, {
 	transformer: 'websockets',
@@ -200,45 +247,6 @@ var nodeCleanupTimeout = setInterval( function ()
 	});
 }, 1000*60*60);
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-app.use(favicon(path.join(__dirname, '/public/images/favicon.png')));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/', function(req, res) {
-  res.render('index', { title: 'Ethereum Network Status' });
-});
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-	var err = new Error('Not Found');
-	err.status = 404;
-	next(err);
-});
-
-// error handlers
-if (app.get('env') === 'development') {
-	app.use(function(err, req, res, next) {
-		res.status(err.status || 500);
-		res.render('error', {
-			message: err.message,
-			error: err
-		});
-	});
-}
-
-// production error handler
-app.use(function(err, req, res, next) {
-	res.status(err.status || 500);
-	res.render('error', {
-		message: err.message,
-		error: {}
-	});
-});
-
 server.listen(process.env.PORT || 3000);
 
-module.exports = app;
+module.exports = server;
