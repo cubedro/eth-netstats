@@ -5,7 +5,7 @@ var MAX_HISTORY = 1000;
 
 var MAX_PEER_PROPAGATION = 36;
 var MIN_PROPAGATION_RANGE = 0;
-var MAX_PROPAGATION_RANGE = 20000;
+var MAX_PROPAGATION_RANGE = 10000;
 
 var MAX_UNCLES_PER_BIN = 25;
 var MAX_BINS = 40;
@@ -188,7 +188,7 @@ History.prototype.getBlockPropagation = function()
 	{
 		_.forEach(n.propagTimes, function (p, i)
 		{
-			var prop = _.result(p, 'propagation', -1);
+			var prop = Math.min(MAX_PROPAGATION_RANGE, _.result(p, 'propagation', -1));
 
 			if(prop >= 0)
 				propagation.push(prop);
@@ -200,13 +200,10 @@ History.prototype.getBlockPropagation = function()
 		var avgPropagation = Math.round( _.sum(propagation) / propagation.length );
 	}
 
-	var x = d3.scale.linear()
-		.domain([ MIN_PROPAGATION_RANGE, MAX_PROPAGATION_RANGE ])
-		.interpolate( d3.interpolateRound );
-
 	var data = d3.layout.histogram()
 		.frequency( false )
-		.bins( x.ticks(MAX_BINS) )
+		.range([ MIN_PROPAGATION_RANGE, MAX_PROPAGATION_RANGE ])
+		.bins( MAX_BINS )
 		( propagation );
 
 	var freqCum = 0;

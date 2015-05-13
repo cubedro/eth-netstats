@@ -127,7 +127,7 @@ angular.module('netStatsApp.directives', []).
 				var TICKS = 40;
 
 				var x = d3.scale.linear()
-					.domain([0, 20000])
+					.domain([0, 10000])
 					.rangeRound([0, width])
 					.interpolate(d3.interpolateRound);
 
@@ -136,8 +136,8 @@ angular.module('netStatsApp.directives', []).
 					.interpolate(d3.interpolateRound);
 
 				var color = d3.scale.linear()
-					.domain([1000, 3000, 7000, 10000, 20000])
-					.range(["#7bcc3a", "#FFD162", "#ff8a00", "#F74B4B", "#CC0000"]);
+					.domain([1000, 3000, 7000, 10000])
+					.range(["#7bcc3a", "#FFD162", "#ff8a00", "#F74B4B"]);
 
 				var xAxis = d3.svg.axis()
 					.scale(x)
@@ -214,8 +214,8 @@ angular.module('netStatsApp.directives', []).
 					bar.insert("rect")
 						.attr("class", "bar")
 						.attr("y", function(d) { return y(d.y); })
-						.attr("rx", 1.2)
-						.attr("ry", 1.2)
+						.attr("rx", 1)
+						.attr("ry", 1)
 						.attr("fill", function(d) { return color(d.x); })
 						.attr("width", x(data[0].dx + data[0].x) - x(data[0].x) - 1)
 						.attr("height", function(d) { return height - y(d.y) + 1; });
@@ -236,6 +236,7 @@ angular.module('netStatsApp.directives', []).
 
 				scope.$watch('data', function() {
 					if(scope.data.length > 0) {
+						alert(scope.data);
 						scope.init();
 					}
 				}, true);
