@@ -236,7 +236,6 @@ angular.module('netStatsApp.directives', []).
 
 				scope.$watch('data', function() {
 					if(scope.data.length > 0) {
-						alert(scope.data);
 						scope.init();
 					}
 				}, true);
