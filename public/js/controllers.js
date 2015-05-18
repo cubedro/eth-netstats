@@ -36,19 +36,31 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 	$scope.currentApiVersion = "0.0.8";
 
-	$scope.predicate = ['-stats.active', '-stats.block.number', 'stats.block.propagation'];
+	$scope.predicate = ['-pinned', '-stats.active', '-stats.block.number', 'stats.block.propagation'];
 	$scope.reverse = false;
+
+	$scope.prefixPredicate = ['-pinned', '-stats.active'];
+	$scope.originalPredicate = ['-stats.block.number', 'stats.block.propagation'];
 
 	$scope.orderTable = function(predicate, reverse)
 	{
-		if(!_.isEqual(predicate, $scope.predicate))
+		if(!_.isEqual(predicate, $scope.originalPredicate))
 		{
 			$scope.reverse = reverse;
-			$scope.predicate = predicate;
+			$scope.originalPredicate = predicate;
+			$scope.predicate = _.union($scope.prefixPredicate, predicate);
 		}
 		else
 		{
 			$scope.reverse = !$scope.reverse;
+
+			if($scope.reverse === true){
+				_.forEach(predicate, function (value, key) {
+					predicate[key] = (value[0] === '-' ? value.replace('-', '') : '-' + value);
+				});
+			}
+
+			$scope.predicate = _.union($scope.prefixPredicate, predicate);
 		}
 	}
 
@@ -99,13 +111,18 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 		switch(action) {
 			case "init":
 				$scope.nodes = data;
-				$scope.$apply();
 
 				_.forEach($scope.nodes, function(node, index) {
 					if(typeof node.stats.hashrate === 'undefined')
 						$scope.nodes[index].stats.hashrate = 0;
+
+					// Init pin
+					$scope.nodes[index].pinned = false;
+
 					makePeerPropagationChart($scope.nodes[index]);
 				});
+
+				$scope.$apply();
 
 				if($scope.nodes.length > 0)
 					toastr['success']("Got nodes list", "Got nodes!");
@@ -269,6 +286,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 		{
 			if(typeof data.stats !== 'undefined' && typeof data.stats.hashrate === 'undefined')
 				data.stats.hashrate = 0;
+
+			data.pinned = false;
 
 			$scope.nodes.push(data);
 

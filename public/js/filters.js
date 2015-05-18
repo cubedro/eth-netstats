@@ -19,6 +19,14 @@ angular.module('netStatsApp.filters', [])
 		return 'text-danger';
 	};
 })
+.filter('nodePinClass', function() {
+	return function(pinned) {
+	  	if(pinned)
+	  		return 'icon-check-o';
+
+	  	return 'icon-loader';
+	};
+})
 .filter('mainClass', function() {
 	return function(node, bestBlock) {
 	  	return mainClass(node, bestBlock);
