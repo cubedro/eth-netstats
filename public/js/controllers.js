@@ -127,7 +127,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				var index = findIndex({id: data.id});
 
 				if(typeof $scope.nodes[index].stats !== 'undefined') {
-					
+
 					if($scope.nodes[index].stats.block.number < data.stats.block.number)
 					{
 						var best = _.max($scope.nodes, function(node) {
@@ -249,6 +249,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 			_.forIn($scope.miners, function(value, key)
 			{
 				if(value.name !== false)
+					return;
+
+				if(value.miner === "0x0000000000000000000000000000000000000000")
 					return;
 
 				var name = _.result(_.find(_.pluck($scope.nodes, 'info'), 'coinbase', value.miner), 'name');
