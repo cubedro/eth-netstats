@@ -359,7 +359,5 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 					};
 			});
 		}
-
-		$scope.$apply();
 	}
 });
