@@ -158,22 +158,33 @@ History.prototype.getNodePropagation = function(id)
 {
 	var propagation = new Array( MAX_PEER_PROPAGATION );
 	var bestBlock = this.bestBlockNumber();
+	var lastBlocktime = _.now();
 
 	_.fill(propagation, -1);
 
 	var sorted = _( this._items )
 		.sortByOrder( 'height', false )
 		.slice( 0, MAX_PEER_PROPAGATION )
-		.reverse()
 		.forEach(function (item, key)
 		{
 			var index = MAX_PEER_PROPAGATION - 1 - bestBlock + item.height;
 
-			if(index > 0)
+			if(index >= 0)
 			{
-				propagation[index] = _.result(_.find(item.propagTimes, 'node', id), 'propagation', -1);
+				var tmpPropagation = _.result(_.find(item.propagTimes, 'node', id), 'propagation', false);
+
+				if (_.result(_.find(item.propagTimes, 'node', id), 'propagation', false) !== false)
+				{
+					propagation[index] = tmpPropagation;
+					lastBlocktime = item.block.arrived;
+				}
+				else
+				{
+					propagation[index] = Math.max(0, lastBlocktime - item.block.arrived);
+				}
 			}
 		})
+		.reverse()
 		.value();
 
 	return propagation;

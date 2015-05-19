@@ -209,5 +209,5 @@ block content
               div.propagationBox
               span {{node.stats.block.propagation | blockPropagationFilter}}
             td.peerPropagationChart(class="{{node.id}}")
-            td(class="{{ node.stats | propagationNodeAvgTimeClass : bestBlock }}") {{ node.stats.propagationAvg | blockPropagationFilter : '' }}
+            td(class="{{ node.stats | propagationNodeAvgTimeClass : bestBlock }}") {{ node.stats | blockPropagationAvgFilter : bestBlock }}
             td(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}
