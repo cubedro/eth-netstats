@@ -7,82 +7,71 @@ angular.module('netStatsApp.directives', [])
 			elm.text(version);
 		};
 }])
-	.directive('sparkchart', ['$compile', '$filter', function($compile, $filter) {
+	.directive('sparkchart', function () {
 		return {
 			restrict: 'E',
 			scope: {
-				data: '='
+				data: '@'
 			},
-			link: function (scope, element, attrs)
+			compile: function (tElement, tAttrs, transclude)
 			{
-				scope.init = function ()
-				{
-					var data = scope.data;
-					// element.empty();
+				tElement.replaceWith('<span>' + tAttrs.data + "</span>");
 
-					jQuery(element[0]).sparkline(data, {
-						type: 'bar',
-						tooltipSuffix: (attrs.tooltipsuffix || '')
+				return function(scope, element, attrs)
+				{
+					attrs.$observe("data", function (newValue)
+					{
+						element.html(newValue);
+						element.sparkline('html', {
+							type: 'bar',
+							tooltipSuffix: (attrs.tooltipsuffix || '')
+						});
 					});
-				}
-
-				scope.init();
-
-				scope.$watch('data', function ()
-				{
-					scope.init();
-				}, true);
+				};
 			}
 		};
-}])
-	.directive('nodepropagchart', ['$compile', '$filter', function($compile, $filter) {
+})
+	.directive('nodepropagchart', ['$filter', function($filter) {
 		return {
 			restrict: 'E',
 			scope: {
-				data: '='
+				data: '@'
 			},
-			link: function (scope, element, attrs)
+			compile: function (tElement, tAttrs, transclude)
 			{
-				var options = {
-					type: 'bar',
-					negBarColor: '#7f7f7f',
-					zeroAxis: false,
-					height: 20,
-					barWidth : 2,
-					barSpacing : 1,
-					tooltipSuffix: '',
-					chartRangeMax: 8000,
-					colorMap: jQuery.range_map({
-						'0:1': '#10a0de',
-						'1:1000': '#7bcc3a',
-						'1001:3000': '#FFD162',
-						'3001:7000': '#ff8a00',
-						'7001:': '#F74B4B'
-					}),
-					tooltipFormatter: function (spark, opt, ms) {
-						var tooltip = '<div class="tooltip-arrow"></div><div class="tooltip-inner">';
-						tooltip += $filter('blockPropagationFilter')(ms[0].value, '');
-						tooltip += '</div>';
+				tElement.replaceWith('<span>' + tAttrs.data + "</span>");
 
-						return tooltip;
-					}
+				return function(scope, element, attrs)
+				{
+					attrs.$observe("data", function (newValue)
+					{
+						element.html(newValue);
+						element.sparkline('html', {
+							type: 'bar',
+							negBarColor: '#7f7f7f',
+							zeroAxis: false,
+							height: 20,
+							barWidth : 2,
+							barSpacing : 1,
+							tooltipSuffix: '',
+							chartRangeMax: 8000,
+							colorMap: jQuery.range_map({
+								'0:1': '#10a0de',
+								'1:1000': '#7bcc3a',
+								'1001:3000': '#FFD162',
+								'3001:7000': '#ff8a00',
+								'7001:': '#F74B4B'
+							}),
+							tooltipFormatter: function (spark, opt, ms) {
+								var tooltip = '<div class="tooltip-arrow"></div><div class="tooltip-inner">';
+								tooltip += $filter('blockPropagationFilter')(ms[0].value, '');
+								tooltip += '</div>';
+
+								return tooltip;
+							}
+						});
+					});
 				};
-
-				scope.init = function ()
-				{
-					var data = scope.data;
-
-					// element.empty();
-
-					jQuery(element[0]).sparkline(data, options);
-				}
-
-				scope.init();
-
-				scope.$watch('data', function ()
-				{
-					scope.init();
-				}, true);
 			}
 		};
 }])

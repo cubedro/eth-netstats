@@ -92,14 +92,14 @@ block content
               //- i.icon-time
               span.small-title block time
               //- span.small-value {{ avgBlockTime | avgTimeFilter }}
-              sparkchart.big-details.spark-blocktimes(data="lastBlocksTime", tooltipsuffix="s")
+              sparkchart.big-details.spark-blocktimes(data="{{lastBlocksTime.join(',')}}", tooltipsuffix="s")
 
           div.col-xs-3.stat-holder
             div.big-info.chart.text-info
               //- i.icon-difficulty
               span.small-title difficulty
               //- span.small-value {{ lastDifficulty | number }}
-              sparkchart.big-details.spark-difficulty(data="difficultyChart")
+              sparkchart.big-details.spark-difficulty(data="{{difficultyChart.join(',')}}")
 
           div.col-xs-3.stat-holder.xpull-right
             div.big-info.chart.xdouble-chart(class="{{ blockPropagationAvg | propagationAvgTimeClass : true }}")
@@ -123,19 +123,19 @@ block content
               span.small-title uncle count #[&nbsp;]
                 span.small (25 blocks per bar)
               //- span.small-value {{ bestStats.block.uncles.length }}/{{ uncleCount }}
-              sparkchart.big-details.spark-uncles(data="uncleCountChart")
+              sparkchart.big-details.spark-uncles(data="{{uncleCountChart.join(',')}}")
 
           div.col-xs-3.stat-holder
             div.big-info.chart.text-info
               //- i.icon-uncle
               span.small-title transactions
-              sparkchart.big-details.spark-transactions(data="transactionDensity")
+              sparkchart.big-details.spark-transactions(data="{{transactionDensity.join(',')}}")
 
           div.col-xs-3.stat-holder
             div.big-info.chart.text-info
               //- i.icon-gasprice
               span.small-title gas spending
-              sparkchart.big-details.spark-gasspending(data="gasSpending")
+              sparkchart.big-details.spark-gasspending(data="{{gasSpending.join(',')}}")
 
 
 
@@ -209,6 +209,6 @@ block content
               div.propagationBox
               span {{node.stats.block.propagation | blockPropagationFilter}}
             td.peerPropagationChart(class="{{node.id}}")
-              nodepropagchart(data="node.history")
+              nodepropagchart(data="{{node.history.join(',')}}")
             td(class="{{ node.stats | propagationNodeAvgTimeClass : bestBlock }}") {{ node.stats | blockPropagationAvgFilter : bestBlock }}
             td(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}
