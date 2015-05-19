@@ -356,6 +356,40 @@ angular.module('netStatsApp.filters', [])
 		return prefix + Math.round(result) + " days";
 	};
 })
+.filter('blockPropagationAvgFilter', function() {
+	return function(stats, bestBlock) {
+		var ms = stats.propagationAvg;
+
+		if(bestBlock - stats.block.number > 40)
+			ms = _.now() - stats.block.received;
+
+		prefix = '';
+
+		var result = 0;
+
+		if(ms < 1000) {
+			return (ms === 0 ? "" : prefix) + ms + " ms";
+		}
+
+		if(ms < 1000*60) {
+			result = ms/1000;
+			return prefix + result.toFixed(1) + " s";
+		}
+
+		if(ms < 1000*60*60) {
+			result = ms/1000/60;
+			return prefix + Math.round(result) + " min";
+		}
+
+		if(ms < 1000*60*60*24) {
+			result = ms/1000/60/60;
+			return prefix + Math.round(result) + " h";
+		}
+
+		result = ms/1000/60/60/24;
+		return prefix + Math.round(result) + " days";
+	};
+})
 .filter('avgTimeFilter', function() {
 	return function(time) {
 		if(time < 60)

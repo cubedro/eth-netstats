@@ -110,11 +110,17 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 		switch(action) {
 			case "init":
+				var oldNodes = [];
+
+				if( $scope.nodes.length > 0 ){
+					oldNodes = $scope.nodes;
+				}
+
 				$scope.nodes = data;
 
 				_.forEach($scope.nodes, function(node, index) {
 					// Init hashrate
-					if(typeof node.stats.hashrate === 'undefined')
+					if( _.isUndefined(node.stats.hashrate) )
 						$scope.nodes[index].stats.hashrate = 0;
 
 					// Init history
@@ -124,8 +130,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 						_.fill(data.history, -1);
 					}
 
-					// Init pin
-					$scope.nodes[index].pinned = false;
+					// Init or recover pin
+					$scope.nodes[index].pinned = _.result(_.find(oldNodes, 'id', node.id), 'pinned', false);
 
 					$scope.$apply();
 
@@ -271,7 +277,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 			height: 20,
 			barWidth : 2,
 			barSpacing : 1,
-			tooltipSuffix: ' ms',
+			tooltipSuffix: '',
 			chartRangeMax: 8000,
 			colorMap: jQuery.range_map({
 				'0:1': '#10a0de',
@@ -279,7 +285,14 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				'1001:3000': '#FFD162',
 				'3001:7000': '#ff8a00',
 				'7001:': '#F74B4B'
-			})
+			}),
+			tooltipFormatter: function (spark, opt, ms) {
+				var tooltip = '<div class="tooltip-arrow"></div><div class="tooltip-inner">';
+				tooltip += $filter('blockPropagationFilter')(ms[0].value, '');
+				tooltip += '</div>';
+
+				return tooltip;
+			}
 		});
 	}
 
