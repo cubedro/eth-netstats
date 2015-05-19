@@ -7,48 +7,48 @@ angular.module('netStatsApp.directives', [])
 			elm.text(version);
 		};
 }])
-	.directive('timeAgo', ['$interval', function($interval) {
-		function link (scope, element, attrs)
-		{
-			var timestamp,
-				timeoutId;
+// 	.directive('timeAgo', ['$interval', function($interval) {
+// 		function link (scope, element, attrs)
+// 		{
+// 			var timestamp,
+// 				timeoutId;
 
-			function updateTime() {
-				element.text(timeAgo())
-			}
+// 			function updateTime() {
+// 				element.text(timeAgo())
+// 			}
 
-			function timeAgo()
-			{
-				if(timestamp === 0)
-					return '∞';
+// 			function timeAgo()
+// 			{
+// 				if(timestamp === 0)
+// 					return '∞';
 
-				var time = (new Date()).getTime();
-				var diff = Math.floor((time - timestamp)/1000);
+// 				var time = (new Date()).getTime();
+// 				var diff = Math.floor((time - timestamp)/1000);
 
-				if(diff < 60)
-					return Math.round(diff) + ' s ago';
+// 				if(diff < 60)
+// 					return Math.round(diff) + ' s ago';
 
-				return moment.duration(Math.round(diff), 's').humanize() + ' ago';
-			};
+// 				return moment.duration(Math.round(diff), 's').humanize() + ' ago';
+// 			};
 
-			scope.$watch(attrs.timeAgo, function(value) {
-				timestamp = value;
-				updateTime();
-			});
+// 			scope.$watch(attrs.timeAgo, function(value) {
+// 				timestamp = value;
+// 				updateTime();
+// 			});
 
-			element.on('$destroy', function() {
-				$interval.cancel(timeoutId);
-			});
+// 			element.on('$destroy', function() {
+// 				$interval.cancel(timeoutId);
+// 			});
 
-			timeoutId = $interval(function () {
-				updateTime();
-			}, 200);
-		};
+// 			timeoutId = $interval(function () {
+// 				updateTime();
+// 			}, 200);
+// 		};
 
-		return {
-			link: link
-		};
-}])
+// 		return {
+// 			link: link
+// 		};
+// }])
 
 	.directive('sparkchart', function () {
 		return {
