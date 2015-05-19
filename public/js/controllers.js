@@ -277,7 +277,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 			height: 20,
 			barWidth : 2,
 			barSpacing : 1,
-			tooltipSuffix: ' ms',
+			tooltipSuffix: '',
 			chartRangeMax: 8000,
 			colorMap: jQuery.range_map({
 				'0:1': '#10a0de',
@@ -285,7 +285,14 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				'1001:3000': '#FFD162',
 				'3001:7000': '#ff8a00',
 				'7001:': '#F74B4B'
-			})
+			}),
+			tooltipFormatter: function (spark, opt, ms) {
+				var tooltip = '<div class="tooltip-arrow"></div><div class="tooltip-inner">';
+				tooltip += $filter('blockPropagationFilter')(ms[0].value, '');
+				tooltip += '</div>';
+
+				return tooltip;
+			}
 		});
 	}
 
