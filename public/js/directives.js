@@ -2,13 +2,89 @@
 
 /* Directives */
 
-angular.module('netStatsApp.directives', []).
-	directive('appVersion', ['version', function(version) {
+angular.module('netStatsApp.directives', [])
+	.directive('appVersion', ['version', function (version) {
 		return function(scope, elm, attrs) {
 			elm.text(version);
 		};
-}]).
-	directive('nodemap', ['$compile', function($compile) {
+}])
+	.directive('sparkchart', ['$compile', '$filter', function($compile, $filter) {
+		return {
+			restrict: 'EA',
+			scope: {
+				data: '='
+			},
+			link: function (scope, element, attrs)
+			{
+				scope.init = function ()
+				{
+					element.empty();
+
+					jQuery(element[0]).sparkline(scope.data, {
+						type: 'bar',
+						tooltipSuffix: (attrs.tooltipsuffix || '')
+					});
+				}
+
+				scope.init();
+
+				scope.$watch('data', function ()
+				{
+					scope.init();
+				}, true);
+			}
+		};
+}])
+	.directive('nodepropagchart', ['$compile', '$filter', function($compile, $filter) {
+		return {
+			restrict: 'EA',
+			scope: {
+				data: '='
+			},
+			link: function (scope, element, attrs)
+			{
+				var options = {
+					type: 'bar',
+					negBarColor: '#7f7f7f',
+					zeroAxis: false,
+					height: 20,
+					barWidth : 2,
+					barSpacing : 1,
+					tooltipSuffix: '',
+					chartRangeMax: 8000,
+					colorMap: jQuery.range_map({
+						'0:1': '#10a0de',
+						'1:1000': '#7bcc3a',
+						'1001:3000': '#FFD162',
+						'3001:7000': '#ff8a00',
+						'7001:': '#F74B4B'
+					}),
+					tooltipFormatter: function (spark, opt, ms) {
+						var tooltip = '<div class="tooltip-arrow"></div><div class="tooltip-inner">';
+						tooltip += $filter('blockPropagationFilter')(ms[0].value, '');
+						tooltip += '</div>';
+
+						return tooltip;
+					}
+				};
+
+				scope.init = function ()
+				{
+					element.empty();
+
+					jQuery(element[0]).sparkline(scope.data, options);
+				}
+
+				scope.init();
+
+				scope.$watch('data', function ()
+				{
+					scope.init();
+				}, true);
+			}
+		};
+}])
+	.directive('nodemap', ['$compile', function($compile) {
 		return {
 			restrict: 'EA',
 			scope: {
@@ -112,8 +188,8 @@ angular.module('netStatsApp.directives', []).
 				}, true);
 			}
 		};
-}]).
-	directive('histogram', ['$compile', function($compile) {
+}])
+	.directive('histogram', ['$compile', function($compile) {
 		return {
 			restrict: 'EA',
 			scope: {

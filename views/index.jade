@@ -92,14 +92,14 @@ block content
               //- i.icon-time
               span.small-title block time
               //- span.small-value {{ avgBlockTime | avgTimeFilter }}
-              span.big-details.spark-blocktimes
+              sparkchart.big-details.spark-blocktimes(data="lastBlocksTime", tooltipsuffix="s")
 
           div.col-xs-3.stat-holder
             div.big-info.chart.text-info
               //- i.icon-difficulty
               span.small-title difficulty
               //- span.small-value {{ lastDifficulty | number }}
-              span.big-details.spark-difficulty
+              sparkchart.big-details.spark-difficulty(data="difficultyChart")
 
           div.col-xs-3.stat-holder.xpull-right
             div.big-info.chart.xdouble-chart(class="{{ blockPropagationAvg | propagationAvgTimeClass : true }}")
@@ -123,19 +123,19 @@ block content
               span.small-title uncle count #[&nbsp;]
                 span.small (25 blocks per bar)
               //- span.small-value {{ bestStats.block.uncles.length }}/{{ uncleCount }}
-              span.big-details.spark-uncles
+              sparkchart.big-details.spark-uncles(data="uncleCountChart")
 
           div.col-xs-3.stat-holder
             div.big-info.chart.text-info
               //- i.icon-uncle
               span.small-title transactions
-              span.big-details.spark-transactions
+              sparkchart.big-details.spark-transactions(data="transactionDensity")
 
           div.col-xs-3.stat-holder
             div.big-info.chart.text-info
               //- i.icon-gasprice
               span.small-title gas spending
-              span.big-details.spark-gasspending
+              sparkchart.big-details.spark-gasspending(data="gasSpending")
 
 
 
@@ -209,5 +209,6 @@ block content
               div.propagationBox
               span {{node.stats.block.propagation | blockPropagationFilter}}
             td.peerPropagationChart(class="{{node.id}}")
+              nodepropagchart(data="node.history")
             td(class="{{ node.stats | propagationNodeAvgTimeClass : bestBlock }}") {{ node.stats | blockPropagationAvgFilter : bestBlock }}
             td(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}
