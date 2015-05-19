@@ -113,16 +113,24 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				$scope.nodes = data;
 
 				_.forEach($scope.nodes, function(node, index) {
+					// Init hashrate
 					if(typeof node.stats.hashrate === 'undefined')
 						$scope.nodes[index].stats.hashrate = 0;
+
+					// Init history
+					if( _.isUndefined(data.history) )
+					{
+						data.history = new Array(40);
+						_.fill(data.history, -1);
+					}
 
 					// Init pin
 					$scope.nodes[index].pinned = false;
 
+					$scope.$apply();
+
 					makePeerPropagationChart($scope.nodes[index]);
 				});
-
-				$scope.$apply();
 
 				if($scope.nodes.length > 0)
 					toastr['success']("Got nodes list", "Got nodes!");
@@ -146,7 +154,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 				var index = findIndex({id: data.id});
 
-				if(typeof $scope.nodes[index].stats !== 'undefined') {
+				if( !_.isUndefined($scope.nodes[index].stats) ) {
 
 					if($scope.nodes[index].stats.block.number < data.stats.block.number)
 					{
@@ -163,6 +171,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 					$scope.nodes[index].stats = data.stats;
 					$scope.nodes[index].history = data.history;
+
+					$scope.$apply();
+
 					makePeerPropagationChart($scope.nodes[index]);
 				}
 
@@ -203,6 +214,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				$scope.gasSpending = data.gasSpending;
 				$scope.miners = data.miners;
 
+				$scope.$apply();
+
 				getMinersNames();
 
 				jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime, {type: 'bar', tooltipSuffix: ' s'});
@@ -228,6 +241,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.latency))
 					$scope.nodes[findIndex({id: data.id})].stats.latency = data.latency;
 
+				$scope.$apply();
+
 				break;
 
 			case "client-ping":
@@ -236,7 +251,10 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				break;
 		}
 
-		updateStats();
+		if(action !== "latency")
+		{
+			updateStats();
+		}
 	}
 
 	function findIndex(search)
@@ -295,15 +313,37 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 			data.pinned = false;
 
+			if( _.isUndefined(data.history) )
+			{
+				data.history = new Array(40);
+				_.fill(data.history, -1);
+			}
+
 			$scope.nodes.push(data);
 
 			return true;
 		}
 
-		if( !_.isUndefined($scope.nodes[index].pinned)) {
+		if( !_.isUndefined($scope.nodes[index].pinned) )
+		{
 			data.pinned = $scope.nodes[index].pinned
-		} else {
+		}
+		else
+		{
 			data.pinned = false;
+		}
+
+		if( !_.isUndefined($scope.nodes[index].pinned) )
+		{
+			data.history = $scope.nodes[index].history
+		}
+		else
+		{
+			if( _.isUndefined(data.history) )
+			{
+				data.history = new Array(40);
+				_.fill(data.history, -1);
+			}
 		}
 
 		$scope.nodes[index] = data;
