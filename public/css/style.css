@@ -283,6 +283,16 @@ table td.peerPropagationChart {
 	padding: 5px;
 }
 
+.th-nodecheck,
+.td-nodecheck {
+	width: 38px;
+	text-align: center;
+}
+
+.td-nodecheck i {
+	left: 0px;
+}
+
 .th-nodename {
 	width: 300px;
 	text-overflow: ellipsis;
@@ -423,7 +433,7 @@ svg .line {
 	stroke-linejoin: round;
 	stroke-linecap: round;
 	shape-rendering: geometric-precision;
-	-webkit-svg-shadow: 0 0 7px #fff;
+	/*-webkit-svg-shadow: 0 0 7px #fff;*/
 }
 
 svg .bar text {
