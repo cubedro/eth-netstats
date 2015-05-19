@@ -135,6 +135,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				else
 					toastr['info']("Node "+ $scope.nodes[findIndex({id: data.id})].info.name +" reconnected!", "Node is back!");
 
+				$scope.$apply();
+				makePeerPropagationChart($scope.nodes[findIndex({id: data.id})]);
+
 				break;
 
 			case "update":
@@ -167,6 +170,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 			case "info":
 				$scope.nodes[findIndex({id: data.id})].info = data.info;
+
+				if(_.isUndefined($scope.nodes[findIndex({id: data.id})].pinned))
+					$scope.nodes[findIndex({id: data.id})].pinned = false;
 
 				break;
 
@@ -294,8 +300,13 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 			return true;
 		}
 
+		if( !_.isUndefined($scope.nodes[index].pinned)) {
+			data.pinned = $scope.nodes[index].pinned
+		} else {
+			data.pinned = false;
+		}
+
 		$scope.nodes[index] = data;
-		makePeerPropagationChart($scope.nodes[index]);
 
 		return false;
 	}
