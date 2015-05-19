@@ -75,7 +75,7 @@ angular.module('netStatsApp.directives', [])
 			}
 		};
 })
-	.directive('nodepropagchart', ['$filter', function($filter) {
+	.directive('nodepropagchart', function() {
 		return {
 			restrict: 'E',
 			scope: {
@@ -84,6 +84,32 @@ angular.module('netStatsApp.directives', [])
 			compile: function (tElement, tAttrs, transclude)
 			{
 				tElement.replaceWith('<span>' + tAttrs.data + "</span>");
+
+				function formatTime (ms) {
+					var result = 0;
+
+					if(ms < 1000) {
+						return ms + " ms";
+					}
+
+					if(ms < 1000*60) {
+						result = ms/1000;
+						return result.toFixed(1) + " s";
+					}
+
+					if(ms < 1000*60*60) {
+						result = ms/1000/60;
+						return Math.round(result) + " min";
+					}
+
+					if(ms < 1000*60*60*24) {
+						result = ms/1000/60/60;
+						return Math.round(result) + " h";
+					}
+
+					result = ms/1000/60/60/24;
+					return Math.round(result) + " days";
+				};
 
 				return function(scope, element, attrs)
 				{
@@ -108,7 +134,7 @@ angular.module('netStatsApp.directives', [])
 							}),
 							tooltipFormatter: function (spark, opt, ms) {
 								var tooltip = '<div class="tooltip-arrow"></div><div class="tooltip-inner">';
-								tooltip += $filter('blockPropagationFilter')(ms[0].value, '');
+								tooltip += formatTime(ms[0].value);
 								tooltip += '</div>';
 
 								return tooltip;
@@ -118,7 +144,7 @@ angular.module('netStatsApp.directives', [])
 				};
 			}
 		};
-}])
+})
 	.directive('nodemap', ['$compile', function($compile) {
 		return {
 			restrict: 'EA',
