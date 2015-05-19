@@ -148,6 +148,7 @@ span.small-title span.small {
 }
 
 .big-info.chart .big-details {
+	display: block;
 	position: absolute;
 	top: 40px;
 }
