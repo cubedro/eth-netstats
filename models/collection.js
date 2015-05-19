@@ -22,12 +22,12 @@ Collection.prototype.update = function(id, stats)
 {
 	var node = this.getNode({ id: id });
 
-	if(!node)
+	if (!node)
 		return false;
 
 	var block = this._blockchain.add(stats.block, id);
 
-	if(! block)
+	if (!block)
 		return false;
 
 	var propagationHistory = this._blockchain.getNodePropagation(id);
@@ -43,7 +43,7 @@ Collection.prototype.addHistory = function(id, blocks)
 {
 	var node = this.getNode({ id: id });
 
-	if(!node)
+	if (!node)
 		return false;
 
 	blocks = blocks.reverse();
@@ -60,7 +60,7 @@ Collection.prototype.updateLatency = function(id, latency)
 {
 	var node = this.getNode({ id: id });
 
-	if(!node)
+	if (!node)
 		return false;
 
 	return node.setLatency(latency);
@@ -70,7 +70,7 @@ Collection.prototype.inactive = function(id)
 {
 	var node = this.getNode({ spark: id });
 
-	if(!node)
+	if (!node)
 		return false;
 
 	node.setState(false);

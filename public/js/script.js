@@ -10,7 +10,7 @@
 	$.fn.sparkline.defaults.bar.barSpacing = 1;
 	$.fn.sparkline.defaults.bar.tooltipClassname = 'jqstooltip';
 	$.fn.sparkline.defaults.bar.tooltipOffsetX = 0;
-	$.fn.sparkline.defaults.bar.tooltipFormat = $.spformat('<div class="tooltip-arrow"></div><div class="tooltip-inner">{{prefix}}{{value}}{{suffix}}</div>');
+	$.fn.sparkline.defaults.bar.tooltipFormat = $.spformat('<div class="tooltip-arrow"></div><div class="tooltip-inner">{{prefix}}{{value}} {{suffix}}</div>');
 	$.fn.sparkline.defaults.bar.colorMap = $.range_map({
 		'0:5': '#10a0de',
 		'6:12': '#7bcc3a',

@@ -157,11 +157,6 @@ api.on('connection', function(spark) {
 		});
 
 		askedForHistory = false;
-
-		client.write({
-			action: 'charts',
-			data: Nodes.getCharts()
-		});
 	});
 
 	spark.on('node-ping', function(data)

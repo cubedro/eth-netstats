@@ -69,7 +69,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 		$scope.$apply();
 	}, 200);
 
-	$scope.getNumber = function(num) {
+	$scope.getNumber = function (num) {
 		return new Array(num);
 	}
 
@@ -118,7 +118,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 				$scope.nodes = data;
 
-				_.forEach($scope.nodes, function(node, index) {
+				_.forEach($scope.nodes, function (node, index) {
 					// Init hashrate
 					if( _.isUndefined(node.stats.hashrate) )
 						$scope.nodes[index].stats.hashrate = 0;
@@ -132,10 +132,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 					// Init or recover pin
 					$scope.nodes[index].pinned = _.result(_.find(oldNodes, 'id', node.id), 'pinned', false);
-
-					$scope.$apply();
-
-					makePeerPropagationChart($scope.nodes[index]);
 				});
 
 				if($scope.nodes.length > 0)
@@ -144,27 +140,26 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				break;
 
 			case "add":
-				if(addNewNode(data))
-					toastr['success']("New node "+ $scope.nodes[findIndex({id: data.id})].info.name +" connected!", "New node!");
-				else
-					toastr['info']("Node "+ $scope.nodes[findIndex({id: data.id})].info.name +" reconnected!", "Node is back!");
+				var index = findIndex({id: data.id});
 
-				$scope.$apply();
-				makePeerPropagationChart($scope.nodes[findIndex({id: data.id})]);
+				if( addNewNode(data) )
+					toastr['success']("New node "+ $scope.nodes[index].info.name +" connected!", "New node!");
+				else
+					toastr['info']("Node "+ $scope.nodes[index].info.name +" reconnected!", "Node is back!");
 
 				break;
 
 			case "update":
-				if(typeof data.stats.hashrate === 'undefined')
-					data.stats.hashrate = 0;
-
 				var index = findIndex({id: data.id});
+
+				if( _.isUndefined(data.stats.hashrate) )
+					data.stats.hashrate = 0;
 
 				if( !_.isUndefined($scope.nodes[index].stats) ) {
 
-					if($scope.nodes[index].stats.block.number < data.stats.block.number)
+					if( $scope.nodes[index].stats.block.number < data.stats.block.number )
 					{
-						var best = _.max($scope.nodes, function(node) {
+						var best = _.max($scope.nodes, function (node) {
 							return parseInt(node.stats.block.number);
 						}).stats.block;
 
@@ -173,23 +168,22 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 						} else {
 							data.stats.block.arrived = best.arrived;
 						}
+
+						$scope.nodes[index].history = data.history;
 					}
 
 					$scope.nodes[index].stats = data.stats;
-					$scope.nodes[index].history = data.history;
-
-					$scope.$apply();
-
-					makePeerPropagationChart($scope.nodes[index]);
 				}
 
 				break;
 
 			case "info":
-				$scope.nodes[findIndex({id: data.id})].info = data.info;
+				var index = findIndex({id: data.id});
 
-				if(_.isUndefined($scope.nodes[findIndex({id: data.id})].pinned))
-					$scope.nodes[findIndex({id: data.id})].pinned = false;
+				$scope.nodes[index].info = data.info;
+
+				if( _.isUndefined($scope.nodes[index].pinned) )
+					$scope.nodes[index].pinned = false;
 
 				break;
 
@@ -200,10 +194,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				break;
 
 			case "uncleCount":
-				$scope.uncleCountChart = data;
 				$scope.uncleCount = data[0] + data[1];
-
-				jQuery('.spark-uncles').sparkline($scope.uncleCountChart.reverse(), {type: 'bar', barSpacing: 1});
+				$scope.uncleCountChart = data.reverse();
 
 				break;
 
@@ -214,40 +206,34 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				$scope.difficultyChart = data.difficulty;
 				$scope.blockPropagationChart = data.propagation.histogram;
 				$scope.blockPropagationAvg = data.propagation.avg;
-				$scope.uncleCountChart = data.uncleCount;
 				$scope.uncleCount = data.uncleCount[0] + data.uncleCount[1];
+				$scope.uncleCountChart = data.uncleCount.reverse();
 				$scope.transactionDensity = data.transactions;
 				$scope.gasSpending = data.gasSpending;
 				$scope.miners = data.miners;
 
-				$scope.$apply();
-
 				getMinersNames();
-
-				jQuery('.spark-blocktimes').sparkline($scope.lastBlocksTime, {type: 'bar', tooltipSuffix: ' s'});
-				jQuery('.spark-difficulty').sparkline($scope.difficultyChart, {type: 'bar'});
-				jQuery('.spark-transactions').sparkline($scope.transactionDensity, {type: 'bar'});
-				jQuery('.spark-gasspending').sparkline($scope.gasSpending, {type: 'bar'});
-				jQuery('.spark-uncles').sparkline($scope.uncleCountChart.reverse(), {type: 'bar', barSpacing: 1});
 
 				break;
 
 			case "inactive":
-				if( !_.isUndefined(data.stats) )
-					$scope.nodes[findIndex({id: data.id})].stats = data.stats;
+				var index = findIndex({id: data.id});
 
-				toastr['error']("Node "+ $scope.nodes[findIndex({id: data.id})].info.name +" went away!", "Node connection was lost!");
+				if( !_.isUndefined(data.stats) )
+					$scope.nodes[index].stats = data.stats;
+
+				toastr['error']("Node "+ $scope.nodes[index].info.name +" went away!", "Node connection was lost!");
 
 				break;
 
 			case "latency":
+				var index = findIndex({id: data.id});
+
 				if( !_.isUndefined(data.id) )
-					var node = $scope.nodes[findIndex({id: data.id})];
+					var node = $scope.nodes[index];
 
-				if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.latency))
-					$scope.nodes[findIndex({id: data.id})].stats.latency = data.latency;
-
-				$scope.$apply();
+				if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.latency) )
+					$scope.nodes[index].stats.latency = data.latency;
 
 				break;
 
@@ -257,7 +243,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				break;
 		}
 
-		if(action !== "latency")
+		if( action !== "latency" && action !== "client-ping" )
 		{
 			updateStats();
 		}
@@ -268,39 +254,11 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 		return _.findIndex($scope.nodes, search);
 	}
 
-	function makePeerPropagationChart(node)
-	{
-		jQuery('.' + node.id).sparkline(node.history, {
-			type: 'bar',
-			negBarColor: '#7f7f7f',
-			zeroAxis: false,
-			height: 20,
-			barWidth : 2,
-			barSpacing : 1,
-			tooltipSuffix: '',
-			chartRangeMax: 8000,
-			colorMap: jQuery.range_map({
-				'0:1': '#10a0de',
-				'1:1000': '#7bcc3a',
-				'1001:3000': '#FFD162',
-				'3001:7000': '#ff8a00',
-				'7001:': '#F74B4B'
-			}),
-			tooltipFormatter: function (spark, opt, ms) {
-				var tooltip = '<div class="tooltip-arrow"></div><div class="tooltip-inner">';
-				tooltip += $filter('blockPropagationFilter')(ms[0].value, '');
-				tooltip += '</div>';
-
-				return tooltip;
-			}
-		});
-	}
-
 	function getMinersNames()
 	{
-		if($scope.miners.length > 0)
+		if( $scope.miners.length > 0 )
 		{
-			_.forIn($scope.miners, function(value, key)
+			_.forIn($scope.miners, function (value, key)
 			{
 				if(value.name !== false)
 					return;
@@ -310,7 +268,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 				var name = _.result(_.find(_.pluck($scope.nodes, 'info'), 'coinbase', value.miner), 'name');
 
-				if(typeof name !== 'undefined')
+				if( !_.isUndefined(name) )
 					$scope.miners[key].name = name;
 			});
 		}
@@ -319,44 +277,32 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 	function addNewNode(data)
 	{
 		var index = findIndex({id: data.id});
-		if(index < 0)
+
+		if( _.isUndefined(data.history) )
 		{
-			if(typeof data.stats !== 'undefined' && typeof data.stats.hashrate === 'undefined')
+			data.history = new Array(40);
+			_.fill(data.history, -1);
+		}
+
+		if( index < 0 )
+		{
+			if( !_.isUndefined(data.stats) && _.isUndefined(data.stats.hashrate) )
+			{
 				data.stats.hashrate = 0;
+			}
 
 			data.pinned = false;
-
-			if( _.isUndefined(data.history) )
-			{
-				data.history = new Array(40);
-				_.fill(data.history, -1);
-			}
 
 			$scope.nodes.push(data);
 
 			return true;
 		}
 
-		if( !_.isUndefined($scope.nodes[index].pinned) )
-		{
-			data.pinned = $scope.nodes[index].pinned
-		}
-		else
-		{
-			data.pinned = false;
-		}
+		data.pinned = ( !_.isUndefined($scope.nodes[index].pinned) ? $scope.nodes[index].pinned : false);
 
-		if( !_.isUndefined($scope.nodes[index].pinned) )
+		if( !_.isUndefined($scope.nodes[index].history) )
 		{
-			data.history = $scope.nodes[index].history
-		}
-		else
-		{
-			if( _.isUndefined(data.history) )
-			{
-				data.history = new Array(40);
-				_.fill(data.history, -1);
-			}
+			data.history = $scope.nodes[index].history;
 		}
 
 		$scope.nodes[index] = data;
@@ -366,22 +312,22 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 	function updateStats()
 	{
-		if($scope.nodes.length)
+		if( $scope.nodes.length )
 		{
 			$scope.nodesTotal = $scope.nodes.length;
 
-			$scope.nodesActive = _.filter($scope.nodes, function(node) {
+			$scope.nodesActive = _.filter($scope.nodes, function (node) {
 				return node.stats.active == true;
 			}).length;
 
-			var bestBlock = _.max($scope.nodes, function(node) {
+			var bestBlock = _.max($scope.nodes, function (node) {
 				return parseInt(node.stats.block.number);
 			}).stats.block.number;
 
-			if(bestBlock > $scope.bestBlock)
+			if( bestBlock > $scope.bestBlock )
 			{
 				$scope.bestBlock = bestBlock;
-				$scope.bestStats = _.max($scope.nodes, function(node) {
+				$scope.bestStats = _.max($scope.nodes, function (node) {
 					return parseInt(node.stats.block.number);
 				}).stats;
 
@@ -389,11 +335,11 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				$scope.lastDifficulty = $scope.bestStats.block.difficulty;
 			}
 
-			$scope.upTimeTotal = _.reduce($scope.nodes, function(total, node) {
+			$scope.upTimeTotal = _.reduce($scope.nodes, function (total, node) {
 				return total + node.stats.uptime;
 			}, 0) / $scope.nodes.length;
 
-			$scope.map = _.map($scope.nodes, function(node) {
+			$scope.map = _.map($scope.nodes, function (node) {
 				var fill = $filter('bubbleClass')(node.stats, $scope.bestBlock);
 
 				if(node.geo != null)

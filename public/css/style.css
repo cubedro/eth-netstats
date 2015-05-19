@@ -277,6 +277,12 @@ table td i {
 table td.peerPropagationChart {
 	padding: 4px 5px !important;
 }
+nodepropagchart {
+	display: inline-block;
+	width: 107px;
+	height: 20px;
+	vertical-align: top;
+}
 
 .table>tbody>tr>td,
 .table>thead>tr>th {
