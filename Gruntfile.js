@@ -10,19 +10,19 @@ var scripts = [
 ];
 
 var vendor = [
-	'public/js/lib/jquery.min.js',
-	'public/js/lib/bootstrap.min.js',
-	'public/js/lib/angular.min.js',
-	'public/js/lib/lodash.min.js',
-	'public/js/lib/d3.min.js',
-	'public/js/lib/d3.tip.min.js',
-	'public/js/lib/topojson.min.js',
-	'public/js/lib/datamaps.min.js',
-	'public/js/lib/moment.min.js',
-	'public/js/lib/moment.en.min.js',
-	'public/js/lib/toastr.min.js',
-	'public/js/lib/jquery.sparkline.min.js',
-	'public/js/lib/primus.min.js'
+	'dist/js/lib/jquery-1.11.3.min.js',
+	'dist/js/lib/bootstrap.min.js',
+	'dist/js/lib/angular.min.js',
+	'dist/js/lib/lodash.min.js',
+	'dist/js/lib/d3.min.js',
+	'dist/js/lib/d3.tip.min.js',
+	'dist/js/lib/topojson.min.js',
+	'dist/js/lib/datamaps.min.js',
+	'dist/js/lib/moment.min.js',
+	'dist/js/lib/moment.en.min.js',
+	'dist/js/lib/toastr.min.js',
+	'dist/js/lib/jquery.sparkline.min.js',
+	'dist/js/lib/primus.min.js'
 ];
 
 var styles = [
@@ -78,8 +78,10 @@ module.exports = function(grunt) {
 						filter: 'isFile'
 					},
 					{
-						src: 'public/js/lib/angular.min.js.map',
-						dest: 'dist/js/angular.min.js.map'
+						expand: true,
+						cwd: 'public/js/lib/',
+						src: ['*.*'],
+						dest: 'dist/js/lib'
 					}
 				]
 			}
@@ -96,22 +98,30 @@ module.exports = function(grunt) {
 		},
 		concat: {
 			vendor: {
+				options: {
+					sourceMap: true,
+					sourceMapIncludeSources: true,
+					sourceMapIn: ['dist/js/lib/*.map']
+				},
 				src: vendor,
 				dest: 'dist/js/vendor.min.js'
 			},
 			scripts : {
 				options: {
-					separator: ';',
+					separator: ';\n',
 				},
 				src: scripts,
 				dest: 'dist/js/app.js'
 			},
 			netstats: {
 				options: {
-					sourceMap: true
+					sourceMap: true,
+					sourceMapIncludeSources: true,
+					sourceMapIn: ['dist/js/vendor.min.js.map', 'dist/js/app.min.js.map']
 				},
 				src: ['<%= concat.vendor.dest %>', '<%= uglify.app.dest %>'],
-				dest: 'dist/js/netstats.min.js'
+				dest: 'dist/js/netstats.min.js',
+				nonull: true,
 			},
 			css: {
 				src: ['dist/css/*.min.css', 'dist/css/*.css'],
@@ -122,6 +132,8 @@ module.exports = function(grunt) {
 			app: {
 				options: {
 					mangle: false,
+					sourceMap: true,
+					sourceMapIncludeSources: true
 				},
 				dest: 'dist/js/app.min.js',
 				src: ['<%= concat.scripts.dest %>']
@@ -136,6 +148,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 
+	// grunt.registerTask('default', ['clean', 'jade', 'copy', 'cssmin', 'concat:vendor', 'concat:scripts', 'uglify', 'concat:netstats', 'concat:css', 'clean:cleanup_css']);
 	grunt.registerTask('default', ['clean', 'jade', 'copy', 'cssmin', 'concat:vendor', 'concat:scripts', 'uglify', 'concat:netstats', 'concat:css', 'clean:cleanup_js', 'clean:cleanup_css']);
 	grunt.registerTask('build',   'default');
 };

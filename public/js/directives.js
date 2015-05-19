@@ -1,4 +1,3 @@
-'use strict';
 
 /* Directives */
 
@@ -10,7 +9,7 @@ angular.module('netStatsApp.directives', [])
 }])
 	.directive('sparkchart', ['$compile', '$filter', function($compile, $filter) {
 		return {
-			restrict: 'EA',
+			restrict: 'E',
 			scope: {
 				data: '='
 			},
@@ -18,9 +17,10 @@ angular.module('netStatsApp.directives', [])
 			{
 				scope.init = function ()
 				{
-					element.empty();
+					var data = scope.data;
+					// element.empty();
 
-					jQuery(element[0]).sparkline(scope.data, {
+					jQuery(element[0]).sparkline(data, {
 						type: 'bar',
 						tooltipSuffix: (attrs.tooltipsuffix || '')
 					});
@@ -37,7 +37,7 @@ angular.module('netStatsApp.directives', [])
 }])
 	.directive('nodepropagchart', ['$compile', '$filter', function($compile, $filter) {
 		return {
-			restrict: 'EA',
+			restrict: 'E',
 			scope: {
 				data: '='
 			},
@@ -70,9 +70,11 @@ angular.module('netStatsApp.directives', [])
 
 				scope.init = function ()
 				{
-					element.empty();
+					var data = scope.data;
 
-					jQuery(element[0]).sparkline(scope.data, options);
+					// element.empty();
+
+					jQuery(element[0]).sparkline(data, options);
 				}
 
 				scope.init();

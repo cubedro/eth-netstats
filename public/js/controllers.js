@@ -1,4 +1,3 @@
-'use strict';
 
 /* Controllers */
 
@@ -64,7 +63,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 		}
 	}
 
-	$scope.timeout = setInterval(function ()
+	var timeout = setInterval(function ()
 	{
 		$scope.$apply();
 	}, 200);
@@ -143,7 +142,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				var index = findIndex({id: data.id});
 
 				if( addNewNode(data) )
-					toastr['success']("New node "+ $scope.nodes[index].info.name +" connected!", "New node!");
+					toastr['success']("New node "+ $scope.nodes[findIndex({id: data.id})].info.name +" connected!", "New node!");
 				else
 					toastr['info']("Node "+ $scope.nodes[index].info.name +" reconnected!", "Node is back!");
 
@@ -152,10 +151,10 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 			case "update":
 				var index = findIndex({id: data.id});
 
-				if( _.isUndefined(data.stats.hashrate) )
-					data.stats.hashrate = 0;
-
-				if( !_.isUndefined($scope.nodes[index].stats) ) {
+				if( index >= 0 && !_.isUndefined($scope.nodes[index]) && !_.isUndefined($scope.nodes[index].stats) )
+				{
+					if( _.isUndefined(data.stats.hashrate) )
+						data.stats.hashrate = 0;
 
 					if( $scope.nodes[index].stats.block.number < data.stats.block.number )
 					{
@@ -180,10 +179,13 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 			case "info":
 				var index = findIndex({id: data.id});
 
-				$scope.nodes[index].info = data.info;
+				if( index >= 0 )
+				{
+					$scope.nodes[index].info = data.info;
 
-				if( _.isUndefined($scope.nodes[index].pinned) )
-					$scope.nodes[index].pinned = false;
+					if( _.isUndefined($scope.nodes[index].pinned) )
+						$scope.nodes[index].pinned = false;
+				}
 
 				break;
 
@@ -219,21 +221,26 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 			case "inactive":
 				var index = findIndex({id: data.id});
 
-				if( !_.isUndefined(data.stats) )
-					$scope.nodes[index].stats = data.stats;
+				if( index >= 0 )
+				{
+					if( !_.isUndefined(data.stats) )
+						$scope.nodes[index].stats = data.stats;
 
-				toastr['error']("Node "+ $scope.nodes[index].info.name +" went away!", "Node connection was lost!");
+					toastr['error']("Node "+ $scope.nodes[index].info.name +" went away!", "Node connection was lost!");
+				}
 
 				break;
 
 			case "latency":
 				var index = findIndex({id: data.id});
 
-				if( !_.isUndefined(data.id) )
+				if( !_.isUndefined(data.id) && index >= 0 )
+				{
 					var node = $scope.nodes[index];
 
-				if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.latency) )
-					$scope.nodes[index].stats.latency = data.latency;
+					if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.latency) )
+						$scope.nodes[index].stats.latency = data.latency;
+				}
 
 				break;
 
