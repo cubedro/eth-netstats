@@ -63,10 +63,10 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 		}
 	}
 
-	// var timeout = setInterval(function ()
-	// {
-	// 	$scope.$apply();
-	// }, 200);
+	var timeout = setInterval(function ()
+	{
+		$scope.$apply();
+	}, 200);
 
 	$scope.getNumber = function (num) {
 		return new Array(num);

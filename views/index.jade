@@ -26,8 +26,8 @@ block content
             i.icon-time
           div.big-details-holder
             span.small-title last block
-            //- span.big-details {{ lastBlock | blockTimeFilter }}
-            span.big-details(time-ago="lastBlock")
+            span.big-details {{ lastBlock | blockTimeFilter }}
+            //- span.big-details(time-ago="lastBlock")
           div.clearfix
       div.col-xs-2.stat-holder
         div.big-info.avgblocktime(class="{{ avgBlockTime | avgTimeClass }}")
@@ -205,7 +205,7 @@ block content
               span.small {{node.stats.block.totalDifficulty | number}}
             td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
             td(style="padding-left: 14px;") {{node.stats.block.uncles.length || 0}}
-            td(class="{{ node.stats.block.received | timeClass : node.stats.active }}", time-ago="node.stats.block.received")
+            td(class="{{ node.stats.block.received | timeClass : node.stats.active }}") {{node.stats.block.received | blockTimeFilter }}
             td(class="{{ node.stats | propagationTimeClass : bestBlock }}")
               div.propagationBox
               span {{node.stats.block.propagation | blockPropagationFilter}}
