@@ -110,11 +110,17 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 		switch(action) {
 			case "init":
+				var oldNodes = [];
+
+				if( $scope.nodes.length > 0 ){
+					oldNodes = $scope.nodes;
+				}
+
 				$scope.nodes = data;
 
 				_.forEach($scope.nodes, function(node, index) {
 					// Init hashrate
-					if(typeof node.stats.hashrate === 'undefined')
+					if( _.isUndefined(node.stats.hashrate) )
 						$scope.nodes[index].stats.hashrate = 0;
 
 					// Init history
@@ -124,8 +130,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 						_.fill(data.history, -1);
 					}
 
-					// Init pin
-					$scope.nodes[index].pinned = false;
+					// Init or recover pin
+					$scope.nodes[index].pinned = _.result(_.find(oldNodes, 'id', node.id), 'pinned', false);
 
 					$scope.$apply();
 
