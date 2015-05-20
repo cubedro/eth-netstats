@@ -202,19 +202,38 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				break;
 
 			case "charts":
-				$scope.avgBlockTime = data.avgBlocktime;
-				$scope.avgHashrate = data.avgHashrate;
-				$scope.lastBlocksTime = data.blocktime;
-				$scope.difficultyChart = data.difficulty;
-				$scope.blockPropagationChart = data.propagation.histogram;
-				$scope.blockPropagationAvg = data.propagation.avg;
-				$scope.uncleCount = data.uncleCount[0] + data.uncleCount[1];
-				$scope.uncleCountChart = data.uncleCount.reverse();
-				$scope.transactionDensity = data.transactions;
-				$scope.gasSpending = data.gasSpending;
-				$scope.miners = data.miners;
+				if( !_.isEqual($scope.avgBlockTime, data.avgBlocktime) )
+					$scope.avgBlockTime = data.avgBlocktime;
 
-				getMinersNames();
+				if( !_.isEqual($scope.avgHashrate, data.avgHashrate) )
+					$scope.avgHashrate = data.avgHashrate;
+
+				if( !_.isEqual($scope.lastBlocksTime, data.blocktime) )
+					$scope.lastBlocksTime = data.blocktime;
+
+				if( !_.isEqual($scope.difficultyChart, data.difficulty) )
+					$scope.difficultyChart = data.difficulty;
+
+				if( !_.isEqual($scope.blockPropagationChart, data.propagation.histogram) ) {
+					$scope.blockPropagationChart = data.propagation.histogram;
+					$scope.blockPropagationAvg = data.propagation.avg;
+				}
+
+				if( !_.isEqual($scope.uncleCountChart, data.uncleCount.reverse()) ) {
+					$scope.uncleCount = data.uncleCount[0] + data.uncleCount[1];
+					$scope.uncleCountChart = data.uncleCount.reverse();
+				}
+
+				if( !_.isEqual($scope.transactionDensity, data.transactions) )
+					$scope.transactionDensity = data.transactions;
+
+				if( !_.isEqual($scope.gasSpending, data.gasSpending) )
+					$scope.gasSpending = data.gasSpending;
+
+				if( !_.isEqual($scope.miners, data.miners) ) {
+					$scope.miners = data.miners;
+					getMinersNames();
+				}
 
 				break;
 
