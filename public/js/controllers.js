@@ -365,6 +365,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 						longitude: 0
 					};
 			});
+
+			$scope.$apply();
 		}
 	}
 });
