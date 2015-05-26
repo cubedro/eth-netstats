@@ -360,7 +360,8 @@ angular.module('netStatsApp.filters', [])
 		var ms = stats.propagationAvg;
 
 		if(bestBlock - stats.block.number > 40)
-			ms = _.now() - stats.block.received;
+			return "∞";
+		//ms = _.now() - stats.block.received;
 
 		prefix = '';
 
