@@ -1,4 +1,5 @@
-extends layout
+//- index.jade
+extends ./layout.jade
 
 block content
   div.container-fluid(ng-controller='StatsCtrl')
@@ -16,7 +17,7 @@ block content
           div.pull-left.icon-full-width
             i.icon-uncle
           div.big-details-holder
-            span.small-title uncles #[&nbsp;]
+            span.small-title uncles&nbsp;
               span.small (current / last 50)
             span.big-details {{ bestStats.block.uncles.length }}/{{ uncleCount }}
           div.clearfix
@@ -121,7 +122,7 @@ block content
           div.col-xs-3.stat-holder
             div.big-info.chart.text-info
               //- i.icon-uncle
-              span.small-title uncle count #[&nbsp;]
+              span.small-title uncle count&nbsp;
                 span.small (25 blocks per bar)
               //- span.small-value {{ bestStats.block.uncles.length }}/{{ uncleCount }}
               sparkchart.big-details.spark-uncles(data="{{uncleCountChart.join(',')}}")
@@ -166,7 +167,7 @@ block content
               i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions", ng-click="orderTable(['-stats.pending'], false)")
             th
               i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
-            th.th-blockhash #[&nbsp;]
+            th.th-blockhash&nbsp;
             th.th-blockhash
               i.icon-difficulty(data-toggle="tooltip", data-placement="top", title="Total difficulty", ng-click="orderTable(['-stats.block.totalDifficulty'], false)")
             th
@@ -188,7 +189,7 @@ block content
               i(ng-click="node.pinned = !node.pinned", class="{{ node.pinned | nodePinClass }}", data-toggle="tooltip", data-placement="right", data-original-title="Click to {{ node.pinned ? 'un' : '' }}pin")
             td.nodeInfo(rel="{{node.id}}")
               span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{node | geoTooltip}}") {{node.info.name}}
-              span.small #[&nbsp;]({{node.info.ip}})
+              span.small&nbsp;({{node.info.ip}})
               a.small(href="https://github.com/ethereum/wiki/wiki/Network-Status#updating", target="_blank", data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="Netstats client needs update.<br>Click this icon for instructions.", class="{{ node.info | nodeClientClass : currentApiVersion }}")
                 i.icon-warning-o
             td
