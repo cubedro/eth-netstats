@@ -109,12 +109,12 @@ History.prototype._save = function(block)
 {
 	this._items.unshift(block);
 
+	this._items = _.sortByOrder( this._items, 'height', false );
+
 	if(this._items.length > MAX_HISTORY)
 	{
 		this._items.pop();
 	}
-
-	this._items = _.sortByOrder( this._items, 'height', false );
 }
 
 History.prototype.search = function(number)
