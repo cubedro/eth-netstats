@@ -3,6 +3,8 @@
 
 netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr) {
 
+	var MAX_BINS = 40;
+
 	// Main Stats init
 	// ---------------
 
@@ -18,17 +20,17 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 	$scope.uncleCount = 0;
 	$scope.bestStats = {};
 
-	$scope.lastBlocksTime = [];
-	$scope.difficultyChart = [];
-	$scope.transactionDensity = [];
-	$scope.gasSpending = [];
+	$scope.lastBlocksTime = _.fill(Array(MAX_BINS), 2);
+	$scope.difficultyChart = _.fill(Array(MAX_BINS), 2);
+	$scope.transactionDensity = _.fill(Array(MAX_BINS), 2);
+	$scope.gasSpending = _.fill(Array(MAX_BINS), 2);
 	$scope.miners = [];
 
 
 	$scope.nodes = [];
 	$scope.map = [];
 	$scope.blockPropagationChart = [];
-	$scope.uncleCountChart = [];
+	$scope.uncleCountChart = _.fill(Array(MAX_BINS), 2);
 	$scope.coinbases = [];
 
 	$scope.latency = 0;
@@ -197,7 +199,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 			case "uncleCount":
 				$scope.uncleCount = data[0] + data[1];
-				$scope.uncleCountChart = data.reverse();
+				data.reverse();
+				$scope.uncleCountChart = data;
 
 				break;
 
@@ -208,10 +211,10 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				if( !_.isEqual($scope.avgHashrate, data.avgHashrate) )
 					$scope.avgHashrate = data.avgHashrate;
 
-				if( !_.isEqual($scope.lastBlocksTime, data.blocktime) )
+				if( !_.isEqual($scope.lastBlocksTime, data.blocktime) && data.blocktime.length >= MAX_BINS )
 					$scope.lastBlocksTime = data.blocktime;
 
-				if( !_.isEqual($scope.difficultyChart, data.difficulty) )
+				if( !_.isEqual($scope.difficultyChart, data.difficulty) && data.difficulty.length >= MAX_BINS )
 					$scope.difficultyChart = data.difficulty;
 
 				if( !_.isEqual($scope.blockPropagationChart, data.propagation.histogram) ) {
@@ -219,15 +222,17 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 					$scope.blockPropagationAvg = data.propagation.avg;
 				}
 
-				if( !_.isEqual($scope.uncleCountChart, data.uncleCount.reverse()) ) {
-					$scope.uncleCount = data.uncleCount[0] + data.uncleCount[1];
-					$scope.uncleCountChart = data.uncleCount.reverse();
+				data.uncleCount.reverse();
+
+				if( !_.isEqual($scope.uncleCountChart, data.uncleCount) && data.uncleCount.length >= MAX_BINS ) {
+					$scope.uncleCount = data.uncleCount[data.uncleCount.length-2] + data.uncleCount[data.uncleCount.length-1];
+					$scope.uncleCountChart = data.uncleCount;
 				}
 
-				if( !_.isEqual($scope.transactionDensity, data.transactions) )
+				if( !_.isEqual($scope.transactionDensity, data.transactions) && data.transactions.length >= MAX_BINS )
 					$scope.transactionDensity = data.transactions;
 
-				if( !_.isEqual($scope.gasSpending, data.gasSpending) )
+				if( !_.isEqual($scope.gasSpending, data.gasSpending) && data.gasSpending.length >= MAX_BINS )
 					$scope.gasSpending = data.gasSpending;
 
 				if( !_.isEqual($scope.miners, data.miners) ) {
