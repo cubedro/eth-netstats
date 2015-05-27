@@ -535,12 +535,31 @@ angular.module('netStatsApp.filters', [])
 		if(typeof info === 'undefined' || typeof info.client === 'undefined' || typeof info.client === '')
 			return 'text-danger';
 
-		if(current.localeCompare(info.client) > 0)
+		if(compareVersions(info.client, '<', current))
 			return 'text-warning';
 
 		return 'hidden';
 	};
 });
+
+function compareVersions(v1, comparator, v2) {
+	"use strict";
+	console.log(v1, comparator, v2);
+	comparator = comparator == '=' ? '==' : comparator;
+	var v1parts = v1.split('.'), v2parts = v2.split('.');
+	var maxLen = Math.max(v1parts.length, v2parts.length);
+	var part1, part2;
+	var cmp = 0;
+	for(var i = 0; i < maxLen && !cmp; i++) {
+		part1 = parseInt(v1parts[i], 10) || 0;
+		part2 = parseInt(v2parts[i], 10) || 0;
+		if(part1 < part2)
+			cmp = 1;
+		if(part1 > part2)
+			cmp = -1;
+	}
+	return eval('0' + comparator + cmp);
+}
 
 function mainClass(node, bestBlock)
 {
