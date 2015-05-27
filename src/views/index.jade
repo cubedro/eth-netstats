@@ -113,10 +113,10 @@ block content
           div.col-xs-3.stat-holder.pull-right
             div.big-info.chart.double-chart
               span.small-title last blocks miners
-              div.blocks-holder(ng-repeat='miner in miners', data-toggle="tooltip", data-placement="right", title="{{miner.blocks}}")
+              div.blocks-holder(ng-repeat='miner in miners track by miner.miner', data-toggle="tooltip", data-placement="right", data-original-title="{{miner.blocks}}")
                 div.block-count(class="{{miner.blocks | minerBlocksClass : 'text-'}}") {{miner.blocks}}
                 div.small-title-miner {{miner.miner | minerNameFilter : miner.name}}
-                div.block(ng-repeat="i in getNumber(miner.blocks) track by $index", class="{{miner.blocks | minerBlocksClass}}")
+                minerblock(blocks="{{miner.blocks}}")
                 div.clearfix
 
           div.col-xs-3.stat-holder
@@ -167,7 +167,7 @@ block content
               i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions", ng-click="orderTable(['-stats.pending'], false)")
             th
               i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
-            th.th-blockhash&nbsp;
+            th.th-blockhash &nbsp;
             th.th-blockhash
               i.icon-difficulty(data-toggle="tooltip", data-placement="top", title="Total difficulty", ng-click="orderTable(['-stats.block.totalDifficulty'], false)")
             th
@@ -189,7 +189,7 @@ block content
               i(ng-click="node.pinned = !node.pinned", class="{{ node.pinned | nodePinClass }}", data-toggle="tooltip", data-placement="right", data-original-title="Click to {{ node.pinned ? 'un' : '' }}pin")
             td.nodeInfo(rel="{{node.id}}")
               span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{node | geoTooltip}}") {{node.info.name}}
-              span.small&nbsp;({{node.info.ip}})
+              span.small &nbsp;({{node.info.ip}})
               a.small(href="https://github.com/ethereum/wiki/wiki/Network-Status#updating", target="_blank", data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="Netstats client needs update.<br>Click this icon for instructions.", class="{{ node.info | nodeClientClass : currentApiVersion }}")
                 i.icon-warning-o
             td

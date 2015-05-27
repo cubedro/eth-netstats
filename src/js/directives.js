@@ -50,6 +50,46 @@ angular.module('netStatsApp.directives', [])
 // 		};
 // }])
 
+	.directive('minerblock', function ($compile) {
+		return {
+			restrict: 'E',
+			template: '<div></div>',
+			replace: true,
+			link: function (scope, element, attrs)
+			{
+				var makeClass = function (value)
+				{
+					if(value <= 6)
+						return 'success';
+
+					if(value <= 12)
+						return 'info';
+
+					if(value <= 18)
+						return 'warning';
+
+					if(value <= 24)
+						return 'orange';
+
+					return 'danger';
+				}
+
+				attrs.$observe("blocks", function (newValue)
+				{
+					var content = '';
+					var blockClass = 'bg-' + makeClass(newValue);
+
+					for(var i = 0; i < newValue; i++)
+					{
+						content += '<div class="block ' + blockClass + '"></div>';
+					}
+
+					element.empty();
+					element.html(content);
+				});
+			}
+		};
+})
 	.directive('sparkchart', function () {
 		return {
 			restrict: 'E',
