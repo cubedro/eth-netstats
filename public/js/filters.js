@@ -291,6 +291,9 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('networkHashrateFilter', ['$sce', '$filter', function($sce, filter) {
 	return function(hashes, isMining) {
+		if(hashes === null)
+			hashes = 0;
+
 		var result = 0;
 		var unit = 'K';
 
