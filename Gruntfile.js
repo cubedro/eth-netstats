@@ -1,12 +1,12 @@
-var src = 'public/';
+var src = 'src/';
 var dest = 'dist/';
 
 var scripts = [
-	'public/js/app.js',
-	'public/js/controllers.js',
-	'public/js/filters.js',
-	'public/js/directives.js',
-	'public/js/script.js'
+	'src/js/app.js',
+	'src/js/controllers.js',
+	'src/js/filters.js',
+	'src/js/directives.js',
+	'src/js/script.js'
 ];
 
 var vendor = [
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'dist/index.html': 'views/index.jade'
+					'dist/index.html': 'src/views/index.jade'
 				}
 			}
 		},
@@ -58,28 +58,28 @@ module.exports = function(grunt) {
 				files: [
 					{
 						expand: true,
-						cwd: 'public/fonts/',
+						cwd: 'src/fonts/',
 						src: ['minimal-*.*'],
 						dest: 'dist/fonts/',
 						filter: 'isFile'
 					},
 					{
 						expand: true,
-						cwd: 'public/images/',
+						cwd: 'src/images/',
 						src: ['*.ico'],
 						dest: 'dist/',
 						filter: 'isFile'
 					},
 					{
 						expand: true,
-						cwd: 'public/css/',
+						cwd: 'src/css/',
 						src: styles,
 						dest: 'dist/css/',
 						filter: 'isFile'
 					},
 					{
 						expand: true,
-						cwd: 'public/js/lib/',
+						cwd: 'src/js/lib/',
 						src: ['*.*'],
 						dest: 'dist/js/lib'
 					}
