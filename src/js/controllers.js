@@ -145,8 +145,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 				if( addNewNode(data) )
 					toastr['success']("New node "+ $scope.nodes[findIndex({id: data.id})].info.name +" connected!", "New node!");
-				else
-					toastr['info']("Node "+ $scope.nodes[index].info.name +" reconnected!", "Node is back!");
+				// else
+					// toastr['info']("Node "+ $scope.nodes[index].info.name +" reconnected!", "Node is back!");
 
 				break;
 
@@ -250,7 +250,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 					if( !_.isUndefined(data.stats) )
 						$scope.nodes[index].stats = data.stats;
 
-					toastr['error']("Node "+ $scope.nodes[index].info.name +" went away!", "Node connection was lost!");
+					// toastr['error']("Node "+ $scope.nodes[index].info.name +" went away!", "Node connection was lost!");
 				}
 
 				break;
