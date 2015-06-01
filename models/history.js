@@ -63,6 +63,28 @@ History.prototype.add = function(block, id)
 				block.arrived = historyBlock.block.arrived;
 				block.received = historyBlock.propagTimes[propIndex].received;
 				block.propagation = historyBlock.propagTimes[propIndex].propagation;
+
+				if(historyBlock.hash !== block.hash || historyBlock.totalDifficulty !== block.totalDifficulty || historyBlock.transactions.length !== block.transactions.length)
+				{
+					index = _.findIndex( this._items, { height: block.number } );
+
+					this._items[index].hash = block.hash;
+					this._items[index].parentHash = block.parentHash;
+					this._items[index].nonce = block.nonce;
+					this._items[index].sha3Uncles = block.sha3Uncles;
+					this._items[index].transactionsRoot = block.transactionsRoot;
+					this._items[index].stateRoot = block.stateRoot;
+					this._items[index].miner = block.miner;
+					this._items[index].difficulty = block.difficulty;
+					this._items[index].totalDifficulty = block.totalDifficulty;
+					this._items[index].size = block.size;
+					this._items[index].extraData = block.extraData;
+					this._items[index].gasLimit = block.gasLimit;
+					this._items[index].gasUsed = block.gasUsed;
+					this._items[index].timestamp = block.timestamp;
+					this._items[index].transactions = block.transactions;
+					this._items[index].uncles = block.uncles;
+				}
 			}
 		}
 		else
