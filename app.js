@@ -127,8 +127,6 @@ api.on('connection', function(spark) {
 	{
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
-			data.stats.latency = spark.latency;
-
 			var stats = Nodes.update(data.id, data.stats);
 
 			if(stats !== false)
@@ -141,6 +139,22 @@ api.on('connection', function(spark) {
 				client.write({
 					action: 'charts',
 					data: Nodes.getCharts()
+				});
+			}
+		}
+	});
+
+	spark.on('pending', function(data)
+	{
+		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
+		{
+			var stats = Nodes.updatePending(data.id, data.stats);
+
+			if(stats !== false)
+			{
+				client.write({
+					action: 'pending',
+					data: stats
 				});
 			}
 		}
@@ -167,11 +181,11 @@ api.on('connection', function(spark) {
 	{
 		if( !_.isUndefined(data.id) )
 		{
-			var stats = Nodes.updateLatency(data.id, data.latency);
+			var latency = Nodes.updateLatency(data.id, data.latency);
 
 			client.write({
 				action: 'latency',
-				data: stats
+				data: latency
 			});
 
 			if( Nodes.requiresUpdate(data.id) && (!askedForHistory || _.now() - askedForHistoryTime > 200000) )

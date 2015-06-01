@@ -155,6 +155,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 				if( index >= 0 && !_.isUndefined($scope.nodes[index]) && !_.isUndefined($scope.nodes[index].stats) )
 				{
+					if( !_.isUndefined($scope.nodes[index].stats.latency) )
+						data.stats.latency = $scope.nodes[index].stats.latency;
+
 					if( _.isUndefined(data.stats.hashrate) )
 						data.stats.hashrate = 0;
 
@@ -174,6 +177,19 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 					}
 
 					$scope.nodes[index].stats = data.stats;
+				}
+
+				break;
+
+			case "pending":
+				var index = findIndex({id: data.id});
+
+				if( !_.isUndefined(data.id) && index >= 0 )
+				{
+					var node = $scope.nodes[index];
+
+					if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.pending) )
+						$scope.nodes[index].stats.pending = data.pending;
 				}
 
 				break;
@@ -263,6 +279,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 					var node = $scope.nodes[index];
 
 					if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.latency) )
+						// console.log(data.latency);
 						$scope.nodes[index].stats.latency = data.latency;
 				}
 

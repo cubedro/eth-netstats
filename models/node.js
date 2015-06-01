@@ -130,9 +130,27 @@ Node.prototype.setStats = function(stats, history)
 		else
 			stats.propagationAvg = 0;
 
+		if( !_.isUndefined(this.stats.latency) )
+			stats.latency = this.stats.latency;
+
 		this.stats = stats;
 
 		return this.getStats();
+	}
+
+	return false;
+}
+
+Node.prototype.setPending = function(stats)
+{
+	if( !_.isUndefined(stats) && !_.isUndefined(stats.pending) )
+	{
+		this.stats.pending = stats.pending;
+
+		return {
+			id: this.id,
+			pending: this.stats.pending
+		};
 	}
 
 	return false;
