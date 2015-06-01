@@ -141,6 +141,31 @@ Node.prototype.setStats = function(stats, history)
 	return false;
 }
 
+Node.prototype.setBlock = function(block, history)
+{
+	if( !_.isUndefined(block) && !_.isUndefined(block.block.number) )
+	{
+		this.history = history;
+		var propagationAvg = 0;
+
+		var positives = _.filter(history, function(p) {
+			return p >= 0;
+		});
+
+		if(positives.length > 0)
+			propagationAvg = Math.round( _.sum(positives) / positives.length );
+		else
+			propagationAvg = 0;
+
+		this.stats.block = block;
+		this.stats.propagationAvg = propagationAvg;
+
+		return this.getBlockStats();
+	}
+
+	return false;
+}
+
 Node.prototype.setPending = function(stats)
 {
 	if( !_.isUndefined(stats) && !_.isUndefined(stats.pending) )
@@ -176,6 +201,16 @@ Node.prototype.getStats = function()
 	return {
 		id: this.id,
 		stats: this.stats,
+		history: this.history
+	};
+}
+
+Node.prototype.getBlockStats = function()
+{
+	return {
+		id: this.id,
+		block: this.stats.block,
+		propagationAvg: this.stats.propagationAvg,
 		history: this.history
 	};
 }

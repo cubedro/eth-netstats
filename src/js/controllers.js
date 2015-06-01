@@ -181,6 +181,32 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 				break;
 
+			case "block":
+				var index = findIndex({id: data.id});
+
+				if( index >= 0 && !_.isUndefined($scope.nodes[index]) && !_.isUndefined($scope.nodes[index].stats) )
+				{
+					if( $scope.nodes[index].stats.block.number < data.block.number )
+					{
+						var best = _.max($scope.nodes, function (node) {
+							return parseInt(node.stats.block.number);
+						}).stats.block;
+
+						if (data.block.number > best.number) {
+							data.block.arrived = _.now();
+						} else {
+							data.block.arrived = best.arrived;
+						}
+
+						$scope.nodes[index].history = data.history;
+					}
+
+					$scope.nodes[index].stats.block = data.block;
+					$scope.nodes[index].stats.propagationAvg = data.propagationAvg;
+				}
+
+				break;
+
 			case "pending":
 				var index = findIndex({id: data.id});
 
