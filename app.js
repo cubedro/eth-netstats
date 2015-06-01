@@ -144,6 +144,27 @@ api.on('connection', function(spark) {
 		}
 	});
 
+	spark.on('block', function(data)
+	{
+		if( !_.isUndefined(data.id) && !_.isUndefined(data.block) )
+		{
+			var stats = Nodes.addBlock(data.id, data.block);
+
+			if(stats !== false)
+			{
+				client.write({
+					action: 'block',
+					data: stats
+				});
+
+				client.write({
+					action: 'charts',
+					data: Nodes.getCharts()
+				});
+			}
+		}
+	});
+
 	spark.on('pending', function(data)
 	{
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
