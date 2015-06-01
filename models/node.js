@@ -143,7 +143,7 @@ Node.prototype.setStats = function(stats, history)
 
 Node.prototype.setBlock = function(block, history)
 {
-	if( !_.isUndefined(block) && !_.isUndefined(block.block.number) )
+	if( !_.isUndefined(block) && !_.isUndefined(block.number) )
 	{
 		this.history = history;
 		var propagationAvg = 0;
