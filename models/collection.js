@@ -70,6 +70,16 @@ Collection.prototype.updatePending = function(id, stats)
 	return node.setPending(stats);
 }
 
+Collection.prototype.updateStats = function(id, stats)
+{
+	var node = this.getNode({ id: id });
+
+	if (!node)
+		return false;
+
+	return node.setBasicStats(stats);
+}
+
 Collection.prototype.addHistory = function(id, blocks)
 {
 	var node = this.getNode({ id: id });
