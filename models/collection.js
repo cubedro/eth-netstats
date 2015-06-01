@@ -39,6 +39,16 @@ Collection.prototype.update = function(id, stats)
 	return node.setStats(stats, propagationHistory);
 }
 
+Collection.prototype.updatePending = function(id, stats)
+{
+	var node = this.getNode({ id: id });
+
+	if (!node)
+		return false;
+
+	return node.setPending(stats);
+}
+
 Collection.prototype.addHistory = function(id, blocks)
 {
 	var node = this.getNode({ id: id });
