@@ -214,8 +214,28 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				{
 					var node = $scope.nodes[index];
 
-					if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.pending) )
+					if( !_.isUndefined(node) && !_.isUndefined(node.stats.pending) && !_.isUndefined(data.pending) )
 						$scope.nodes[index].stats.pending = data.pending;
+				}
+
+				break;
+
+			case "stats":
+				var index = findIndex({id: data.id});
+
+				if( !_.isUndefined(data.id) && index >= 0 )
+				{
+					var node = $scope.nodes[index];
+
+					if( !_.isUndefined(node) && !_.isUndefined(node.stats) )
+					{
+						$scope.nodes[index].stats.active = data.stats.active;
+						$scope.nodes[index].stats.mining = data.stats.mining;
+						$scope.nodes[index].stats.hashrate = data.stats.hashrate;
+						$scope.nodes[index].stats.peers = data.stats.peers;
+						$scope.nodes[index].stats.gasPrice = data.stats.gasPrice;
+						$scope.nodes[index].stats.uptime = data.stats.uptime;
+					}
 				}
 
 				break;
@@ -317,7 +337,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				break;
 		}
 
-		if( action !== "latency" && action !== "client-ping" )
+		if( action !== "latency" && action !== "pending" && action !== "client-ping" )
 		{
 			updateStats();
 		}

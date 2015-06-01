@@ -181,6 +181,22 @@ api.on('connection', function(spark) {
 		}
 	});
 
+	spark.on('stats', function(data)
+	{
+		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
+		{
+			var stats = Nodes.updateStats(data.id, data.stats);
+
+			if(stats !== false)
+			{
+				client.write({
+					action: 'stats',
+					data: stats
+				});
+			}
+		}
+	});
+
 	spark.on('history', function(data)
 	{
 		console.log("got history from " + data.id);

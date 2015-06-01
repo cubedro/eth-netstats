@@ -11,8 +11,8 @@ var Node = function Node(data)
 	this.geo = {}
 	this.stats = {
 		active: false,
-		listening: false,
 		mining: false,
+		hashrate: 0,
 		peers: 0,
 		pending: 0,
 		gasPrice: 0,
@@ -181,6 +181,23 @@ Node.prototype.setPending = function(stats)
 	return false;
 }
 
+Node.prototype.setBasicStats = function(stats)
+{
+	if( !_.isUndefined(stats) )
+	{
+		this.stats.active = stats.active;
+		this.stats.mining = stats.mining;
+		this.stats.hashrate = stats.hashrate;
+		this.stats.peers = stats.peers;
+		this.stats.gasPrice = stats.gasPrice;
+		this.stats.uptime = stats.uptime;
+
+		return this.getBasicStats();
+	}
+
+	return false;
+}
+
 Node.prototype.setLatency = function(latency)
 {
 	if( !_.isUndefined(latency) )
@@ -212,6 +229,21 @@ Node.prototype.getBlockStats = function()
 		block: this.stats.block,
 		propagationAvg: this.stats.propagationAvg,
 		history: this.history
+	};
+}
+
+Node.prototype.getBasicStats = function()
+{
+	return {
+		id: this.id,
+		stats: {
+			active: this.stats.active,
+			mining: this.stats.mining,
+			hashrate: this.stats.hashrate,
+			peers: this.stats.peers,
+			gasPrice: this.stats.gasPrice,
+			uptime: this.stats.uptime
+		}
 	};
 }
 
