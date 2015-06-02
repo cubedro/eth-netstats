@@ -83,21 +83,18 @@ var clientLatency = 0;
 
 client.use('emit', require('primus-emit'));
 
-api.on('connection', function(spark) {
-	console.log('Latency: ', spark.latency);
-	console.log(spark.id);
-	console.log(spark.address);
-	console.log(spark.query);
+api.on('connection', function (spark)
+{
+	console.log(_.now(), "Socket api connection:", spark.address.ip);
 
-	spark.on('hello', function(data)
+	spark.on('hello', function (data)
 	{
-		console.log('Latency: ', spark.latency);
-		console.log('Got hello data from ', spark.id);
-		console.log(data);
+		console.log(_.now(), "Socket api hello", data);
 
 		if( _.isUndefined(data.secret) || data.secret !== WS_SECRET )
 		{
 			spark.end(undefined, { reconnect: false });
+			console.log(_.now(), "Socket api connection closed - wrong auth", data);
 
 			return false;
 		}
@@ -123,8 +120,10 @@ api.on('connection', function(spark) {
 		}
 	});
 
-	spark.on('update', function(data)
+	spark.on('update', function (data)
 	{
+		console.log(_.now(), "Socket api update", data);
+
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
 			var stats = Nodes.update(data.id, data.stats);
@@ -144,8 +143,10 @@ api.on('connection', function(spark) {
 		}
 	});
 
-	spark.on('block', function(data)
+	spark.on('block', function (data)
 	{
+		console.log(_.now(), "Socket api block", data);
+
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.block) )
 		{
 			var stats = Nodes.addBlock(data.id, data.block);
@@ -165,8 +166,10 @@ api.on('connection', function(spark) {
 		}
 	});
 
-	spark.on('pending', function(data)
+	spark.on('pending', function (data)
 	{
+		console.log(_.now(), "Socket api pending", data);
+
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
 			var stats = Nodes.updatePending(data.id, data.stats);
@@ -181,8 +184,10 @@ api.on('connection', function(spark) {
 		}
 	});
 
-	spark.on('stats', function(data)
+	spark.on('stats', function (data)
 	{
+		console.log(_.now(), "Socket api stats", data);
+
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
 			var stats = Nodes.updateStats(data.id, data.stats);
@@ -197,7 +202,7 @@ api.on('connection', function(spark) {
 		}
 	});
 
-	spark.on('history', function(data)
+	spark.on('history', function (data)
 	{
 		console.log("got history from " + data.id);
 
@@ -244,8 +249,10 @@ api.on('connection', function(spark) {
 		}
 	});
 
-	spark.on('end', function(data)
+	spark.on('end', function (data)
 	{
+		console.log(_.now(), "Socket api connection end", data);
+
 		var stats = Nodes.inactive(spark.id);
 
 		client.write({
