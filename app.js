@@ -253,9 +253,9 @@ api.on('connection', function(spark) {
 	});
 });
 
-client.on('connection', function(clientSpark)
+client.on('connection', function (clientSpark)
 {
-	clientSpark.on('ready', function(data)
+	clientSpark.on('ready', function (data)
 	{
 		clientSpark.emit('init', { nodes: Nodes.all() });
 
@@ -265,9 +265,9 @@ client.on('connection', function(clientSpark)
 		});
 	});
 
-	clientSpark.on('client-pong', function(data)
+	clientSpark.on('client-pong', function (data)
 	{
-		var latency = Math.ceil( (_.now() - clientLatency) / 2 );
+		var latency = Math.ceil( (_.now() - data.serverTime) / 2 );
 
 		clientSpark.emit('client-latency', { latency: latency });
 	});
@@ -275,9 +275,12 @@ client.on('connection', function(clientSpark)
 
 var latencyTimeout = setInterval( function ()
 {
-	clientLatency = _.now();
-
-	client.write({ action: 'client-ping' });
+	client.write({
+		action: 'client-ping',
+		data: {
+			serverTime: _.now()
+		}
+	});
 }, 5000);
 
 

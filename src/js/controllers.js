@@ -333,7 +333,10 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 				break;
 
 			case "client-ping":
-				socket.emit('client-pong');
+				socket.emit('client-pong', {
+					serverTime: data.serverTime,
+					clientTime: _.now()
+				});
 
 				break;
 		}
