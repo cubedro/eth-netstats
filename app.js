@@ -211,7 +211,10 @@ api.on('connection', function(spark) {
 
 	spark.on('node-ping', function(data)
 	{
-		spark.emit('node-pong');
+		spark.emit('node-pong', {
+			clientTime: data.clientTime,
+			serverTime: _.now()
+		});
 	});
 
 	spark.on('latency', function(data)

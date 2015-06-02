@@ -150,6 +150,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 				break;
 
+			// TODO: Remove when everybody updates api client to 0.0.12
 			case "update":
 				var index = findIndex({id: data.id});
 
