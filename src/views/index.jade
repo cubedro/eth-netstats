@@ -186,7 +186,7 @@ block content
         tbody(ng-cloak)
           tr(ng-repeat='node in nodes | orderBy:predicate track by node.id', class="{{ node.stats | mainClass : bestBlock }}")
             td.td-nodecheck
-              i(ng-click="node.pinned = !node.pinned", class="{{ node.pinned | nodePinClass }}", data-toggle="tooltip", data-placement="right", data-original-title="Click to {{ node.pinned ? 'un' : '' }}pin")
+              i(ng-click="pinNode(node.id)", class="{{ node.pinned | nodePinClass }}", data-toggle="tooltip", data-placement="right", data-original-title="Click to {{ node.pinned ? 'un' : '' }}pin")
             td.nodeInfo(rel="{{node.id}}")
               span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{node | geoTooltip}}") {{node.info.name}}
               span.small &nbsp;({{node.info.ip}})

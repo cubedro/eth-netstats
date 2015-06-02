@@ -1,7 +1,7 @@
 
 /* Controllers */
 
-netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr) {
+netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, socket, _, toastr) {
 
 	var MAX_BINS = 40;
 
@@ -37,8 +37,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 	$scope.currentApiVersion = "0.0.12";
 
-	$scope.predicate = ['-pinned', '-stats.active', '-stats.block.number', 'stats.block.propagation'];
-	$scope.reverse = false;
+	$scope.predicate = $localStorage.predicate || ['-pinned', '-stats.active', '-stats.block.number', 'stats.block.propagation'];
+	$scope.reverse = $localStorage.reverse || false;
+	$scope.pinned = $localStorage.pinned || [];
 
 	$scope.prefixPredicate = ['-pinned', '-stats.active'];
 	$scope.originalPredicate = ['-stats.block.number', 'stats.block.propagation'];
@@ -63,6 +64,30 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 
 			$scope.predicate = _.union($scope.prefixPredicate, predicate);
 		}
+
+		$localStorage.predicate = $scope.predicate;
+		$localStorage.reverse = $scope.reverse;
+	}
+
+	$scope.pinNode = function(id)
+	{
+		index = findIndex({id: id});
+
+		if( !_.isUndefined($scope.nodes[index]) )
+		{
+			$scope.nodes[index].pinned = !$scope.nodes[index].pinned;
+
+			if($scope.nodes[index].pinned)
+			{
+				$scope.pinned.push(id);
+			}
+			else
+			{
+				$scope.pinned.splice($scope.pinned.indexOf(id), 1);
+			}
+		}
+
+		$localStorage.pinned = $scope.pinned;
 	}
 
 	var timeout = setInterval(function ()
@@ -132,7 +157,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 					}
 
 					// Init or recover pin
-					$scope.nodes[index].pinned = _.result(_.find(oldNodes, 'id', node.id), 'pinned', false);
+					$scope.nodes[index].pinned = ($scope.pinned.indexOf(node.id) >= 0 ? true : false);
 				});
 
 				if($scope.nodes.length > 0)
