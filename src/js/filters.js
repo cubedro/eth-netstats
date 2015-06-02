@@ -536,7 +536,7 @@ angular.module('netStatsApp.filters', [])
 			return 'text-danger';
 
 		if(compareVersions(info.client, '<', current))
-			return 'text-warning';
+			return 'text-danger';
 
 		return 'hidden';
 	};
