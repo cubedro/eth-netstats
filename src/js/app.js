@@ -2,7 +2,7 @@
 
 /* Init Angular App */
 
-var netStatsApp = angular.module('netStatsApp', ['netStatsApp.filters', 'netStatsApp.directives']);
+var netStatsApp = angular.module('netStatsApp', ['netStatsApp.filters', 'netStatsApp.directives', 'ngStorage']);
 
 
 /* Services */
