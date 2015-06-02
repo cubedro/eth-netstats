@@ -211,8 +211,10 @@ api.on('connection', function(spark) {
 
 	spark.on('node-ping', function(data)
 	{
+		var start = (!_.isUndefined(data) && !_.isUndefined(data.clientTime) ? data.clientTime : null);
+
 		spark.emit('node-pong', {
-			clientTime: data.clientTime,
+			clientTime: start,
 			serverTime: _.now()
 		});
 	});
@@ -267,7 +269,7 @@ client.on('connection', function (clientSpark)
 
 	clientSpark.on('client-pong', function (data)
 	{
-		var start = (!_.isUndefined(data) && !_.isUndefined(data.serverTime) ? data.serverTime : clientLatency)
+		var start = (!_.isUndefined(data) && !_.isUndefined(data.serverTime) ? data.serverTime : clientLatency);
 		var latency = Math.ceil( (_.now() - data.serverTime) / 2 );
 
 		clientSpark.emit('client-latency', { latency: latency });
