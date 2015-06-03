@@ -1,4 +1,6 @@
 var _ = require('lodash');
+var logger = require('./lib/utils/logger');
+var chalk = require('chalk');
 
 var askedForHistory = false;
 var askedForHistoryTime = 0;
@@ -9,7 +11,7 @@ var Primus = require('primus'),
 
 var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
 
-var Collection = require('./models/collection');
+var Collection = require('./lib/collection');
 var Nodes = new Collection();
 
 var server;
@@ -86,17 +88,17 @@ client.use('emit', require('primus-emit'));
 
 api.on('connection', function (spark)
 {
-	console.log((new Date()).toJSON(), '[API]', '[CON]', 'Open:', spark.address.ip);
+	console.info('API', 'CON', 'Open:', spark.address.ip);
 
 
 	spark.on('hello', function (data)
 	{
-		console.log((new Date()).toJSON(), '[API]', '[CON]', 'Hello', data['id']);
+		console.info('API', 'CON', 'Hello', data['id']);
 
 		if( _.isUndefined(data.secret) || data.secret !== WS_SECRET )
 		{
 			spark.end(undefined, { reconnect: false });
-			console.log((new Date()).toJSON(), '[API]', '[CON]', 'Closed - wrong auth', data);
+			console.error('API', 'CON', 'Closed - wrong auth', data);
 
 			return false;
 		}
@@ -110,22 +112,22 @@ api.on('connection', function (spark)
 			var info = Nodes.add( data );
 			spark.emit('ready');
 
-			console.log((new Date()).toJSON(), '[API]', '[CON]', 'Connected', data.id);
+			console.success('API', 'CON', 'Connected', data.id);
 
 			client.write({
 				action: 'add',
 				data: info
 			});
 
-			var time = (new Date()).toJSON();
-			console.time(time + ' [COL] [CHR] Got charts in');
+			var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
+			console.time(time, 'COL', 'CHR', 'Got charts in');
 
 			client.write({
 				action: 'charts',
 				data: Nodes.getCharts()
 			});
 
-			console.timeEnd(time + ' [COL] [CHR] Got charts in');
+			console.timeEnd(time, 'COL', 'CHR', 'Got charts in');
 		}
 	});
 
@@ -143,23 +145,23 @@ api.on('connection', function (spark)
 					data: stats
 				});
 
-				console.log((new Date()).toJSON(), '[API]', '[UPD]', 'Update from:', data.id, 'for:', data.stats);
+				console.info('API', 'UPD', 'Update from:', data.id, 'for:', data.stats);
 
-				var time = (new Date()).toJSON();
-				console.time(time + ' [COL] [CHR] Got charts in');
+				var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
+				console.time(time, 'COL', 'CHR', 'Got charts in');
 
 				client.write({
 					action: 'charts',
 					data: Nodes.getCharts()
 				});
 
-				console.timeEnd(time + ' [COL] [CHR] Got charts in');
+				console.timeEnd(time, 'COL', 'CHR', 'Got charts in');
 			}
 
 		}
 		else
 		{
-			console.log((new Date()).toJSON(), '[API]', '[UPD]', 'Update error:', data);
+			console.error('API', 'UPD', 'Update error:', data);
 		}
 	});
 
@@ -177,22 +179,22 @@ api.on('connection', function (spark)
 					data: stats
 				});
 
-				console.log((new Date()).toJSON(), '[API]', '[BLK]', 'Block:', data.block['number'], 'from:', data.id);
+				console.success('API', 'BLK', 'Block:', data.block['number'], 'from:', data.id);
 
-				var time = (new Date()).toJSON();
-				console.time(time + ' [COL] [CHR] Got charts in');
+				var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
+				console.time(time, 'COL', 'CHR', 'Got charts in');
 
 				client.write({
 					action: 'charts',
 					data: Nodes.getCharts()
 				});
 
-				console.timeEnd(time + ' [COL] [CHR] Got charts in');
+				console.timeEnd(time, 'COL', 'CHR', 'Got charts in');
 			}
 		}
 		else
 		{
-			console.log((new Date()).toJSON(), '[API]', '[BLK]', 'Block error:', data);
+			console.error('API', 'BLK', 'Block error:', data);
 		}
 	});
 
@@ -211,11 +213,11 @@ api.on('connection', function (spark)
 				});
 			}
 
-			console.log((new Date()).toJSON(), '[API]', '[TXS]', 'Pending:', data.stats['pending'], 'from:', data.id);
+			console.success('API', 'TXS', 'Pending:', data.stats['pending'], 'from:', data.id);
 		}
 		else
 		{
-			console.log((new Date()).toJSON(), '[API]', '[TXS]', 'Pending error:', data);
+			console.error('API', 'TXS', 'Pending error:', data);
 		}
 	});
 
@@ -235,28 +237,28 @@ api.on('connection', function (spark)
 				});
 			}
 
-			console.log((new Date()).toJSON(), '[API]', '[STA]', 'Stats from:', data.id);
+			console.success('API', 'STA', 'Stats from:', data.id);
 		}
 		else
 		{
-			console.log((new Date()).toJSON(), '[API]', '[STA]', 'Stats error:', data);
+			console.error('API', 'STA', 'Stats error:', data);
 		}
 	});
 
 
 	spark.on('history', function (data)
 	{
-		console.log((new Date()).toJSON(), '[API]', '[HIS]', 'Got from:', data.id);
+		console.success('API', 'HIS', 'Got from:', data.id);
 
-		var time = (new Date()).toJSON();
-		console.time(time + ' [COL] [CHR] Got charts in');
+			var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
+			console.time(time, 'COL', 'CHR', 'Got charts in');
 
 		client.write({
 			action: 'charts',
 			data: Nodes.addHistory(data.id, data.history)
 		});
 
-		console.timeEnd(time + ' [COL] [CHR] Got charts in');
+		console.timeEnd(time, 'COL', 'CHR', 'Got charts in');
 
 		askedForHistory = false;
 
@@ -272,7 +274,7 @@ api.on('connection', function (spark)
 			serverTime: _.now()
 		});
 
-		console.log((new Date()).toJSON(), '[API]', '[PIN]', 'Ping from:', data['id']);
+		console.info('API', 'PIN', 'Ping from:', data['id']);
 	});
 
 
@@ -290,14 +292,14 @@ api.on('connection', function (spark)
 				});
 			}
 
-			console.log((new Date()).toJSON(), '[API]', '[PIN]', 'Latency:', latency, 'from:', data.id);
+			console.info('API', 'PIN', 'Latency:', latency, 'from:', data.id);
 
 			if( Nodes.requiresUpdate(data.id) && (!askedForHistory || _.now() - askedForHistoryTime > 200000) )
 			{
 				var range = Nodes.getHistory().getHistoryRequestRange();
 
 				spark.emit('history', range);
-				console.log((new Date()).toJSON(), '[API]', '[HIS]', 'Asked:', data.id, 'for history:', range.min, '-', range.max);
+				console.info('API', 'HIS', 'Asked:', data.id, 'for history:', range.min, '-', range.max);
 
 				askedForHistory = true;
 				askedForHistoryTime = _.now();
@@ -315,7 +317,7 @@ api.on('connection', function (spark)
 			data: stats
 		});
 
-		console.log((new Date()).toJSON(), '[API]', '[CON]', 'Connection with:', spark.id, 'ended:', data);
+		console.warn('API', 'CON', 'Connection with:', spark.id, 'ended:', data);
 	});
 });
 
