@@ -88,6 +88,7 @@ api.on('connection', function (spark)
 {
 	console.log((new Date()).toJSON(), '[API]', '[CON]', 'Open:', spark.address.ip);
 
+
 	spark.on('hello', function (data)
 	{
 		console.log((new Date()).toJSON(), '[API]', '[CON]', 'Hello', data['id']);
@@ -104,7 +105,7 @@ api.on('connection', function (spark)
 		{
 			data.ip = spark.address.ip;
 			data.spark = spark.id;
-			data.latency = spark.latency;
+			data.latency = spark.latency || 0;
 
 			var info = Nodes.add( data );
 			spark.emit('ready');
@@ -127,6 +128,7 @@ api.on('connection', function (spark)
 			console.timeEnd(time + ' [COL] [CHR] Got charts in');
 		}
 	});
+
 
 	spark.on('update', function (data)
 	{
@@ -161,6 +163,7 @@ api.on('connection', function (spark)
 		}
 	});
 
+
 	spark.on('block', function (data)
 	{
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.block) )
@@ -193,6 +196,7 @@ api.on('connection', function (spark)
 		}
 	});
 
+
 	spark.on('pending', function (data)
 	{
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
@@ -214,6 +218,7 @@ api.on('connection', function (spark)
 			console.log((new Date()).toJSON(), '[API]', '[TXS]', 'Pending error:', data);
 		}
 	});
+
 
 	spark.on('stats', function (data)
 	{
@@ -238,6 +243,7 @@ api.on('connection', function (spark)
 		}
 	});
 
+
 	spark.on('history', function (data)
 	{
 		console.log((new Date()).toJSON(), '[API]', '[HIS]', 'Got from:', data.id);
@@ -256,6 +262,7 @@ api.on('connection', function (spark)
 
 	});
 
+
 	spark.on('node-ping', function (data)
 	{
 		var start = (!_.isUndefined(data) && !_.isUndefined(data.clientTime) ? data.clientTime : null);
@@ -268,16 +275,20 @@ api.on('connection', function (spark)
 		console.log((new Date()).toJSON(), '[API]', '[PIN]', 'Ping from:', data['id']);
 	});
 
+
 	spark.on('latency', function (data)
 	{
 		if( !_.isUndefined(data.id) )
 		{
 			var latency = Nodes.updateLatency(data.id, data.latency);
 
-			client.write({
-				action: 'latency',
-				data: latency
-			});
+			if(latency)
+			{
+				client.write({
+					action: 'latency',
+					data: latency
+				});
+			}
 
 			console.log((new Date()).toJSON(), '[API]', '[PIN]', 'Latency:', latency, 'from:', data.id);
 
@@ -294,6 +305,7 @@ api.on('connection', function (spark)
 		}
 	});
 
+
 	spark.on('end', function (data)
 	{
 		var stats = Nodes.inactive(spark.id);
@@ -306,6 +318,8 @@ api.on('connection', function (spark)
 		console.log((new Date()).toJSON(), '[API]', '[CON]', 'Connection with:', spark.id, 'ended:', data);
 	});
 });
+
+
 
 client.on('connection', function (clientSpark)
 {

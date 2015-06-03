@@ -134,14 +134,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 		// console.log('Action: ', action);
 		// console.log('Data: ', data);
 
-		switch(action) {
+		switch(action)
+		{
 			case "init":
-				var oldNodes = [];
-
-				if( $scope.nodes.length > 0 ){
-					oldNodes = $scope.nodes;
-				}
-
 				$scope.nodes = data;
 
 				_.forEach($scope.nodes, function (node, index) {
@@ -160,8 +155,12 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					$scope.nodes[index].pinned = ($scope.pinned.indexOf(node.id) >= 0 ? true : false);
 				});
 
-				if($scope.nodes.length > 0)
+				if( $scope.nodes.length > 0 )
+				{
 					toastr['success']("Got nodes list", "Got nodes!");
+
+					updateActiveNodes();
+				}
 
 				break;
 
@@ -170,8 +169,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 				if( addNewNode(data) )
 					toastr['success']("New node "+ $scope.nodes[findIndex({id: data.id})].info.name +" connected!", "New node!");
-				// else
-					// toastr['info']("Node "+ $scope.nodes[index].info.name +" reconnected!", "Node is back!");
+				else
+					toastr['info']("Node "+ $scope.nodes[index].info.name +" reconnected!", "Node is back!");
 
 				break;
 
@@ -203,6 +202,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					}
 
 					$scope.nodes[index].stats = data.stats;
+
+					updateBestBlock();
 				}
 
 				break;
@@ -229,6 +230,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 					$scope.nodes[index].stats.block = data.block;
 					$scope.nodes[index].stats.propagationAvg = data.propagationAvg;
+
+					updateBestBlock();
 				}
 
 				break;
@@ -261,6 +264,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 						$scope.nodes[index].stats.peers = data.stats.peers;
 						$scope.nodes[index].stats.gasPrice = data.stats.gasPrice;
 						$scope.nodes[index].stats.uptime = data.stats.uptime;
+
+						updateActiveNodes();
 					}
 				}
 
@@ -275,6 +280,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 					if( _.isUndefined($scope.nodes[index].pinned) )
 						$scope.nodes[index].pinned = false;
+
+					updateActiveNodes();
 				}
 
 				break;
@@ -338,7 +345,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					if( !_.isUndefined(data.stats) )
 						$scope.nodes[index].stats = data.stats;
 
-					// toastr['error']("Node "+ $scope.nodes[index].info.name +" went away!", "Node connection was lost!");
+					toastr['error']("Node "+ $scope.nodes[index].info.name +" went away!", "Node connection was lost!");
+
+					updateActiveNodes();
 				}
 
 				break;
@@ -351,8 +360,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					var node = $scope.nodes[index];
 
 					if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.latency) )
-						// console.log(data.latency);
+					{
 						$scope.nodes[index].stats.latency = data.latency;
+					}
 				}
 
 				break;
@@ -366,10 +376,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				break;
 		}
 
-		if( action !== "latency" && action !== "pending" && action !== "client-ping" )
-		{
-			updateStats();
-		}
+		$scope.$apply();
 	}
 
 	function findIndex(search)
@@ -430,19 +437,50 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 		$scope.nodes[index] = data;
 
+		updateActiveNodes();
+
 		return false;
 	}
 
-	function updateStats()
+	function updateActiveNodes()
+	{
+		updateBestBlock();
+
+		$scope.nodesTotal = $scope.nodes.length;
+
+		$scope.nodesActive = _.filter($scope.nodes, function (node) {
+			return node.stats.active == true;
+		}).length;
+
+		$scope.upTimeTotal = _.reduce($scope.nodes, function (total, node) {
+			return total + node.stats.uptime;
+		}, 0) / $scope.nodes.length;
+
+		$scope.map = _.map($scope.nodes, function (node) {
+			var fill = $filter('bubbleClass')(node.stats, $scope.bestBlock);
+
+			if(node.geo != null)
+				return {
+					radius: 3,
+					latitude: node.geo.ll[0],
+					longitude: node.geo.ll[1],
+					nodeName: node.info.name,
+					fillClass: "text-" + fill,
+					fillKey: fill,
+				};
+			else
+				return {
+					radius: 0,
+					latitude: 0,
+					longitude: 0
+				};
+		});
+	}
+
+	function updateBestBlock()
 	{
 		if( $scope.nodes.length )
 		{
-			$scope.nodesTotal = $scope.nodes.length;
-
-			$scope.nodesActive = _.filter($scope.nodes, function (node) {
-				return node.stats.active == true;
-			}).length;
-
 			var bestBlock = _.max($scope.nodes, function (node) {
 				return parseInt(node.stats.block.number);
 			}).stats.block.number;
@@ -457,32 +495,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				$scope.lastBlock = $scope.bestStats.block.arrived;
 				$scope.lastDifficulty = $scope.bestStats.block.difficulty;
 			}
-
-			$scope.upTimeTotal = _.reduce($scope.nodes, function (total, node) {
-				return total + node.stats.uptime;
-			}, 0) / $scope.nodes.length;
-
-			$scope.map = _.map($scope.nodes, function (node) {
-				var fill = $filter('bubbleClass')(node.stats, $scope.bestBlock);
-
-				if(node.geo != null)
-					return {
-						radius: 3,
-						latitude: node.geo.ll[0],
-						longitude: node.geo.ll[1],
-						nodeName: node.info.name,
-						fillClass: "text-" + fill,
-						fillKey: fill,
-					};
-				else
-					return {
-						radius: 0,
-						latitude: 0,
-						longitude: 0
-					};
-			});
-
-			// $scope.$apply();
 		}
 	}
 });

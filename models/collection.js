@@ -167,9 +167,7 @@ Collection.prototype.removeOldNodes = function()
 
 	for(var i = this._items.length - 1; i >= 0; i--)
 	{
-		var node = this._items[i];
-
-		if( node.isInactiveAndOld() )
+		if( this._items[i].isInactiveAndOld() )
 		{
 			deleteList.push(i);
 		}
