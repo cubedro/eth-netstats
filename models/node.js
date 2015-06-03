@@ -4,7 +4,7 @@ var _ = require('lodash');
 var MAX_HISTORY = 40;
 var MAX_INACTIVE_TIME = 1000*60*60*4;
 
-var Node = function Node(data)
+var Node = function(data)
 {
 	this.id = null;
 	this.info = {};
@@ -17,28 +17,32 @@ var Node = function Node(data)
 		pending: 0,
 		gasPrice: 0,
 		block: {
-			difficulty: 0,
 			number: 0,
+			hash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+			difficulty: 0,
+			totalDifficulty: 0,
 			gasLimit: 0,
 			timestamp: 0,
 			time: 0,
 			arrival: 0,
-			propagation: 0,
 			received: 0,
+			propagation: 0,
 			transactions: [],
 			uncles: []
 		},
 		propagationAvg: 0,
 		latency: 0,
-		uptime: 0,
-		lastUpdate: 0
+		uptime: 100
 	};
 
 	this.history = new Array(MAX_HISTORY);
 
 	this.uptime = {
 		started: null,
-		history: []
+		up: 0,
+		down: 0,
+		lastStatus: null,
+		lastUpdate: null
 	};
 
 	this.init(data);
@@ -50,21 +54,15 @@ Node.prototype.init = function(data)
 {
 	_.fill(this.history, -1);
 
-	if( this.id === null )
-	{
-		this.uptime.started = _.now();
+	if( this.id === null && this.uptime.started === null )
 		this.setState(true);
-	}
 
-	if( !_.isUndefined(data.id) )
-		this.id = data.id;
-
-	this.setInfo(data);
+	this.id = _.result(data, 'id', this.id);
 
 	if( !_.isUndefined(data.latency) )
 		this.stats.latency = data.latency;
 
-	return this;
+	this.setInfo(data);
 }
 
 Node.prototype.setInfo = function(data)
@@ -73,35 +71,26 @@ Node.prototype.setInfo = function(data)
 	{
 		this.info = data.info;
 
-		if( _.isUndefined(data.info.canUpdateHistory) )
-			data.info.canUpdateHistory = false;
+		if( !_.isUndefined(data.info.canUpdateHistory) )
+		{
+			this.info.canUpdateHistory = _.result(data, 'info.canUpdateHistory', false);
+		}
 	}
 
 	if( !_.isUndefined(data.ip) )
 	{
-		if(data.ip === '::ffff:127.0.0.1')
-			data.ip = '84.117.82.122';
-
-		this.info.ip = data.ip;
-		this.setGeo();
+		this.setGeo(data.ip);
 	}
 
-	if( !_.isUndefined(data.spark) )
-		this.spark = data.spark;
+	this.spark = _.result(data, 'spark', null);
 
-	var uptimeCnt = this.uptime.history.length;
-
-	if( uptimeCnt > 0 && this.uptime.history[uptimeCnt - 1].status === 'down' )
-		this.setState(true);
-
-	return this;
+	this.setState(true);
 }
 
-Node.prototype.setGeo = function()
+Node.prototype.setGeo = function(ip)
 {
-	this.geo = geoip.lookup(this.info.ip);
-
-	return this;
+	this.info.ip = ip;
+	this.geo = geoip.lookup(ip);
 }
 
 Node.prototype.getInfo = function()
@@ -109,31 +98,32 @@ Node.prototype.getInfo = function()
 	return {
 		id: this.id,
 		info: this.info,
-		geo: this.geo,
-		stats: this.stats,
-		history: this.history
+		stats: {
+			active: this.stats.active,
+			mining: this.stats.mining,
+			hashrate: this.stats.hashrate,
+			peers: this.stats.peers,
+			gasPrice: this.stats.gasPrice,
+			block: this.stats.block,
+			propagationAvg: this.stats.propagationAvg,
+			uptime: this.stats.uptime,
+			latency: this.stats.latency,
+			pending: this.stats.pending,
+		},
+		history: this.history,
+		geo: this.geo
 	};
 }
 
 Node.prototype.setStats = function(stats, history)
 {
-	if( !_.isUndefined(stats) && !_.isUndefined(stats.block) && !_.isUndefined(stats.block.number) )
+	if( !_.isUndefined(stats) )
 	{
-		this.history = history;
+		this.setBlock( _.result(stats, 'block', this.stats.block), history );
 
-		var positives = _.filter(history, function(p) {
-			return p >= 0;
-		});
+		this.setBasicStats(stats);
 
-		if(positives.length > 0)
-			stats.propagationAvg = Math.round( _.sum(positives) / positives.length );
-		else
-			stats.propagationAvg = 0;
-
-		if( !_.isUndefined(this.stats.latency) )
-			stats.latency = this.stats.latency;
-
-		this.stats = stats;
+		this.setPending( _.result(stats, 'pending', this.stats.pending) );
 
 		return this.getStats();
 	}
@@ -143,22 +133,14 @@ Node.prototype.setStats = function(stats, history)
 
 Node.prototype.setBlock = function(block, history)
 {
-	if( !_.isUndefined(block) && !_.isUndefined(block.number) )
+	if( !_.isUndefined(block) && !_.isUndefined(block.number) && ( !_.isEqual(history, this.history) || !_.isEqual(block, this.stats.block) ))
 	{
-		this.history = history;
-		var propagationAvg = 0;
+		if(block.number !== this.stats.block.number && block.hash !== this.stats.block.hash)
+		{
+			this.stats.block = block;
+		}
 
-		var positives = _.filter(history, function(p) {
-			return p >= 0;
-		});
-
-		if(positives.length > 0)
-			propagationAvg = Math.round( _.sum(positives) / positives.length );
-		else
-			propagationAvg = 0;
-
-		this.stats.block = block;
-		this.stats.propagationAvg = propagationAvg;
+		this.setHistory(history);
 
 		return this.getBlockStats();
 	}
@@ -166,9 +148,36 @@ Node.prototype.setBlock = function(block, history)
 	return false;
 }
 
+Node.prototype.setHistory = function(history)
+{
+	if( _.isEqual(history, this.history) )
+	{
+		return false;
+	}
+
+	if( !_.isArray(history) )
+	{
+		this.history = _.fill( new Array(MAX_HISTORY), -1 );
+		this.stats.propagationAvg = 0;
+
+		return true;
+	}
+
+	this.history = history;
+
+	var positives = _.filter(history, function(p) {
+		return p >= 0;
+	});
+
+	this.stats.propagationAvg = ( positives.length > 0 ? Math.round( _.sum(positives) / positives.length ) : 0 );
+	positives = null;
+
+	return true;
+}
+
 Node.prototype.setPending = function(stats)
 {
-	if( !_.isUndefined(stats) && !_.isUndefined(stats.pending) )
+	if( !_.isUndefined(stats) && !_.isUndefined(stats.pending) && !_.isEqual(stats.pending, this.stats.pending))
 	{
 		this.stats.pending = stats.pending;
 
@@ -183,7 +192,14 @@ Node.prototype.setPending = function(stats)
 
 Node.prototype.setBasicStats = function(stats)
 {
-	if( !_.isUndefined(stats) )
+	if( !_.isUndefined(stats) && !_.isEqual(stats, {
+			active: this.stats.active,
+			mining: this.stats.mining,
+			hashrate: this.stats.hashrate,
+			peers: this.stats.peers,
+			gasPrice: this.stats.gasPrice,
+			uptime: this.stats.uptime
+		}) )
 	{
 		this.stats.active = stats.active;
 		this.stats.mining = stats.mining;
@@ -200,7 +216,7 @@ Node.prototype.setBasicStats = function(stats)
 
 Node.prototype.setLatency = function(latency)
 {
-	if( !_.isUndefined(latency) )
+	if( !_.isUndefined(latency) && !_.isEqual(latency, this.stats.latency) )
 	{
 		this.stats.latency = latency;
 
@@ -217,7 +233,17 @@ Node.prototype.getStats = function()
 {
 	return {
 		id: this.id,
-		stats: this.stats,
+		stats: {
+			active: this.stats.active,
+			mining: this.stats.mining,
+			hashrate: this.stats.hashrate,
+			peers: this.stats.peers,
+			gasPrice: this.stats.gasPrice,
+			block: this.stats.block,
+			propagationAvg: this.stats.propagationAvg,
+			uptime: this.stats.uptime,
+			pending: this.stats.pending
+		},
 		history: this.history
 	};
 }
@@ -249,11 +275,41 @@ Node.prototype.getBasicStats = function()
 
 Node.prototype.setState = function(active)
 {
+	var now = _.now();
+
+	if(this.uptime.started !== null)
+	{
+		if(this.uptime.lastStatus === active)
+		{
+			this.uptime[(active ? 'up' : 'down')] += now - this.uptime.lastUpdate;
+		}
+		else
+		{
+			this.uptime[(active ? 'down' : 'up')] += now - this.uptime.lastUpdate;
+		}
+	}
+	else
+	{
+		this.uptime.started = now;
+	}
+
 	this.stats.active = active;
-	this.uptime.history.push({
-		status: (active ? 'up' : 'down'),
-		time: _.now()
-	});
+	this.uptime.lastStatus = active;
+	this.uptime.lastUpdate = now;
+
+	this.stats.uptime = this.calculateUptime();
+
+	now = undefined;
+}
+
+Node.prototype.calculateUptime = function()
+{
+	if(this.uptime.lastUpdate === this.uptime.started)
+	{
+		return 100;
+	}
+
+	return Math.round( this.uptime.up / (this.uptime.lastUpdate - this.uptime.started) * 100);
 }
 
 Node.prototype.getBlockNumber = function()
@@ -268,15 +324,9 @@ Node.prototype.canUpdate = function()
 
 Node.prototype.isInactiveAndOld = function()
 {
-	if(this.stats.active)
-		return false;
-
-	var lastState = this.uptime.history[this.uptime.history.length -1];
-
-	if( !_.isUndefined(lastState) && !_.isUndefined(lastState.status) && !_.isUndefined(lastState.time) )
+	if( this.uptime.lastStatus === false && this.uptime.lastUpdate !== null && (_.now() - this.uptime.lastUpdate) > MAX_INACTIVE_TIME )
 	{
-		if( lastState.status === 'down' && (_.now() - lastState.time) > MAX_INACTIVE_TIME )
-			return true;
+		return true;
 	}
 
 	return false;

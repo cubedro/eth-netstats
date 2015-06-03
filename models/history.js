@@ -386,7 +386,7 @@ History.prototype.getMinersCount = function()
 		.value();
 }
 
-History.prototype.getCharts = function()
+History.prototype.getCharts = function(callback)
 {
 	var chartHistory = _( this._items )
 		.sortByOrder( 'height', false )
