@@ -1,4 +1,3 @@
-var util = require('util');
 var geoip = require('geoip-lite');
 var _ = require('lodash');
 
@@ -53,7 +52,6 @@ var Node = function(data)
 
 Node.prototype.init = function(data)
 {
-	console.info(util.inspect( data, { depth: null, colors: true } ));
 	_.fill(this.history, -1);
 
 	if( this.id === null && this.uptime.started === null )
