@@ -2,7 +2,6 @@ var _ = require('lodash');
 var logger = require('./lib/utils/logger');
 var chalk = require('chalk');
 
-var askedForHistory = false;
 var askedForHistoryTime = 0;
 
 var Primus = require('primus'),
@@ -84,6 +83,21 @@ var client = new Primus(server, {
 
 var clientLatency = 0;
 
+Nodes.setChartsCallback(function (err, charts)
+{
+	if(err !== null)
+	{
+		console.error('COL', 'CHR', 'Charts error:', err);
+	}
+	else
+	{
+		client.write({
+			action: 'charts',
+			data: charts
+		});
+	}
+});
+
 client.use('emit', require('primus-emit'));
 
 api.on('connection', function (spark)
@@ -109,25 +123,26 @@ api.on('connection', function (spark)
 			data.spark = spark.id;
 			data.latency = spark.latency || 0;
 
-			var info = Nodes.add( data );
-			spark.emit('ready');
+			Nodes.add( data, function (err, info)
+			{
+				if(err !== null)
+				{
+					console.error('API', 'CON', 'Connection error:', err);
+					return false;
+				}
 
-			console.success('API', 'CON', 'Connected', data.id);
+				if(info !== null)
+				{
+					spark.emit('ready');
 
-			client.write({
-				action: 'add',
-				data: info
+					console.success('API', 'CON', 'Connected', data.id);
+
+					client.write({
+						action: 'add',
+						data: info
+					});
+				}
 			});
-
-			var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
-			console.time(time, 'COL', 'CHR', 'Got charts in');
-
-			client.write({
-				action: 'charts',
-				data: Nodes.getCharts()
-			});
-
-			console.timeEnd(time, 'COL', 'CHR', 'Got charts in');
 		}
 	});
 
@@ -136,28 +151,27 @@ api.on('connection', function (spark)
 	{
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
-			var stats = Nodes.update(data.id, data.stats);
-
-			if(stats !== false)
+			Nodes.update(data.id, data.stats, function (err, stats)
 			{
-				client.write({
-					action: 'update',
-					data: stats
-				});
+				if(err !== null)
+				{
+					console.error('API', 'UPD', 'Update error:', err);
+				}
+				else
+				{
+					if(stats !== null)
+					{
+						client.write({
+							action: 'update',
+							data: stats
+						});
 
-				console.info('API', 'UPD', 'Update from:', data.id, 'for:', data.stats);
+						console.info('API', 'UPD', 'Update from:', data.id, 'for:', stats);
 
-				var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
-				console.time(time, 'COL', 'CHR', 'Got charts in');
-
-				client.write({
-					action: 'charts',
-					data: Nodes.getCharts()
-				});
-
-				console.timeEnd(time, 'COL', 'CHR', 'Got charts in');
-			}
-
+						Nodes.getCharts();
+					}
+				}
+			});
 		}
 		else
 		{
@@ -170,27 +184,27 @@ api.on('connection', function (spark)
 	{
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.block) )
 		{
-			var stats = Nodes.addBlock(data.id, data.block);
-
-			if(stats !== false)
+			Nodes.addBlock(data.id, data.block, function (err, stats)
 			{
-				client.write({
-					action: 'block',
-					data: stats
-				});
+				if(err !== null)
+				{
+					console.error('API', 'BLK', 'Block error:', err);
+				}
+				else
+				{
+					if(stats !== null)
+					{
+						client.write({
+							action: 'block',
+							data: stats
+						});
 
-				console.success('API', 'BLK', 'Block:', data.block['number'], 'from:', data.id);
+						console.success('API', 'BLK', 'Block:', data.block['number'], 'from:', data.id);
 
-				var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
-				console.time(time, 'COL', 'CHR', 'Got charts in');
-
-				client.write({
-					action: 'charts',
-					data: Nodes.getCharts()
-				});
-
-				console.timeEnd(time, 'COL', 'CHR', 'Got charts in');
-			}
+						Nodes.getCharts();
+					}
+				}
+			});
 		}
 		else
 		{
@@ -203,17 +217,22 @@ api.on('connection', function (spark)
 	{
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
-			var stats = Nodes.updatePending(data.id, data.stats);
+			Nodes.updatePending(data.id, data.stats, function (err, stats) {
+				if(err !== null)
+				{
+					console.error('API', 'TXS', 'Pending error:', err);
+				}
 
-			if(stats !== false)
-			{
-				client.write({
-					action: 'pending',
-					data: stats
-				});
-			}
+				if(stats !== null)
+				{
+					client.write({
+						action: 'pending',
+						data: stats
+					});
 
-			console.success('API', 'TXS', 'Pending:', data.stats['pending'], 'from:', data.id);
+					console.success('API', 'TXS', 'Pending:', data.stats['pending'], 'from:', data.id);
+				}
+			});
 		}
 		else
 		{
@@ -227,17 +246,25 @@ api.on('connection', function (spark)
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
 
-			var stats = Nodes.updateStats(data.id, data.stats);
-
-			if(stats !== false)
+			Nodes.updateStats(data.id, data.stats, function (err, stats)
 			{
-				client.write({
-					action: 'stats',
-					data: stats
-				});
-			}
+				if(err !== null)
+				{
+					console.error('API', 'STA', 'Stats error:', err);
+				}
+				else
+				{
+					if(stats !== null)
+					{
+						client.write({
+							action: 'stats',
+							data: stats
+						});
 
-			console.success('API', 'STA', 'Stats from:', data.id);
+						console.success('API', 'STA', 'Stats from:', data.id);
+					}
+				}
+			});
 		}
 		else
 		{
@@ -248,20 +275,27 @@ api.on('connection', function (spark)
 
 	spark.on('history', function (data)
 	{
-		console.success('API', 'HIS', 'Got from:', data.id);
+		console.success('API', 'HIS', 'Got history from:', data.id);
 
-			var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
-			console.time(time, 'COL', 'CHR', 'Got charts in');
+		var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
+		console.time(time, 'COL', 'CHR', 'Got charts in');
 
-		client.write({
-			action: 'charts',
-			data: Nodes.addHistory(data.id, data.history)
+		Nodes.addHistory(data.id, data.history, function (err, history)
+		{
+			console.timeEnd(time, 'COL', 'CHR', 'Got charts in');
+
+			if(err !== null)
+			{
+				console.error('COL', 'CHR', 'History error:', err);
+			}
+			else
+			{
+				client.write({
+					action: 'charts',
+					data: history
+				});
+			}
 		});
-
-		console.timeEnd(time, 'COL', 'CHR', 'Got charts in');
-
-		askedForHistory = false;
-
 	});
 
 
@@ -282,26 +316,31 @@ api.on('connection', function (spark)
 	{
 		if( !_.isUndefined(data.id) )
 		{
-			var latency = Nodes.updateLatency(data.id, data.latency);
+			Nodes.updateLatency(data.id, data.latency, function (err, latency) {
+				if(err !== null)
+				{
+					console.error('API', 'PIN', 'Latency error:', err);
+				}
 
-			if(latency)
-			{
-				client.write({
-					action: 'latency',
-					data: latency
-				});
-			}
+				if(latency !== null)
+				{
+					client.write({
+						action: 'latency',
+						data: latency
+					});
 
-			console.info('API', 'PIN', 'Latency:', latency, 'from:', data.id);
+					console.info('API', 'PIN', 'Latency:', latency, 'from:', data.id);
+				}
+			});
 
-			if( Nodes.requiresUpdate(data.id) && (!askedForHistory || _.now() - askedForHistoryTime > 200000) )
+			if( Nodes.requiresUpdate(data.id) && (!Nodes.askedForHistory() || _.now() - askedForHistoryTime > 200000) )
 			{
 				var range = Nodes.getHistory().getHistoryRequestRange();
 
 				spark.emit('history', range);
 				console.info('API', 'HIS', 'Asked:', data.id, 'for history:', range.min, '-', range.max);
 
-				askedForHistory = true;
+				Nodes.askedForHistory(true);
 				askedForHistoryTime = _.now();
 			}
 		}
@@ -310,14 +349,22 @@ api.on('connection', function (spark)
 
 	spark.on('end', function (data)
 	{
-		var stats = Nodes.inactive(spark.id);
+		Nodes.inactive(spark.id, function (err, stats)
+		{
+			if(err !== null)
+			{
+				console.error('API', 'CON', 'Connection end error:', err);
+			}
+			else
+			{
+				client.write({
+					action: 'inactive',
+					data: stats
+				});
 
-		client.write({
-			action: 'inactive',
-			data: stats
+				console.warn('API', 'CON', 'Connection with:', spark.id, 'ended:', data);
+			}
 		});
-
-		console.warn('API', 'CON', 'Connection with:', spark.id, 'ended:', data);
 	});
 });
 
@@ -329,10 +376,7 @@ client.on('connection', function (clientSpark)
 	{
 		clientSpark.emit('init', { nodes: Nodes.all() });
 
-		clientSpark.write({
-			action: 'charts',
-			data: Nodes.getCharts()
-		});
+		Nodes.getCharts();
 	});
 
 	clientSpark.on('client-pong', function (data)
@@ -365,10 +409,8 @@ var nodeCleanupTimeout = setInterval( function ()
 		data: Nodes.all()
 	});
 
-	client.write({
-		action: 'charts',
-		data: Nodes.getCharts()
-	});
+	Nodes.getCharts();
+
 }, 1000*60*60);
 
 server.listen(process.env.PORT || 3000);
