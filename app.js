@@ -316,7 +316,8 @@ api.on('connection', function (spark)
 	{
 		if( !_.isUndefined(data.id) )
 		{
-			Nodes.updateLatency(data.id, data.latency, function (err, latency) {
+			Nodes.updateLatency(data.id, data.latency, function (err, latency)
+			{
 				if(err !== null)
 				{
 					console.error('API', 'PIN', 'Latency error:', err);
@@ -333,7 +334,7 @@ api.on('connection', function (spark)
 				}
 			});
 
-			if( Nodes.requiresUpdate(data.id) && (!Nodes.askedForHistory() || _.now() - askedForHistoryTime > 200000) )
+			if( Nodes.requiresUpdate(data.id) && (!Nodes.askedForHistory() || _.now() - askedForHistoryTime > 2*60*1000) )
 			{
 				var range = Nodes.getHistory().getHistoryRequestRange();
 
