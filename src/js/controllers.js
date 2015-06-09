@@ -485,7 +485,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				return parseInt(node.stats.block.number);
 			}).stats.block.number;
 
-			if( bestBlock > $scope.bestBlock )
+			if( bestBlock !== $scope.bestBlock )
 			{
 				$scope.bestBlock = bestBlock;
 				$scope.bestStats = _.max($scope.nodes, function (node) {
