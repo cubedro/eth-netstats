@@ -116,12 +116,12 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 		console.log('We are scheduling a reconnect operation', opts);
 	})
 	.on('data', function incoming(data) {
-		socketAction(data.action, data.data);
+		$scope.$apply(socketAction(data.action, data.data));
 	});
 
 	socket.on('init', function(data)
 	{
-		socketAction("init", data.nodes);
+		$scope.$apply(socketAction("init", data.nodes));
 	});
 
 	socket.on('client-latency', function(data)
@@ -142,7 +142,10 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				_.forEach($scope.nodes, function (node, index) {
 					// Init hashrate
 					if( _.isUndefined(node.stats.hashrate) )
-						$scope.nodes[index].stats.hashrate = 0;
+						node.stats.hashrate = 0;
+
+					// Init latency
+					latencyFilter(node);
 
 					// Init history
 					if( _.isUndefined(data.history) )
@@ -152,7 +155,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					}
 
 					// Init or recover pin
-					$scope.nodes[index].pinned = ($scope.pinned.indexOf(node.id) >= 0 ? true : false);
+					node.pinned = ($scope.pinned.indexOf(node.id) >= 0 ? true : false);
 				});
 
 				if( $scope.nodes.length > 0 )
@@ -281,6 +284,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					if( _.isUndefined($scope.nodes[index].pinned) )
 						$scope.nodes[index].pinned = false;
 
+					// Init latency
+					latencyFilter($scope.nodes[index]);
+
 					updateActiveNodes();
 				}
 
@@ -353,15 +359,19 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				break;
 
 			case "latency":
-				var index = findIndex({id: data.id});
-
-				if( !_.isUndefined(data.id) && index >= 0 )
+				if( !_.isUndefined(data.id) && !_.isUndefined(data.latency) )
 				{
-					var node = $scope.nodes[index];
+					var index = findIndex({id: data.id});
 
-					if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.latency) )
+					if( index >= 0 )
 					{
-						$scope.nodes[index].stats.latency = data.latency;
+						var node = $scope.nodes[index];
+
+						if( !_.isUndefined(node) && !_.isUndefined(node.stats) && !_.isUndefined(node.stats.latency) && node.stats.latency !== data.latency )
+						{
+							node.stats.latency = data.latency;
+							latencyFilter(node);
+						}
 					}
 				}
 
@@ -376,7 +386,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				break;
 		}
 
-		$scope.$apply();
+		// $scope.$apply();
 	}
 
 	function findIndex(search)
@@ -495,6 +505,36 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				$scope.lastBlock = $scope.bestStats.block.arrived;
 				$scope.lastDifficulty = $scope.bestStats.block.difficulty;
 			}
+		}
+	}
+
+	function latencyFilter(node)
+	{
+		if( _.isUndefined(node.readable) )
+			node.readable = {};
+
+		if( _.isUndefined(node.stats) ) {
+			node.readable.latencyClass = 'text-danger';
+			node.readable.latency = 'offline';
+		}
+
+		if (node.stats.active === false)
+		{
+			node.readable.latencyClass = 'text-danger';
+			node.readable.latency = 'offline';
+		}
+		else
+		{
+			if (node.stats.latency <= 100)
+				node.readable.latencyClass = 'text-success';
+
+			if (node.stats.latency > 100 && node.stats.latency <= 1000)
+				node.readable.latencyClass = 'text-warning';
+
+			if (node.stats.latency > 1000)
+				node.readable.latencyClass = 'text-danger';
+
+			node.readable.latency = node.stats.latency + ' ms';
 		}
 	}
 });
