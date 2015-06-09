@@ -199,7 +199,10 @@ block content
             td(class="{{ node.stats.mining | hashrateClass : node.stats.active }}", ng-bind-html="node.stats.hashrate | hashrateFilter : node.stats.mining")
             td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
             td(style="padding-left: 15px;") {{node.stats.pending}}
-            td(class="{{ node.stats | blockClass : bestBlock }}") {{'#'}}{{ node.stats.block.number | number }}
+            td(class="{{ node.stats | blockClass : bestBlock }}")
+              span(class="{{ node.readable.forkMessage ? node.readable.forkClass : '' }}") {{'#'}}{{ node.stats.block.number | number }}
+              a.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{ node.readable.forkMessage }}", class="{{ node.readable.forkClass }}")
+                i.icon-warning-o
             td(class="{{ node.stats | blockClass : bestBlock }}")
               span.small {{node.stats.block.hash | hashFilter}}
             td(class="{{ node.stats | blockClass : bestBlock }}")

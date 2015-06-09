@@ -459,6 +459,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 		$scope.nodesTotal = $scope.nodes.length;
 
 		$scope.nodesActive = _.filter($scope.nodes, function (node) {
+			forkFilter(node);
 			return node.stats.active == true;
 		}).length;
 
@@ -491,8 +492,49 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 	{
 		if( $scope.nodes.length )
 		{
-			var bestBlock = _.max($scope.nodes, function (node) {
-				return parseInt(node.stats.block.number);
+			var chains = {};
+			var maxScore = 0;
+
+			_($scope.nodes)
+				.map(function (item)
+				{
+					maxScore += (item.trusted ? 50 : 1);
+
+					if( _.isUndefined(chains[item.stats.block.number]) )
+						chains[item.stats.block.number] = [];
+
+					if( _.isUndefined(chains[item.stats.block.number][item.stats.block.fork]) )
+						chains[item.stats.block.number][item.stats.block.fork] = {
+							fork: item.stats.block.fork,
+							count: 0,
+							trusted: 0,
+							score: 0
+						};
+
+					if(item.stats.block.trusted)
+						chains[item.stats.block.number][item.stats.block.fork].trusted++;
+					else
+						chains[item.stats.block.number][item.stats.block.fork].count++;
+
+					chains[item.stats.block.number][item.stats.block.fork].score = chains[item.stats.block.number][item.stats.block.fork].trusted * 50 + chains[item.stats.block.number][item.stats.block.fork].count;
+				})
+				.value();
+
+			$scope.maxScore = maxScore;
+			$scope.chains = _.reduce(chains, function (result, item, key)
+			{
+				result[key] = _.max(item, 'score');
+				return result;
+			}, {});
+
+			var bestBlock = _.max($scope.nodes, function (node)
+			{
+				if( $scope.chains[node.stats.block.number].fork === node.stats.block.fork && $scope.chains[node.stats.block.number].score / $scope.maxScore >= 0.5 )
+				{
+					return parseInt(node.stats.block.number);
+				}
+
+				return 0;
 			}).stats.block.number;
 
 			if( bestBlock !== $scope.bestBlock )
@@ -505,6 +547,36 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				$scope.lastBlock = $scope.bestStats.block.arrived;
 				$scope.lastDifficulty = $scope.bestStats.block.difficulty;
 			}
+		}
+	}
+
+	function forkFilter(node)
+	{
+		if( _.isUndefined(node.readable) )
+			node.readable = {};
+
+		if( $scope.chains[node.stats.block.number].fork === node.stats.block.fork && $scope.chains[node.stats.block.number].score / $scope.maxScore >= 0.5 )
+		{
+			node.readable.forkClass = 'hidden';
+			node.readable.forkMessage = '';
+
+			return true;
+		}
+
+		if( $scope.chains[node.stats.block.number].fork !== node.stats.block.fork )
+		{
+			node.readable.forkClass = 'text-danger';
+			node.readable.forkMessage = 'Wrong chain.<br/>This chain is a fork.';
+
+			return false;
+		}
+
+		if( $scope.chains[node.stats.block.number].score / $scope.maxScore < 0.5)
+		{
+			node.readable.forkClass = 'text-warning';
+			node.readable.forkMessage = 'May not be main chain.<br/>Waiting for more confirmations.';
+
+			return false;
 		}
 	}
 
