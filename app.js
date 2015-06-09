@@ -333,7 +333,7 @@ api.on('connection', function (spark)
 				}
 			});
 
-			if( Nodes.requiresUpdate(data.id) && (!Nodes.askedForHistory() || _.now() - askedForHistoryTime > 200000) )
+			if( Nodes.requiresUpdate(data.id) && (!Nodes.askedForHistory() || _.now() - askedForHistoryTime > 60*1000) )
 			{
 				var range = Nodes.getHistory().getHistoryRequestRange();
 
