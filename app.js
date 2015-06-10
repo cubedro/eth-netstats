@@ -3,69 +3,27 @@ var logger = require('./lib/utils/logger');
 var chalk = require('chalk');
 
 var askedForHistoryTime = 0;
-
-var Primus = require('primus'),
-	api,
-	client;
-
 var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
 
-var Collection = require('./lib/collection');
-var Nodes = new Collection();
 
-var server;
-var env = 'production';
-
+// Init http server
 if( process.env.NODE_ENV !== 'production' )
 {
-	var express = require('express');
-	var app = express();
-	var path = require('path');
-	var bodyParser = require('body-parser');
-
-	// view engine setup
-	app.set('views', path.join(__dirname, 'src/views'));
-	app.set('view engine', 'jade');
-	app.use(bodyParser.json());
-	app.use(bodyParser.urlencoded({ extended: false }));
-	app.use(express.static(path.join(__dirname, 'dist')));
-
-	app.get('/', function(req, res) {
-	  res.render('index');
-	});
-
-	// catch 404 and forward to error handler
-	app.use(function(req, res, next) {
-		var err = new Error('Not Found');
-		err.status = 404;
-		next(err);
-	});
-
-	// error handlers
-	app.use(function(err, req, res, next) {
-		res.status(err.status || 500);
-		res.render('error', {
-			message: err.message,
-			error: err
-		});
-	});
-
-	// production error handler
-	app.use(function(err, req, res, next) {
-		res.status(err.status || 500);
-		res.render('error', {
-			message: err.message,
-			error: {}
-		});
-	});
-
+	var app = require('./lib/express');
 	server = require('http').createServer(app);
 }
 else
-{
 	server = require('http').createServer();
-}
 
+
+// Init socket vars
+var Primus = require('primus');
+var api;
+var client;
+var server;
+
+
+// Init API Socket connection
 api = new Primus(server, {
 	transformer: 'websockets',
 	pathname: '/api',
@@ -75,13 +33,20 @@ api = new Primus(server, {
 api.use('emit', require('primus-emit'));
 api.use('spark-latency', require('primus-spark-latency'));
 
-var client = new Primus(server, {
+
+// Init Client Socket connection
+client = new Primus(server, {
 	transformer: 'websockets',
 	pathname: '/primus',
 	parser: 'JSON'
 });
 
-var clientLatency = 0;
+client.use('emit', require('primus-emit'));
+
+
+// Init collections
+var Collection = require('./lib/collection');
+var Nodes = new Collection();
 
 Nodes.setChartsCallback(function (err, charts)
 {
@@ -98,8 +63,8 @@ Nodes.setChartsCallback(function (err, charts)
 	}
 });
 
-client.use('emit', require('primus-emit'));
 
+// Init API Socket events
 api.on('connection', function (spark)
 {
 	console.info('API', 'CON', 'Open:', spark.address.ip);
@@ -382,8 +347,7 @@ client.on('connection', function (clientSpark)
 
 	clientSpark.on('client-pong', function (data)
 	{
-		var start = (!_.isUndefined(data) && !_.isUndefined(data.serverTime) ? data.serverTime : clientLatency);
-		var latency = Math.ceil( (_.now() - start) / 2 );
+		var latency = Math.ceil( (_.now() - data.serverTime) / 2 );
 
 		clientSpark.emit('client-latency', { latency: latency });
 	});
@@ -391,12 +355,10 @@ client.on('connection', function (clientSpark)
 
 var latencyTimeout = setInterval( function ()
 {
-	clientLatency = _.now();
-
 	client.write({
 		action: 'client-ping',
 		data: {
-			serverTime: clientLatency
+			serverTime: _.now()
 		}
 	});
 }, 5000);
