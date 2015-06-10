@@ -2,7 +2,7 @@ var _ = require('lodash');
 var logger = require('./lib/utils/logger');
 var chalk = require('chalk');
 
-var askedForHistoryTime = 0;
+
 var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
 
 
@@ -68,7 +68,6 @@ Nodes.setChartsCallback(function (err, charts)
 api.on('connection', function (spark)
 {
 	console.info('API', 'CON', 'Open:', spark.address.ip);
-
 
 	spark.on('hello', function (data)
 	{
@@ -299,7 +298,7 @@ api.on('connection', function (spark)
 				}
 			});
 
-			if( Nodes.requiresUpdate(data.id) && (!Nodes.askedForHistory() || _.now() - askedForHistoryTime > 2*60*1000) )
+			if( Nodes.requiresUpdate(data.id) && !Nodes.askedForHistory() )
 			{
 				var range = Nodes.getHistory().getHistoryRequestRange();
 
@@ -307,7 +306,6 @@ api.on('connection', function (spark)
 				console.info('API', 'HIS', 'Asked:', data.id, 'for history:', range.min, '-', range.max);
 
 				Nodes.askedForHistory(true);
-				askedForHistoryTime = _.now();
 			}
 		}
 	});
