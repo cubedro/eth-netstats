@@ -3,30 +3,27 @@ var logger = require('./lib/utils/logger');
 var chalk = require('chalk');
 
 var askedForHistoryTime = 0;
-
-var Primus = require('primus'),
-	api,
-	client;
-
 var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
 
-var Collection = require('./lib/collection');
-var Nodes = new Collection();
 
-var server;
-var env = 'production';
-
+// Init http server
 if( process.env.NODE_ENV !== 'production' )
 {
 	var app = require('./lib/express');
-
 	server = require('http').createServer(app);
 }
 else
-{
 	server = require('http').createServer();
-}
 
+
+// Init socket vars
+var Primus = require('primus');
+var api;
+var client;
+var server;
+
+
+// Init API Socket connection
 api = new Primus(server, {
 	transformer: 'websockets',
 	pathname: '/api',
@@ -36,13 +33,20 @@ api = new Primus(server, {
 api.use('emit', require('primus-emit'));
 api.use('spark-latency', require('primus-spark-latency'));
 
-var client = new Primus(server, {
+
+// Init Client Socket connection
+client = new Primus(server, {
 	transformer: 'websockets',
 	pathname: '/primus',
 	parser: 'JSON'
 });
 
-var clientLatency = 0;
+client.use('emit', require('primus-emit'));
+
+
+// Init collections
+var Collection = require('./lib/collection');
+var Nodes = new Collection();
 
 Nodes.setChartsCallback(function (err, charts)
 {
@@ -59,8 +63,8 @@ Nodes.setChartsCallback(function (err, charts)
 	}
 });
 
-client.use('emit', require('primus-emit'));
 
+// Init API Socket events
 api.on('connection', function (spark)
 {
 	console.info('API', 'CON', 'Open:', spark.address.ip);
@@ -343,8 +347,7 @@ client.on('connection', function (clientSpark)
 
 	clientSpark.on('client-pong', function (data)
 	{
-		var start = (!_.isUndefined(data) && !_.isUndefined(data.serverTime) ? data.serverTime : clientLatency);
-		var latency = Math.ceil( (_.now() - start) / 2 );
+		var latency = Math.ceil( (_.now() - data.serverTime) / 2 );
 
 		clientSpark.emit('client-latency', { latency: latency });
 	});
@@ -352,12 +355,10 @@ client.on('connection', function (clientSpark)
 
 var latencyTimeout = setInterval( function ()
 {
-	clientLatency = _.now();
-
 	client.write({
 		action: 'client-ping',
 		data: {
-			serverTime: clientLatency
+			serverTime: _.now()
 		}
 	});
 }, 5000);
