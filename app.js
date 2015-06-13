@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var logger = require('./lib/utils/logger');
 var chalk = require('chalk');
-
+var http = require('http');
 
 var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
 
@@ -10,11 +10,12 @@ var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
 if( process.env.NODE_ENV !== 'production' )
 {
 	var app = require('./lib/express');
-	server = require('http').createServer(app);
+	server = http.createServer(app);
 }
 else
-	server = require('http').createServer();
+	server = http.createServer();
 
+http.globalAgent.maxSockets = 50;
 
 // Init socket vars
 var Primus = require('primus');
