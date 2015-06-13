@@ -35,7 +35,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 	$scope.latency = 0;
 
-	$scope.currentApiVersion = "0.0.13";
+	$scope.currentApiVersion = "0.0.14";
 
 	$scope.predicate = $localStorage.predicate || ['-pinned', '-stats.active', '-stats.block.number', 'stats.block.propagation'];
 	$scope.reverse = $localStorage.reverse || false;
@@ -93,7 +93,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 	var timeout = setInterval(function ()
 	{
 		$scope.$apply();
-	}, 200);
+	}, 300);
 
 	$scope.getNumber = function (num) {
 		return new Array(num);
@@ -206,6 +206,13 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 					$scope.nodes[index].stats = data.stats;
 
+					if( !_.isUndefined(data.stats.latency) && _.get($scope.nodes[index], 'stats.latency', 0) !== data.stats.latency )
+					{
+						$scope.nodes[index].stats.latency = data.stats.latency;
+
+						latencyFilter($scope.nodes[index]);
+					}
+
 					updateBestBlock();
 				}
 
@@ -267,6 +274,13 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 						$scope.nodes[index].stats.peers = data.stats.peers;
 						$scope.nodes[index].stats.gasPrice = data.stats.gasPrice;
 						$scope.nodes[index].stats.uptime = data.stats.uptime;
+
+						if( !_.isUndefined(data.stats.latency) && _.get($scope.nodes[index], 'stats.latency', 0) !== data.stats.latency )
+						{
+							$scope.nodes[index].stats.latency = data.stats.latency;
+
+							latencyFilter($scope.nodes[index]);
+						}
 
 						updateActiveNodes();
 					}
@@ -554,6 +568,11 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 	{
 		if( _.isUndefined(node.readable) )
 			node.readable = {};
+
+		node.readable.forkClass = 'hidden';
+		node.readable.forkMessage = '';
+
+		return true;
 
 		if( $scope.chains[node.stats.block.number].fork === node.stats.block.fork && $scope.chains[node.stats.block.number].score / $scope.maxScore >= 0.5 )
 		{
