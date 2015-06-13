@@ -288,16 +288,16 @@ api.on('connection', function (spark)
 
 				if(latency !== null)
 				{
-					client.write({
-						action: 'latency',
-						data: latency
-					});
+					// client.write({
+					// 	action: 'latency',
+					// 	data: latency
+					// });
 
 					console.info('API', 'PIN', 'Latency:', latency, 'from:', data.id);
 				}
 			});
 
-			if( Nodes.requiresUpdate(data.id) && !Nodes.askedForHistory() )
+			if( Nodes.requiresUpdate(data.id) )
 			{
 				var range = Nodes.getHistory().getHistoryRequestRange();
 
