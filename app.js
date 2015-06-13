@@ -15,8 +15,6 @@ if( process.env.NODE_ENV !== 'production' )
 else
 	server = http.createServer();
 
-http.globalAgent.maxSockets = 50;
-
 // Init socket vars
 var Primus = require('primus');
 var api;
