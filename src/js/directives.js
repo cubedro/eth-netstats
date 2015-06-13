@@ -296,7 +296,8 @@ angular.module('netStatsApp.directives', [])
 			scope: {
 				data: '='
 			},
-			link: function(scope, element, attrs) {
+			link: function(scope, element, attrs)
+			{
 				var margin = {top: 0, right: 0, bottom: 0, left: 0};
 				var width = 280 - margin.left - margin.right,
 					height = 63 - margin.top - margin.bottom;
