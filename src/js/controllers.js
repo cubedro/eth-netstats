@@ -543,12 +543,12 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 			var bestBlock = _.max($scope.nodes, function (node)
 			{
-				if( $scope.chains[node.stats.block.number].fork === node.stats.block.fork && $scope.chains[node.stats.block.number].score / $scope.maxScore >= 0.5 )
-				{
+				// if( $scope.chains[node.stats.block.number].fork === node.stats.block.fork && $scope.chains[node.stats.block.number].score / $scope.maxScore >= 0.5 )
+				// {
 					return parseInt(node.stats.block.number);
-				}
+				// }
 
-				return 0;
+				// return 0;
 			}).stats.block.number;
 
 			if( bestBlock !== $scope.bestBlock )
