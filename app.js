@@ -345,7 +345,7 @@ client.on('connection', function (clientSpark)
 	clientSpark.on('client-pong', function (data)
 	{
 		var serverTime = _.get(data, "serverTime", 0);
-		var latency = Math.ceil( (_.now() - data.serverTime) / 2 );
+		var latency = Math.ceil( (_.now() - serverTime) / 2 );
 
 		clientSpark.emit('client-latency', { latency: latency });
 	});
