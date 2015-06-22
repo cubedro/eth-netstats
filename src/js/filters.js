@@ -142,22 +142,22 @@ angular.module('netStatsApp.filters', [])
 			return "0 wei";
 
 		if(price.length < 4)
-			return price + " wei";
+			return numberFilter(price) + " wei";
 
 		if(price.length < 7)
-			return (price/1000) + " kwei";
+			return numberFilter(price/1000) + " kwei";
 
 		if(price.length < 10)
-			return (price/1000000) + " mwei";
+			return numberFilter(price/1000000) + " mwei";
 
 		if(price.length < 13)
-			return (price/1000000000) + " gwei";
+			return numberFilter(price/1000000000) + " gwei";
 
 		if(price.length < 16)
-			return (price/1000000000000) + " szabo";
+			return numberFilter(price/1000000000000) + " szabo";
 
 		if(price.length < 19)
-			return (price.substr(0, price.length - 15)) + " finney";
+			return numberFilter(price.substr(0, price.length - 15)) + " finney";
 
 		return numberFilter(price.substr(0, price.length - 18)) + " ether";
 	}
