@@ -43,9 +43,18 @@ client = new Primus(server, {
 client.use('emit', require('primus-emit'));
 
 
+// Init external API
+external = new Primus(server, {
+	transformer: 'websockets',
+	pathname: '/external',
+	parser: 'JSON'
+});
+
+external.use('emit', require('primus-emit'));
+
 // Init collections
 var Collection = require('./lib/collection');
-var Nodes = new Collection();
+var Nodes = new Collection(external);
 
 Nodes.setChartsCallback(function (err, charts)
 {
