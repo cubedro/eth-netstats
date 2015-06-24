@@ -115,7 +115,8 @@ block content
               span.small-title last blocks miners
               div.blocks-holder(ng-repeat='miner in miners track by miner.miner', data-toggle="tooltip", data-placement="right", data-original-title="{{miner.blocks}}")
                 div.block-count(class="{{miner.blocks | minerBlocksClass : 'text-'}}") {{miner.blocks}}
-                div.small-title-miner {{miner.miner | minerNameFilter : miner.name}}
+                //- div.small-title-miner {{miner.miner | minerNameFilter : miner.name}}
+                div.small-title-miner {{miner.miner}}
                 minerblock(blocks="{{miner.blocks}}")
                 div.clearfix
 
