@@ -49,9 +49,14 @@ module.exports = function(grunt) {
 						pretty: true
 					}
 				},
-				files: {
-					'dist/index.html': 'src/views/index.jade'
-				}
+				files: [
+					{
+						'dist/index.html': 'src/views/index.jade'
+					},
+					{
+						'dist/index-lite.html': 'src/views/index-lite.jade'
+					}
+				]
 			}
 		},
 		copy: {
