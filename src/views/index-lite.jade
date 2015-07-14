@@ -28,7 +28,6 @@ block content
           div.big-details-holder
             span.small-title last block
             span.big-details {{ lastBlock | blockTimeFilter }}
-            //- span.big-details(time-ago="lastBlock")
           div.clearfix
       div.col-xs-2.stat-holder
         div.big-info.avgblocktime(class="{{ avgBlockTime | avgTimeClass }}")
@@ -57,7 +56,6 @@ block content
           div.clearfix
 
       div.clearfix
-
 
     div.row(ng-cloak)
       div.col-xs-8.stats-boxes(style="padding-top: 0px;")
