@@ -540,6 +540,39 @@ angular.module('netStatsApp.filters', [])
 
 		return 'hidden';
 	};
+})
+.filter('consensusClass', function() {
+	return function(nodes, bestBlock) {
+		var status = 'success';
+		var now = _.now();
+
+		for(var x = 0; x < nodes.length; x++)
+		{
+			if(nodes[x].stats.block.number === bestBlock.number && nodes[x].stats.block.hash !== bestBlock.hash)
+				return 'danger';
+
+			if((bestBlock.number - nodes[x].stats.block.number) > 1 && (now - bestBlock.received) >= 20*1000)
+				status = 'orange';
+
+			if((bestBlock.number - nodes[x].stats.block.number) === 1 && (now - bestBlock.received) >= 10*1000 && status !== 'orange')
+				status = 'warning';
+		}
+
+		return status;
+	};
+})
+.filter('consensusFilter', function() {
+	return function(nodes, bestBlock) {
+		var cnt = 0;
+
+		for(var x = 0; x < nodes.length; x++)
+		{
+			if(nodes[x].stats.block.number === bestBlock.number && nodes[x].stats.block.hash === bestBlock.hash)
+				cnt++;
+		}
+
+		return cnt + '/' + nodes.length;
+	};
 });
 
 function compareVersions(v1, comparator, v2)
