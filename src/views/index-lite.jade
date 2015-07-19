@@ -66,10 +66,10 @@ block content
               span.small-title active nodes
               span.small-value {{nodesActive}}/{{nodesTotal}}
           div.col-xs-3.stat-holder.box
-            div.gasprice.text-info
-              i.icon-gasprice
-              span.small-title gas price
-              span.small-value {{ bestStats.gasPrice.toString() | gasPriceFilter }}
+            div.gasprice(class="{{ nodes | consensusClass : bestStats }}")
+              i.icon-check-o
+              span.small-title nodes status
+              span.small-value {{ nodes | consensusFilter : bestStats }}
           div.col-xs-3.stat-holder.box
             div.page-latency(class="{{ {active: true, latency: latency} | latencyClass }}")
               i.icon-clock
@@ -122,7 +122,7 @@ block content
               span.small-title gas spending
               sparkchart.big-details.spark-gasspending(data="{{gasSpending.join(',')}}")
 
-      div.col-xs-4.stat-holder.map-holder
+      //- div.col-xs-4.stat-holder.map-holder
         nodemap#mapHolder(data="map")
 
     div.row(ng-cloak, style="padding-top: 10px")
