@@ -60,26 +60,21 @@ block content
     div.row(ng-cloak)
       div.col-xs-12.stats-boxes(style="padding-top: 0px;")
         div.row.second-row
-          div.col-xs-3.stat-holder.box
+          div.col-xs-4.stat-holder.box
             div.active-nodes(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
               i.icon-node
               span.small-title active nodes
               span.small-value {{nodesActive}}/{{nodesTotal}}
-          div.col-xs-3.stat-holder.box
+          div.col-xs-4.stat-holder.box
             div.gasprice(class="{{ nodes | consensusClass : bestStats }}")
               i.icon-check-o
               span.small-title nodes status
               span.small-value {{ nodes | consensusFilter : bestStats }}
-          div.col-xs-3.stat-holder.box
+          div.col-xs-4.stat-holder.box
             div.page-latency(class="{{ {active: true, latency: latency} | latencyClass }}")
               i.icon-clock
               span.small-title page latency
               span.small-value {{latency}} ms
-          div.col-xs-3.stat-holder.box
-            div.uptime(class="{{ upTimeTotal | upTimeClass : true }}")
-              i.icon-bulb
-              span.small-title uptime
-              span.small-value {{ upTimeTotal | upTimeFilter }}
 
         //- div.row
           div.col-xs-3.stat-holder
