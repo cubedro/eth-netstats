@@ -76,50 +76,6 @@ block content
               span.small-title page latency
               span.small-value {{latency}} ms
 
-        //- div.row
-          div.col-xs-3.stat-holder
-            div.big-info.chart(class="{{ avgBlockTime | avgTimeClass }}")
-              span.small-title block time
-              sparkchart.big-details.spark-blocktimes(data="{{lastBlocksTime.join(',')}}", tooltipsuffix="s")
-
-          div.col-xs-3.stat-holder
-            div.big-info.chart.text-info
-              span.small-title difficulty
-              sparkchart.big-details.spark-difficulty(data="{{difficultyChart.join(',')}}")
-
-          div.col-xs-3.stat-holder.xpull-right
-            div.big-info.chart.xdouble-chart(class="{{ blockPropagationAvg | propagationAvgTimeClass : true }}")
-              span.small-title block propagation
-              histogram.big-details.d3-blockpropagation(data="blockPropagationChart")
-
-          div.col-xs-3.stat-holder.pull-right
-            div.big-info.chart.double-chart
-              span.small-title last blocks miners
-              div.blocks-holder(ng-repeat='miner in miners track by miner.miner', data-toggle="tooltip", data-placement="right", data-original-title="{{miner.blocks}}")
-                div.block-count(class="{{miner.blocks | minerBlocksClass : 'text-'}}") {{miner.blocks}}
-                div.small-title-miner {{miner.miner}}
-                minerblock(blocks="{{miner.blocks}}")
-                div.clearfix
-
-          div.col-xs-3.stat-holder
-            div.big-info.chart.text-info
-              span.small-title uncle count&nbsp;
-                span.small (25 blocks per bar)
-              sparkchart.big-details.spark-uncles(data="{{uncleCountChart.join(',')}}")
-
-          div.col-xs-3.stat-holder
-            div.big-info.chart.text-info
-              span.small-title transactions
-              sparkchart.big-details.spark-transactions(data="{{transactionDensity.join(',')}}")
-
-          div.col-xs-3.stat-holder
-            div.big-info.chart.text-info
-              span.small-title gas spending
-              sparkchart.big-details.spark-gasspending(data="{{gasSpending.join(',')}}")
-
-      //- div.col-xs-4.stat-holder.map-holder
-        nodemap#mapHolder(data="map")
-
     div.row(ng-cloak, style="padding-top: 10px")
       table.table.table-striped
         thead
