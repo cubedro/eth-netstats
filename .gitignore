@@ -1,6 +1,8 @@
 .DS_Store
 */**/.DS_Store
 node_modules
+dist
+dist-lite
 npm-debug.log
 ansible/venv
 config/nodes.js
