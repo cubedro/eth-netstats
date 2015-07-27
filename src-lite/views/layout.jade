@@ -1,0 +1,13 @@
+//- layout.jade
+doctype html
+html(ng-app="netStatsApp")
+  head
+    meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    title Ethereum Network Status
+    style(type="text/css") [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak { display: none !important; }
+    link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700')
+    link(rel='stylesheet', href='/css/netstats.min.css')
+  body
+    block content
+
+    script(src="/js/netstats.min.js")
