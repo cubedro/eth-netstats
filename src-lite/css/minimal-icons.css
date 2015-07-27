@@ -1,0 +1,78 @@
+@font-face {
+  font-family: 'minimal-icons';
+  src: url('../fonts/minimal-icons.eot?7541141');
+  src: url('../fonts/minimal-icons.eot?7541141#iefix') format('embedded-opentype'),
+       url('../fonts/minimal-icons.woff?7541141') format('woff'),
+       url('../fonts/minimal-icons.ttf?7541141') format('truetype'),
+       url('../fonts/minimal-icons.svg?7541141#minimal-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'minimal-icons';
+    src: url('../fonts/minimal-icons.svg?7541141#minimal-icons') format('svg');
+  }
+}
+*/
+
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "minimal-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  /*-webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;*/
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-truck:before { content: '\e800'; } /* '' */
+.icon-database:before { content: '\e801'; } /* '' */
+.icon-mining:before { content: '\e802'; } /* '' */
+.icon-check:before { content: '\e803'; } /* '' */
+.icon-cancel:before { content: '\e804'; } /* '' */
+.icon-loader:before { content: '\e805'; } /* '' */
+.icon-check-o:before { content: '\e806'; } /* '' */
+.icon-cancel-o:before { content: '\e807'; } /* '' */
+.icon-warning-o:before { content: '\e808'; } /* '' */
+.icon-network:before { content: '\e809'; } /* '' */
+.icon-block:before { content: '\e80a'; } /* '' */
+.icon-bulb:before { content: '\e80b'; } /* '' */
+.icon-node:before { content: '\e80c'; } /* '' */
+.icon-laptop:before { content: '\e80d'; } /* '' */
+.icon-time:before { content: '\e80e'; } /* '' */
+.icon-clock:before { content: '\e80f'; } /* '' */
+.icon-group:before { content: '\e810'; } /* '' */
+.icon-gas:before { content: '\e811'; } /* '' */
+.icon-difficulty:before { content: '\e812'; } /* '' */
+.icon-uncle:before { content: '\e813'; } /* '' */
+.icon-hashrate:before { content: '\e814'; } /* '' */
+.icon-gasprice:before { content: '\e815'; } /* '' */
