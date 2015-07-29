@@ -1,7 +1,7 @@
 
 /* Controllers */
 
-netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, socket, _, toastr) {
+netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr) {
 
 	var MAX_BINS = 40;
 
@@ -37,9 +37,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 	$scope.currentApiVersion = "0.0.16";
 
-	$scope.predicate = $localStorage.predicate || ['-pinned', '-stats.active', '-stats.block.number', 'stats.block.propagation'];
-	$scope.reverse = $localStorage.reverse || false;
-	$scope.pinned = $localStorage.pinned || [];
+	$scope.predicate = ['-pinned', '-stats.active', '-stats.block.number', 'stats.block.propagation'];
+	$scope.reverse = false;
+	$scope.pinned = [];
 
 	$scope.prefixPredicate = ['-pinned', '-stats.active'];
 	$scope.originalPredicate = ['-stats.block.number', 'stats.block.propagation'];
@@ -64,9 +64,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 			$scope.predicate = _.union($scope.prefixPredicate, predicate);
 		}
-
-		$localStorage.predicate = $scope.predicate;
-		$localStorage.reverse = $scope.reverse;
 	}
 
 	$scope.pinNode = function(id)
@@ -86,8 +83,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				$scope.pinned.splice($scope.pinned.indexOf(id), 1);
 			}
 		}
-
-		$localStorage.pinned = $scope.pinned;
 	}
 
 	var timeout = setInterval(function ()
@@ -329,30 +324,11 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				if( !_.isEqual($scope.lastBlocksTime, data.blocktime) && data.blocktime.length >= MAX_BINS )
 					$scope.lastBlocksTime = data.blocktime;
 
-				if( !_.isEqual($scope.difficultyChart, data.difficulty) && data.difficulty.length >= MAX_BINS )
-					$scope.difficultyChart = data.difficulty;
-
-				if( !_.isEqual($scope.blockPropagationChart, data.propagation.histogram) ) {
-					$scope.blockPropagationChart = data.propagation.histogram;
-					$scope.blockPropagationAvg = data.propagation.avg;
-				}
-
 				data.uncleCount.reverse();
 
 				if( !_.isEqual($scope.uncleCountChart, data.uncleCount) && data.uncleCount.length >= MAX_BINS ) {
 					$scope.uncleCount = data.uncleCount[data.uncleCount.length-2] + data.uncleCount[data.uncleCount.length-1];
 					$scope.uncleCountChart = data.uncleCount;
-				}
-
-				if( !_.isEqual($scope.transactionDensity, data.transactions) && data.transactions.length >= MAX_BINS )
-					$scope.transactionDensity = data.transactions;
-
-				if( !_.isEqual($scope.gasSpending, data.gasSpending) && data.gasSpending.length >= MAX_BINS )
-					$scope.gasSpending = data.gasSpending;
-
-				if( !_.isEqual($scope.miners, data.miners) ) {
-					$scope.miners = data.miners;
-					getMinersNames();
 				}
 
 				break;
@@ -399,33 +375,11 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 				break;
 		}
-
-		// $scope.$apply();
 	}
 
 	function findIndex(search)
 	{
 		return _.findIndex($scope.nodes, search);
-	}
-
-	function getMinersNames()
-	{
-		if( $scope.miners.length > 0 )
-		{
-			_.forIn($scope.miners, function (value, key)
-			{
-				if(value.name !== false)
-					return;
-
-				if(value.miner === "0x0000000000000000000000000000000000000000")
-					return;
-
-				var name = _.result(_.find(_.pluck($scope.nodes, 'info'), 'coinbase', value.miner), 'name');
-
-				if( !_.isUndefined(name) )
-					$scope.miners[key].name = name;
-			});
-		}
 	}
 
 	function addNewNode(data)
@@ -476,30 +430,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 			forkFilter(node);
 			return node.stats.active == true;
 		}).length;
-
-		$scope.upTimeTotal = _.reduce($scope.nodes, function (total, node) {
-			return total + node.stats.uptime;
-		}, 0) / $scope.nodes.length;
-
-		$scope.map = _.map($scope.nodes, function (node) {
-			var fill = $filter('bubbleClass')(node.stats, $scope.bestBlock);
-
-			if(node.geo != null)
-				return {
-					radius: 3,
-					latitude: node.geo.ll[0],
-					longitude: node.geo.ll[1],
-					nodeName: node.info.name,
-					fillClass: "text-" + fill,
-					fillKey: fill,
-				};
-			else
-				return {
-					radius: 0,
-					latitude: 0,
-					longitude: 0
-				};
-		});
 	}
 
 	function updateBestBlock()

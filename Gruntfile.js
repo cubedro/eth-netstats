@@ -37,23 +37,20 @@ var src_lite = 'src-lite/';
 var dest_lite = 'dist-lite/';
 
 var scripts_lite = [
-	'scr-lite/js/app.js',
-	'scr-lite/js/controllers.js',
-	'scr-lite/js/filters.js',
-	'scr-lite/js/directives.js',
-	'scr-lite/js/script.js'
+	'src-lite/js/app.js',
+	'src-lite/js/controllers.js',
+	'src-lite/js/filters.js',
+	'src-lite/js/directives.js',
+	'src-lite/js/script.js'
 ];
 
 var vendor_lite = [
 	'dist-lite/js/lib/jquery-1.11.3.min.js',
 	'dist-lite/js/lib/bootstrap.min.js',
 	'dist-lite/js/lib/angular.min.js',
-	'dist-lite/js/lib/ngStorage.min.js',
 	'dist-lite/js/lib/lodash.min.js',
 	'dist-lite/js/lib/d3.min.js',
 	'dist-lite/js/lib/d3.tip.min.js',
-	'dist-lite/js/lib/topojson.min.js',
-	'dist-lite/js/lib/datamaps.min.js',
 	'dist-lite/js/lib/moment.min.js',
 	'dist-lite/js/lib/moment.en.min.js',
 	'dist-lite/js/lib/toastr.min.js',

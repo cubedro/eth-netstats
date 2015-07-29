@@ -36,27 +36,6 @@ angular.module('netStatsApp.filters', [])
 		return peerClass(peers, active);
 	};
 })
-.filter('miningClass', function() {
-	return function(mining, active) {
-		if(! active)
-			return 'text-gray';
-
-		return (! mining ? 'text-danger' : 'text-success');
-	};
-})
-.filter('miningIconClass', function() {
-	return function(mining) {
-		return (! mining ? 'icon-cancel' : 'icon-check');
-	};
-})
-.filter('hashrateClass', function() {
-	return function(mining, active) {
-		if(! mining || ! active)
-			return 'text-gray';
-
-		return 'text-success';
-	};
-})
 .filter('hashrateFilter', ['$sce', '$filter', function($sce, filter) {
 	return function(hashes, isMining) {
 		var result = 0;
@@ -544,7 +523,7 @@ angular.module('netStatsApp.filters', [])
 .filter('consensusClass', function() {
 	return function(nodes, bestBlock) {
 		var status = 'success';
-		var now = _.now();
+		var now = (new Date()).getTime();
 
 		for(var x = 0; x < nodes.length; x++)
 		{
