@@ -527,13 +527,13 @@ angular.module('netStatsApp.filters', [])
 
 		for(var x = 0; x < nodes.length; x++)
 		{
-			if(nodes[x].stats.block.number === bestBlock.number && nodes[x].stats.block.hash !== bestBlock.hash)
+			if(nodes[x].stats.block.number === bestBlock.block.number && nodes[x].stats.block.hash !== bestBlock.block.hash)
 				return 'danger';
 
-			if((bestBlock.number - nodes[x].stats.block.number) > 1 && (now - bestBlock.received) >= 20*1000)
+			if((bestBlock.block.number - nodes[x].stats.block.number) > 1 && (now - bestBlock.block.received) >= 20*1000)
 				status = 'orange';
 
-			if((bestBlock.number - nodes[x].stats.block.number) === 1 && (now - bestBlock.received) >= 10*1000 && status !== 'orange')
+			if((bestBlock.block.number - nodes[x].stats.block.number) === 1 && (now - bestBlock.block.received) >= 10*1000 && status !== 'orange')
 				status = 'warning';
 		}
 
@@ -546,7 +546,7 @@ angular.module('netStatsApp.filters', [])
 
 		for(var x = 0; x < nodes.length; x++)
 		{
-			if(nodes[x].stats.block.number === bestBlock.number && nodes[x].stats.block.hash === bestBlock.hash)
+			if(nodes[x].stats.block.number === bestBlock.block.number && nodes[x].stats.block.hash === bestBlock.block.hash)
 				cnt++;
 		}
 
