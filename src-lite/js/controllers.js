@@ -8,6 +8,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, socket, _, toastr)
 	// Main Stats init
 	// ---------------
 
+	$scope.frontierHash = '?';
 	$scope.nodesTotal = 0;
 	$scope.nodesActive = 0;
 	$scope.bestBlock = 0;
