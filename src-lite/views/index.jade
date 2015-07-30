@@ -4,7 +4,7 @@ extends ./layout.jade
 block content
   div.container-fluid(ng-controller='StatsCtrl')
     div.row(ng-cloak)
-      div.col-xs-2.stat-holder
+      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
         div.big-info.bestblock.text-info
           div.pull-left.icon-full-width
             i.icon-block
@@ -12,7 +12,7 @@ block content
             span.small-title best block
             span.big-details {{'#'}}{{ bestBlock | number}}
           div.clearfix
-      div.col-xs-2.stat-holder
+      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
         div.big-info.uncleCount.text-info
           div.pull-left.icon-full-width
             i.icon-uncle
@@ -21,7 +21,7 @@ block content
               span.small (current / last 50)
             span.big-details {{ bestStats.block.uncles.length }}/{{ uncleCount }}
           div.clearfix
-      div.col-xs-2.stat-holder
+      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
         div.big-info.blocktime(class="{{ lastBlock | timeClass : true }}")
           div.pull-left.icon-full-width
             i.icon-time
@@ -29,7 +29,7 @@ block content
             span.small-title last block
             span.big-details {{ lastBlock | blockTimeFilter }}
           div.clearfix
-      div.col-xs-2.stat-holder
+      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
         div.big-info.avgblocktime(class="{{ avgBlockTime | avgTimeClass }}")
           div.pull-left.icon-full-width
             i.icon-gas
@@ -37,7 +37,7 @@ block content
             span.small-title avg block time
             span.big-details {{ avgBlockTime | avgTimeFilter }}
           div.clearfix
-      div.col-xs-2.stat-holder
+      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
         div.big-info.difficulty.text-orange
           div.pull-left.icon-full-width
             i.icon-hashrate
@@ -45,7 +45,7 @@ block content
             span.small-title avg network hashrate
             span.big-details(ng-bind-html="avgHashrate | networkHashrateFilter")
           div.clearfix
-      div.col-xs-2.stat-holder
+      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
         div.big-info.difficulty.text-danger
           div.pull-left.icon-full-width
             i.icon-difficulty
@@ -60,17 +60,17 @@ block content
     div.row(ng-cloak)
       div.col-xs-12.stats-boxes(style="padding-top: 0px;")
         div.row.second-row
-          div.col-xs-4.stat-holder.box
+          div.col-sm-4.col-xs-1.stat-holder.box
             div.active-nodes(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
               i.icon-node
               span.small-title active nodes
               span.small-value {{nodesActive}}/{{nodesTotal}}
-          div.col-xs-4.stat-holder.box
+          div.col-sm-4.col-xs-1.stat-holder.box
             div.gasprice(class="{{ nodes | consensusClass : bestStats }}")
               i.icon-check-o
               span.small-title nodes status
               span.small-value {{ nodes | consensusFilter : bestStats }}
-          div.col-xs-4.stat-holder.box
+          div.col-sm-4.col-xs-1.stat-holder.box
             div.page-latency(class="{{ {active: true, latency: latency} | latencyClass }}")
               i.icon-clock
               span.small-title page latency
@@ -84,7 +84,7 @@ block content
               i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Pin nodes to display first", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
             th.th-nodename
               i.icon-node(data-toggle="tooltip", data-placement="top", title="Node name", ng-click="orderTable(['info.name'], false)")
-            th.th-nodetype
+            th.th-nodetype.hidden-xs
               i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type", ng-click="orderTable(['info.node'], false)")
             th.th-latency
               i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency", ng-click="orderTable(['stats.latency'], false)")
@@ -93,7 +93,7 @@ block content
             th
               i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
             th.th-blockhash &nbsp;
-            th.th-blockhash
+            th.th-blockhash.hidden-xs
               i.icon-difficulty(data-toggle="tooltip", data-placement="top", title="Total difficulty", ng-click="orderTable(['-stats.block.totalDifficulty'], false)")
             th.th-blocktime
               i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time", ng-click="orderTable(['-stats.block.received'], false)")
@@ -111,7 +111,7 @@ block content
               span.small &nbsp;({{node.info.ip}})
               a.small(href="https://github.com/ethereum/wiki/wiki/Network-Status#updating", target="_blank", data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="Netstats client needs update.<br>Click this icon for instructions.", class="{{ node.info | nodeClientClass : currentApiVersion }}")
                 i.icon-warning-o
-            td
+            td.hidden-xs
               div.small(ng-bind-html="node.info.node | nodeVersion")
             td(class="{{ node.readable.latencyClass }}")
               span.small {{ node.readable.latency }}
@@ -122,7 +122,7 @@ block content
                 i.icon-warning-o
             td(class="{{ node.stats | blockClass : bestBlock }}")
               span.small {{node.stats.block.hash | hashFilter}}
-            td(class="{{ node.stats | blockClass : bestBlock }}")
+            td(class="{{ node.stats | blockClass : bestBlock }}").hidden-xs
               span.small {{node.stats.block.totalDifficulty | number}}
             td(class="{{ node.stats.block.received | timeClass : node.stats.active }}") {{node.stats.block.received | blockTimeFilter }}
             td(class="{{ node.stats | propagationTimeClass : bestBlock }}")
