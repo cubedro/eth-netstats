@@ -522,19 +522,19 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('consensusClass', function() {
 	return function(nodes, bestBlock) {
-		var status = 'success';
+		var status = 'text-success';
 		var now = (new Date()).getTime();
 
 		for(var x = 0; x < nodes.length; x++)
 		{
 			if(nodes[x].stats.block.number === bestBlock.block.number && nodes[x].stats.block.hash !== bestBlock.block.hash)
-				return 'danger';
+				return 'text-danger';
 
 			if((bestBlock.block.number - nodes[x].stats.block.number) > 1 && (now - bestBlock.block.received) >= 20*1000)
-				status = 'orange';
+				status = 'text-orange';
 
 			if((bestBlock.block.number - nodes[x].stats.block.number) === 1 && (now - bestBlock.block.received) >= 10*1000 && status !== 'orange')
-				status = 'warning';
+				status = 'text-warning';
 		}
 
 		return status;
