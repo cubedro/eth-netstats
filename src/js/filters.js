@@ -396,7 +396,7 @@ angular.module('netStatsApp.filters', [])
 .filter('avgTimeFilter', function() {
 	return function(time) {
 		if(time < 60)
-			return Math.round(time) + ' s';
+			return parseFloat(time).toFixed(2) + ' s';
 
 		return moment.duration(Math.round(time), 's').humanize();
 	};
