@@ -8,6 +8,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 	// Main Stats init
 	// ---------------
 
+	$scope.frontierHash = '?';
 	$scope.nodesTotal = 0;
 	$scope.nodesActive = 0;
 	$scope.bestBlock = 0;
@@ -557,6 +558,11 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				$scope.bestStats = _.max($scope.nodes, function (node) {
 					return parseInt(node.stats.block.number);
 				}).stats;
+
+				if($scope.bestBlock === 1028201)
+				{
+					$scope.frontierHash = $scope.bestStats.block.hash;
+				}
 
 				$scope.lastBlock = $scope.bestStats.block.arrived;
 				$scope.lastDifficulty = $scope.bestStats.block.difficulty;

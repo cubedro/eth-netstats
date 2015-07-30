@@ -146,6 +146,14 @@ block content
         //- div.col-xs-12
         nodemap#mapHolder(data="map")
 
+      div.col-xs-12.stats-boxes
+        div.row.second-row
+          div.col-xs-12.stat-holder.box
+            div.active-nodes.text-orange
+              i.icon-hashrate
+              span.small-title Block #1028201 hash
+              span.small-value {{frontierHash}}
+
       //- div.clearfix
 
     div.row(ng-cloak, style="padding-top: 10px")
