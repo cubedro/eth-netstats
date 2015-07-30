@@ -4,7 +4,7 @@ extends ./layout.jade
 block content
   div.container-fluid(ng-controller='StatsCtrl')
     div.row(ng-cloak)
-      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
+      div.col-lg-2.col-md-4.col-sm-1.stat-holder
         div.big-info.bestblock.text-info
           div.pull-left.icon-full-width
             i.icon-block
@@ -12,7 +12,7 @@ block content
             span.small-title best block
             span.big-details {{'#'}}{{ bestBlock | number}}
           div.clearfix
-      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
+      div.col-lg-2.col-md-4.col-sm-1.stat-holder
         div.big-info.uncleCount.text-info
           div.pull-left.icon-full-width
             i.icon-uncle
@@ -21,7 +21,7 @@ block content
               span.small (current / last 50)
             span.big-details {{ bestStats.block.uncles.length }}/{{ uncleCount }}
           div.clearfix
-      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
+      div.col-lg-2.col-md-4.col-sm-1.stat-holder
         div.big-info.blocktime(class="{{ lastBlock | timeClass : true }}")
           div.pull-left.icon-full-width
             i.icon-time
@@ -29,7 +29,7 @@ block content
             span.small-title last block
             span.big-details {{ lastBlock | blockTimeFilter }}
           div.clearfix
-      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
+      div.col-lg-2.col-md-4.col-sm-1.stat-holder
         div.big-info.avgblocktime(class="{{ avgBlockTime | avgTimeClass }}")
           div.pull-left.icon-full-width
             i.icon-gas
@@ -37,7 +37,7 @@ block content
             span.small-title avg block time
             span.big-details {{ avgBlockTime | avgTimeFilter }}
           div.clearfix
-      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
+      div.col-lg-2.col-md-4.col-sm-1.stat-holder
         div.big-info.difficulty.text-orange
           div.pull-left.icon-full-width
             i.icon-hashrate
@@ -45,7 +45,7 @@ block content
             span.small-title avg network hashrate
             span.big-details(ng-bind-html="avgHashrate | networkHashrateFilter")
           div.clearfix
-      div.col-lg-2.col-sm-4.col-xs-1.stat-holder
+      div.col-lg-2.col-md-4.col-sm-1.stat-holder
         div.big-info.difficulty.text-danger
           div.pull-left.icon-full-width
             i.icon-difficulty
@@ -60,17 +60,17 @@ block content
     div.row(ng-cloak)
       div.col-xs-12.stats-boxes(style="padding-top: 0px;")
         div.row.second-row
-          div.col-sm-4.col-xs-1.stat-holder.box
+          div.col-md-4.col-sm-1.stat-holder.box
             div.active-nodes(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
               i.icon-node
               span.small-title active nodes
               span.small-value {{nodesActive}}/{{nodesTotal}}
-          div.col-sm-4.col-xs-1.stat-holder.box
+          div.col-md-4.col-sm-1.stat-holder.box
             div.gasprice(class="{{ nodes | consensusClass : bestStats }}")
               i.icon-check-o
               span.small-title nodes status
               span.small-value {{ nodes | consensusFilter : bestStats }}
-          div.col-sm-4.col-xs-1.stat-holder.box
+          div.col-md-4.col-sm-1.stat-holder.box
             div.page-latency(class="{{ {active: true, latency: latency} | latencyClass }}")
               i.icon-clock
               span.small-title page latency
