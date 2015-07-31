@@ -625,7 +625,7 @@ function timeClass(timestamp)
 
 function blockTimeClass(diff)
 {
-	if(diff <= 12)
+	if(diff <= 13)
 		return 'text-success';
 
 	if(diff <= 20)
