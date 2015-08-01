@@ -19,7 +19,7 @@ Clone the repository and install the dependencies
 git clone https://github.com/cubedro/eth-netstats
 cd eth-netstats
 npm install
-npm install -g grunt
+sudo npm install -g grunt-cli
 ```
 
 ##Build the resources
