@@ -211,13 +211,13 @@ angular.module('netStatsApp.directives', [])
 					element.empty();
 
 					var width = 628,
-						height = 244;
+						height = 202;
 
 					scope.map = new Datamap({
 						element: element[0],
 						scope: 'world',
 						width: width,
-						height: 300,
+						height: 242,
 						fills: {
 							success: '#7BCC3A',
 							info: '#10A0DE',
