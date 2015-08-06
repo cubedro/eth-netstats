@@ -88,6 +88,16 @@ block content
               span.small-title uptime
               span.small-value {{ upTimeTotal | upTimeFilter }}
 
+        div.row.second-row
+          div.col-xs-3.stat-holder.box
+          div.col-xs-3.stat-holder.box
+            div.gasprice.text-info
+              i.icon-gasprice
+              span.small-title gas limit
+              span.small-value {{ bestStats.block.gasLimit }} gas
+          div.col-xs-3.stat-holder.box
+          div.col-xs-3.stat-holder.box
+
         div.row
           div.col-xs-3.stat-holder
             div.big-info.chart(class="{{ avgBlockTime | avgTimeClass }}")
@@ -146,6 +156,16 @@ block content
         //- div.col-xs-12
         nodemap#mapHolder(data="map")
 
+
+    div.row
+      div.col-xs-3.stat-holder
+        div.big-info.chart.text-info
+          //- i.icon-difficulty
+          span.small-title gas limit
+          //- span.small-value {{ lastDifficulty | number }}
+          sparkchart.big-details.spark-difficulty(data="{{lastGasLimit.join(',')}}")
+
+    div.row
       div.col-xs-12.stats-boxes
         div.row.second-row
           div.col-xs-12.stat-holder.box
@@ -153,6 +173,7 @@ block content
               i.icon-hashrate
               span.small-title Block #1028201 hash
               span.small-value {{frontierHash}}
+
 
       //- div.clearfix
 
