@@ -11,7 +11,14 @@ if( !_.isUndefined(process.env.WS_SECRET) && !_.isNull(process.env.WS_SECRET) )
 }
 else
 {
-	WS_SECRET = [process.env.WS_SECRET];
+	if( process.env.WS_SECRET.indexOf('|') > 0 )
+	{
+		WS_SECRET = process.env.WS_SECRET.split('|');
+	}
+	else
+	{
+		WS_SECRET = [process.env.WS_SECRET];
+	}
 }
 
 var banned = require('./lib/utils/config').banned;
