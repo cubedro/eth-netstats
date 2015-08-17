@@ -3,7 +3,17 @@ var logger = require('./lib/utils/logger');
 var chalk = require('chalk');
 var http = require('http');
 
-var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
+var WS_SECRET;
+
+if( !_.isUndefined(process.env.WS_SECRET) && !_.isNull(process.env.WS_SECRET) )
+{
+	WS_SECRET = ["eth-net-stats-has-a-secret"];
+}
+else
+{
+	WS_SECRET = [process.env.WS_SECRET];
+}
+
 var banned = require('./lib/utils/config').banned;
 
 // Init http server
@@ -81,7 +91,7 @@ api.on('connection', function (spark)
 	{
 		console.info('API', 'CON', 'Hello', data['id']);
 
-		if( _.isUndefined(data.secret) || data.secret !== WS_SECRET || banned.indexOf(spark.address.ip) >= 0 )
+		if( _.isUndefined(data.secret) || WS_SECRET.indexOf(data.secret) === -1 || banned.indexOf(spark.address.ip) >= 0 )
 		{
 			spark.end(undefined, { reconnect: false });
 			console.error('API', 'CON', 'Closed - wrong auth', data);
