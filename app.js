@@ -17,7 +17,7 @@ else
 	}
 	else
 	{
-		WS_SECRET = [process.env.WS_SECRET];
+		WS_SECRET = process.env.WS_SECRET.split('');
 	}
 }
 
