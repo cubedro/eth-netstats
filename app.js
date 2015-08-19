@@ -20,7 +20,7 @@ if( !_.isUndefined(process.env.WS_SECRET) && !_.isNull(process.env.WS_SECRET) )
 else
 {
 	try {
-		WS_SECRET = require('./ws_secret.js');
+		WS_SECRET = require('./ws_secret.json');
 	}
 	catch (e)
 	{
