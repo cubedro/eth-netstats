@@ -3,13 +3,10 @@ var logger = require('./lib/utils/logger');
 var chalk = require('chalk');
 var http = require('http');
 
+// Init WS SECRET
 var WS_SECRET;
 
 if( !_.isUndefined(process.env.WS_SECRET) && !_.isNull(process.env.WS_SECRET) )
-{
-	WS_SECRET = ["eth-net-stats-has-a-secret"];
-}
-else
 {
 	if( process.env.WS_SECRET.indexOf('|') > 0 )
 	{
@@ -18,6 +15,16 @@ else
 	else
 	{
 		WS_SECRET = process.env.WS_SECRET.split('');
+	}
+}
+else
+{
+	try {
+		WS_SECRET = require('./ws_secret.js');
+	}
+	catch (e)
+	{
+		console.error("WS_SECRET NOT SET");
 	}
 }
 
