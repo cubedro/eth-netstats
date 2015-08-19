@@ -10,3 +10,4 @@ config/nodes.js
 *.swp
 *.pem
 .node-xmlhttprequest-*
+ws_secret.js
