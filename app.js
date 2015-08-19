@@ -20,11 +20,12 @@ if( !_.isUndefined(process.env.WS_SECRET) && !_.isNull(process.env.WS_SECRET) )
 else
 {
 	try {
-		WS_SECRET = require('./ws_secret.json');
+		var tmp_secret_json = require('./ws_secret.json');
+		WS_SECRET = _.values(tmp_secret_json);
 	}
 	catch (e)
 	{
-		console.error("WS_SECRET NOT SET");
+		console.error("WS_SECRET NOT SET!!!");
 	}
 }
 
