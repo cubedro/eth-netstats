@@ -11,18 +11,18 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "body-parser": "1.12.4",
-    "chalk": "^1.0.0",
-    "d3": "^3.5.5",
+    "body-parser": "1.13.3",
+    "chalk": "1.1.1",
+    "d3": "3.5.6",
     "debug": "2.2.0",
-    "express": "4.12.4",
+    "express": "4.13.3",
     "geoip-lite": "1.1.6",
-    "jade": "1.10.0",
-    "lodash": "3.9.3",
-    "primus": "3.0.2",
+    "jade": "1.11.0",
+    "lodash": "3.10.1",
+    "primus": "3.2.1",
     "primus-emit": "0.1.2",
     "primus-spark-latency": "0.1.1",
-    "ws": "0.7.2"
+    "ws": "0.8.0"
   },
   "repository": {
     "type": "git",
