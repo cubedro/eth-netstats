@@ -14,7 +14,7 @@ if( !_.isUndefined(process.env.WS_SECRET) && !_.isNull(process.env.WS_SECRET) )
 	}
 	else
 	{
-		WS_SECRET = process.env.WS_SECRET.split('');
+		WS_SECRET = [process.env.WS_SECRET];
 	}
 }
 else
