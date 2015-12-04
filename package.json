@@ -22,7 +22,7 @@
     "primus": "3.2.1",
     "primus-emit": "0.1.2",
     "primus-spark-latency": "0.1.1",
-    "ws": "0.8.0"
+    "ws": "0.8.1"
   },
   "repository": {
     "type": "git",
