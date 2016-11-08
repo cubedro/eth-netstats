@@ -128,7 +128,7 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('nodeVersion', function($sce) {
 	return function(version) {
-		if(typeof version !== 'undefined')
+		if(version)
 		{
 			var tmp = version.split('/');
 
@@ -463,7 +463,7 @@ angular.module('netStatsApp.filters', [])
 		var tooltip = [];
 		var string = '';
 
-		if(node.info.node !== '' && typeof node.info.node !== 'undefined') {
+		if(node.info.node) {
 			var eth_version = node.info.node.split('/');
 
 			if(eth_version[1][0] !== 'v' && eth_version[1][2] !== '.')
