@@ -139,19 +139,19 @@ angular.module('netStatsApp.filters', [])
 				tmp[0] = 'pyeth';
 			}
 
-			if(tmp[1][0] !== 'v' && tmp[1][2] !== '.')
+			if(tmp[1] && tmp[1][0] !== 'v' && tmp[1][2] !== '.')
 			{
 				tmp.splice(1,1);
 			}
 
-			if(tmp[2] === 'Release'){
+			if(tmp[2] && tmp[2] === 'Release'){
 				tmp.splice(2,1);
 			}
 
-			if(tmp[2].indexOf('Linux') === 0)
+			if(tmp[2] && tmp[2].indexOf('Linux') === 0)
 				tmp[2] = 'linux';
 
-			if(tmp[2].indexOf('Darwin') === 0)
+			if(tmp[2] && tmp[2].indexOf('Darwin') === 0)
 				tmp[2] = 'darwin';
 
 			return $sce.trustAsHtml(tmp.join('/'));
@@ -466,16 +466,18 @@ angular.module('netStatsApp.filters', [])
 		if(node.info.node) {
 			var eth_version = node.info.node.split('/');
 
-			if(eth_version[1][0] !== 'v' && eth_version[1][2] !== '.')
-			{
-				eth_version.splice(1,1);
-			}
+      if(eth_version[1]){
+			  if(eth_version[1][0] !== 'v' && eth_version[1][2] !== '.')
+			  {
+				  eth_version.splice(1,1);
+			  }
 
-			string = "<b>" + node.info.node + "</b>";
-			tooltip.push(string);
+			  string = "<b>" + node.info.node + "</b>";
+			  tooltip.push(string);
 
-			string = "Version: <b>" + (eth_version[1]) + "</b>";
-			tooltip.push(string);
+			  string = "Version: <b>" + (eth_version[1]) + "</b>";
+			  tooltip.push(string);
+      }
 		}
 
 		if(node.info.net !== '') {
