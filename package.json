@@ -26,10 +26,10 @@
     "grunt-contrib-uglify": "^0.9.1",
     "jade": "1.11.0",
     "lodash": "3.10.1",
-    "primus": "^6.0.3",
+    "primus": "^6.0.5",
     "primus-emit": "^1.0.0",
     "primus-spark-latency": "^0.1.1",
-    "ws": "^1.1.1"
+    "ws": "^1.1.1",
   },
   "repository": {
     "type": "git",
