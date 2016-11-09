@@ -54,8 +54,8 @@ api = new Primus(server, {
 	parser: 'JSON'
 });
 
-api.use('emit', require('primus-emit'));
-api.use('spark-latency', require('primus-spark-latency'));
+api.plugin('emit', require('primus-emit'));
+api.plugin('spark-latency', require('primus-spark-latency'));
 
 
 // Init Client Socket connection
@@ -65,7 +65,7 @@ client = new Primus(server, {
 	parser: 'JSON'
 });
 
-client.use('emit', require('primus-emit'));
+client.plugin('emit', require('primus-emit'));
 
 
 // Init external API
@@ -75,7 +75,7 @@ external = new Primus(server, {
 	parser: 'JSON'
 });
 
-external.use('emit', require('primus-emit'));
+external.plugin('emit', require('primus-emit'));
 
 // Init collections
 var Collection = require('./lib/collection');

@@ -11,3 +11,4 @@ config/nodes.js
 *.pem
 .node-xmlhttprequest-*
 ws_secret.json
+stats.json

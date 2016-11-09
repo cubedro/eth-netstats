@@ -185,7 +185,7 @@ module.exports = function(grunt) {
 		concat: {
 			vendor: {
 				options: {
-					sourceMap: true,
+					souceMap: false,
 					sourceMapIncludeSources: true,
 					sourceMapIn: ['dist/js/lib/*.map']
 				},
@@ -201,13 +201,13 @@ module.exports = function(grunt) {
 			},
 			netstats: {
 				options: {
-					sourceMap: true,
+					sourceMap: false,
 					sourceMapIncludeSources: true,
 					sourceMapIn: ['dist/js/vendor.min.js.map', 'dist/js/app.min.js.map']
 				},
 				src: ['<%= concat.vendor.dest %>', '<%= uglify.app.dest %>'],
 				dest: 'dist/js/netstats.min.js',
-				nonull: true,
+				nonull: true
 			},
 			css: {
 				src: ['dist/css/*.min.css', 'dist/css/*.css'],
@@ -215,7 +215,7 @@ module.exports = function(grunt) {
 			},
 			vendor_lite: {
 				options: {
-					sourceMap: true,
+					sourceMap: false,
 					sourceMapIncludeSources: true,
 					sourceMapIn: ['dist-lite/js/lib/*.map']
 				},
@@ -231,7 +231,7 @@ module.exports = function(grunt) {
 			},
 			netstats_lite: {
 				options: {
-					sourceMap: true,
+					sourceMap: false,
 					sourceMapIncludeSources: true,
 					sourceMapIn: ['dist-lite/js/vendor.min.js.map', 'dist-lite/js/app.min.js.map']
 				},
@@ -248,7 +248,7 @@ module.exports = function(grunt) {
 			app: {
 				options: {
 					mangle: false,
-					sourceMap: true,
+					sourceMap: false,
 					sourceMapIncludeSources: true
 				},
 				dest: 'dist/js/app.min.js',
@@ -257,7 +257,7 @@ module.exports = function(grunt) {
 			app_lite: {
 				options: {
 					mangle: false,
-					sourceMap: true,
+					sourceMap: false,
 					sourceMapIncludeSources: true
 				},
 				dest: 'dist-lite/js/app.min.js',
