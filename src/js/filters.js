@@ -316,7 +316,7 @@ angular.module('netStatsApp.filters', [])
 		var time = (new Date()).getTime();
 		var diff = Math.floor((time - timestamp)/1000);
 
-		if(diff < 60)
+		if(diff < 180)
 			return Math.round(diff) + ' s ago';
 
 		return moment.duration(Math.round(diff), 's').humanize() + ' ago';
@@ -428,7 +428,7 @@ angular.module('netStatsApp.filters', [])
 })
 .filter('avgTimeFilter', function() {
 	return function(time) {
-		if(time < 60)
+		if(time < 180)
 			return parseFloat(time).toFixed(2) + ' s';
 
 		return moment.duration(Math.round(time), 's').humanize();
@@ -660,13 +660,13 @@ function timeClass(timestamp)
 
 function blockTimeClass(diff)
 {
-	if(diff <= 13)
+	if(diff <= 88)
 		return 'text-success';
 
-	if(diff <= 20)
+	if(diff <= 120)
 		return 'text-warning';
 
-	if(diff <= 30)
+	if(diff <= 150)
 		return 'text-orange';
 
 	return 'text-danger'
