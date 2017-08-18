@@ -196,7 +196,7 @@ api.on('connection', function (spark)
 							data: stats
 						});
 
-						console.success('API', 'BLK', 'Block:', data.block['number'], 'from:', data.id);
+						console.success('API', 'BLK', 'Block:', data.block['number'], 'from:', data.id, 'ip:', spark.address.ip);
 
 						Nodes.getCharts();
 					}
