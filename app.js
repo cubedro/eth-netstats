@@ -3,7 +3,32 @@ var logger = require('./lib/utils/logger');
 var chalk = require('chalk');
 var http = require('http');
 
-var WS_SECRET = process.env.WS_SECRET || "eth-net-stats-has-a-secret";
+// Init WS SECRET
+var WS_SECRET;
+
+if( !_.isUndefined(process.env.WS_SECRET) && !_.isNull(process.env.WS_SECRET) )
+{
+	if( process.env.WS_SECRET.indexOf('|') > 0 )
+	{
+		WS_SECRET = process.env.WS_SECRET.split('|');
+	}
+	else
+	{
+		WS_SECRET = [process.env.WS_SECRET];
+	}
+}
+else
+{
+	try {
+		var tmp_secret_json = require('./ws_secret.json');
+		WS_SECRET = _.values(tmp_secret_json);
+	}
+	catch (e)
+	{
+		console.error("WS_SECRET NOT SET!!!");
+	}
+}
+
 var banned = require('./lib/utils/config').banned;
 
 // Init http server
@@ -29,8 +54,8 @@ api = new Primus(server, {
 	parser: 'JSON'
 });
 
-api.use('emit', require('primus-emit'));
-api.use('spark-latency', require('primus-spark-latency'));
+api.plugin('emit', require('primus-emit'));
+api.plugin('spark-latency', require('primus-spark-latency'));
 
 
 // Init Client Socket connection
@@ -40,7 +65,7 @@ client = new Primus(server, {
 	parser: 'JSON'
 });
 
-client.use('emit', require('primus-emit'));
+client.plugin('emit', require('primus-emit'));
 
 
 // Init external API
@@ -50,7 +75,7 @@ external = new Primus(server, {
 	parser: 'JSON'
 });
 
-external.use('emit', require('primus-emit'));
+external.plugin('emit', require('primus-emit'));
 
 // Init collections
 var Collection = require('./lib/collection');
@@ -81,7 +106,7 @@ api.on('connection', function (spark)
 	{
 		console.info('API', 'CON', 'Hello', data['id']);
 
-		if( _.isUndefined(data.secret) || data.secret !== WS_SECRET || banned.indexOf(spark.address.ip) >= 0 )
+		if( _.isUndefined(data.secret) || WS_SECRET.indexOf(data.secret) === -1 || banned.indexOf(spark.address.ip) >= 0 )
 		{
 			spark.end(undefined, { reconnect: false });
 			console.error('API', 'CON', 'Closed - wrong auth', data);

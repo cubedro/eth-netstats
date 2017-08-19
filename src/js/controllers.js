@@ -37,7 +37,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 	$scope.latency = 0;
 
-	$scope.currentApiVersion = "0.0.16";
+	$scope.currentApiVersion = "0.1.1";
 
 	$scope.predicate = $localStorage.predicate || ['-pinned', '-stats.active', '-stats.block.number', 'stats.block.propagation'];
 	$scope.reverse = $localStorage.reverse || false;
@@ -133,6 +133,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 	function socketAction(action, data)
 	{
+		// filter data
+		data = xssFilter(data);
+
 		// console.log('Action: ', action);
 		// console.log('Data: ', data);
 
@@ -142,6 +145,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				$scope.nodes = data;
 
 				_.forEach($scope.nodes, function (node, index) {
+
 					// Init hashrate
 					if( _.isUndefined(node.stats.hashrate) )
 						node.stats.hashrate = 0;
@@ -172,10 +176,10 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 			case "add":
 				var index = findIndex({id: data.id});
 
-				if( addNewNode(data) )
-					toastr['success']("New node "+ $scope.nodes[findIndex({id: data.id})].info.name +" connected!", "New node!");
-				else
-					toastr['info']("Node "+ $scope.nodes[index].info.name +" reconnected!", "Node is back!");
+				// if( addNewNode(data) )
+				// 	toastr['success']("New node "+ $scope.nodes[findIndex({id: data.id})].info.name +" connected!", "New node!");
+				// else
+				// 	toastr['info']("Node "+ $scope.nodes[index].info.name +" reconnected!", "Node is back!");
 
 				break;
 
@@ -370,7 +374,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					if( !_.isUndefined(data.stats) )
 						$scope.nodes[index].stats = data.stats;
 
-					toastr['error']("Node "+ $scope.nodes[index].info.name +" went away!", "Node connection was lost!");
+					// toastr['error']("Node "+ $scope.nodes[index].info.name +" went away!", "Node connection was lost!");
 
 					updateActiveNodes();
 				}
@@ -632,5 +636,19 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 			node.readable.latency = node.stats.latency + ' ms';
 		}
+	}
+
+	// very simple xss filter
+	function xssFilter(obj){
+		if(_.isArray(obj)) {
+			return _.map(obj, xssFilter);
+
+		} else if(_.isObject(obj)) {
+			return _.mapValues(obj, xssFilter);
+
+		} else if(_.isString(obj)) {
+			return obj.replace(/\< *\/* *script *>*/gi,'').replace(/javascript/gi,'');
+		} else
+			return obj;
 	}
 });

@@ -13,10 +13,10 @@
 	$.fn.sparkline.defaults.bar.tooltipFormat = $.spformat('<div class="tooltip-arrow"></div><div class="tooltip-inner">{{prefix}}{{value}} {{suffix}}</div>');
 	$.fn.sparkline.defaults.bar.colorMap = $.range_map({
 		'0:6': '#10a0de',
-		'6:13': '#7bcc3a',
-		'13:20': '#FFD162',
-		'20:30': '#ff8a00',
-		'30:': '#F74B4B'
+		'6:15': '#7bcc3a',
+		'15:40': '#FFD162',
+		'40:60': '#ff8a00',
+		'60:': '#F74B4B'
 	});
 
 	moment.relativeTimeThreshold('s', 60);
@@ -32,5 +32,6 @@
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-63657296-1', 'auto');
+// ga('create', 'UA-68390837-2', 'auto');
+ga('create', 'UA-80834434-1', 'auto');
 ga('send', 'pageview');
