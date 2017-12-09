@@ -2,7 +2,7 @@
 
 _ = lodash;
 
-socket = new Primus({url: 'wss://stats.ethdev.com'});
+socket = new Primus({url: 'ws://ubiq.darcr.us'});
 
 toastr = window.toastr;
 toastr.options = {
