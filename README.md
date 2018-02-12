@@ -5,18 +5,18 @@ This is a visual interface for tracking kUSD network status. It uses WebSockets 
 
 ## Prerequisite
 * node
-* npm
+* yarn
 
 ## Installation
-Make sure you have node.js and npm installed.
+Make sure you have node.js and yarn installed.
 
 Clone the repository and install the dependencies
 
 ```bash
 git clone https://github.com/kowala-tech/kUSD-netstats
 cd kUSD-netstats
-npm install
-sudo npm install -g grunt-cli
+yarn install
+sudo yarn install -g grunt-cli
 ```
 
 ##Build the resources
@@ -41,7 +41,7 @@ grunt all
 ##Run
 
 ```bash
-npm start
+yarn start
 ```
 
 see the interface at http://localhost:3000
