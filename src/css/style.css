@@ -2,12 +2,23 @@ html {
 	width: 100%;
 }
 
+#particles-js{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
 body {
 	width: 100%;
-	min-width: 1900px;
+	height: 100%;
 	font-smooth: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	font-family: "Montserrat";
+}
+
+table {
+	min-width: 1200px;
 }
 
 table td {
@@ -15,6 +26,10 @@ table td {
 	white-space: nowrap !important;
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-osx-font-smoothing: auto;
+}
+
+.table-responsive{
+	border: none;
 }
 
 .propagationBox {
@@ -30,27 +45,27 @@ table td {
 
 .bg-success,
 .text-success .propagationBox {
-	background: #7bcc3a;
+	background: #3DCF35;
 }
 
 .bg-info,
 .text-info .propagationBox {
-	background: #10a0de;
+	background: #FF4500;
 }
 
 .bg-warning,
 .text-warning .propagationBox {
-	background: #FFD162;
+	background: #FF9641;
 }
 
 .bg-orange,
 .text-orange .propagationBox {
-	background: #ff8a00;
+	background: #c20061;
 }
 
 .bg-danger,
 .text-danger .propagationBox {
-	background: #F74B4B;
+	background: #FF4500;
 }
 
 .text-gray .propagationBox {
@@ -71,7 +86,7 @@ table td {
 }
 
 .text-orange {
-	color: #ff8a00;
+	color: #c20061;
 }
 
 .container-fluid {
@@ -80,7 +95,7 @@ table td {
 }
 
 .stat-holder {
-	background: #090909;
+	background: transparent;
 	border: 1px solid rgba(255,255,255,0.05);
 }
 
@@ -106,12 +121,12 @@ table td {
 
 span.small-title,
 div.small-title-miner {
-	font-weight: 700;
+	font-weight: 400;
 	font-size: 14px;
 	line-height: 20px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
-	color: #aaa;
+	color: #fff;
 }
 
 span.small-title span.small {
@@ -119,14 +134,14 @@ span.small-title span.small {
 	font-weight: 600;
 	line-height: 16px;
 	letter-spacing: 0px;
-	color: #666;
+	color: #fff;
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-osx-font-smoothing: auto;
 }
 
 .big-info .big-details {
 	display: block;
-	font-weight: 200;
+	font-weight: 300;
 	font-size: 50px;
 	line-height: 55px;
 	letter-spacing: -4px;
@@ -209,13 +224,6 @@ span.small-title span.small {
 	margin-right: 0px;
 }
 
-.second-row .box {
-	height: 40px;
-	line-height: 24px !important;
-	padding: 5px 15px;
-}
-
-.second-row .box i,
 .big-info.chart i {
 	position: relative;
 	top: 2px;
@@ -239,9 +247,6 @@ span.small-title span.small {
 	float: right;
 }
 
-.second-row .box .small-value {
-	float: right;
-}
 .big-info .small-value {
 	position: absolute;
 	right: 14px;
@@ -255,7 +260,7 @@ table i {
 
 table th,
 table td {
-	border-color: #222 !important;
+	border-bottom: 1px solid rgba(255,255,255,0.05) !important;
 }
 
 table td {
@@ -263,7 +268,7 @@ table td {
 }
 
 table th {
-	color: #888;
+	color: #fff;
 }
 
 table th i {
@@ -458,7 +463,7 @@ svg .axis text {
 	fill: #777;
 	font-size: 10px;
 	letter-spacing: 0px;
-	font-family: "Source Sans Pro";
+	font-family: "Montserrat";
 	font-weight: 700;
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-osx-font-smoothing: auto;
