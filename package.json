@@ -1,12 +1,8 @@
 {
-  "name": "eth-netstats",
-  "description": "Ethereum Network Intelligence dashboard",
+  "name": "kUSD-netstats",
+  "description": "kUSD Network Dashboard",
   "version": "0.0.9",
-  "private": true,
-  "engines": {
-    "node": "0.12.0",
-    "npm": "2.5.1"
-  },
+  "private": false,
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -33,19 +29,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cubedro/eth-netstats.git"
+    "url": "https://github.com/kowala-tech/kUSD-netstats.git"
   },
-  "homepage": "https://github.com/cubedro/eth-netstats",
+  "homepage": "https://github.com/kowala-tech/kUSD-netstats",
   "bugs": {
-    "url": "https://github.com/cubedro/eth-netstats/issues"
+    "url": "https://github.com/kowala-tech/kUSD-netstats/issues"
   },
   "authors": [
     {
-      "name": "Marian Oancea",
-      "email": "marian@ethdev.com",
-      "url": "https://github.com/cubedro"
+      "name": "Kowala",
+      "url": "https://github.com/kowala-tech"
     }
   ],
   "license": "LGPL-3.0",
-  "devDependencies": {}
+  "devDependencies": {
+  }
 }

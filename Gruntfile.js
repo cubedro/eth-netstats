@@ -27,7 +27,7 @@ var vendor = [
 ];
 
 var styles = [
-	'bootstrap.min.css',
+	'bootstrap.css',
 	'minimal-icons-embedded.css',
 	'toastr.min.css',
 	'style.css'
@@ -59,7 +59,7 @@ var vendor_lite = [
 ];
 
 var styles_lite = [
-	'bootstrap.min.css',
+	'bootstrap.css',
 	'minimal-icons-embedded.css',
 	'toastr.min.css',
 	'style.css'
@@ -75,6 +75,13 @@ module.exports = function(grunt) {
 			build_lite: ['dist-lite'],
 			cleanup_js_lite: ['dist-lite/js/*.*', '!dist-lite/js/netstats.*'],
 			cleanup_css_lite: ['dist-lite/css/*.css', '!dist-lite/css/netstats.*.css']
+		},
+		watch: {
+			files: ['src/*/**'],
+			tasks: ['build'],
+			options: {
+				livereload: true
+			}
 		},
 		jade: {
 			build: {
@@ -266,6 +273,7 @@ module.exports = function(grunt) {
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-concat');
