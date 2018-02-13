@@ -121,7 +121,7 @@ table td {
 
 span.small-title,
 div.small-title-miner {
-	font-weight: 400;
+	font-weight: 300;
 	font-size: 14px;
 	line-height: 20px;
 	letter-spacing: 1px;
@@ -141,9 +141,9 @@ span.small-title span.small {
 
 .big-info .big-details {
 	display: block;
-	font-weight: 300;
-	font-size: 50px;
-	line-height: 55px;
+	font-weight: 400;
+	font-size: 45px;
+	line-height: 50px;
 	letter-spacing: -4px;
 	word-spacing: nowrap !important;
 }
@@ -471,4 +471,14 @@ svg .axis text {
 
 svg .y.axis .tick:first-child text {
 	opacity: 0;
+}
+
+.kowala{
+	color: #fff;
+	text-shadow: 2px 2px 2px #1f033d;
+}
+
+.kowala-inverse{
+	color: #fe0053;
+	text-shadow: 2px 2px 2px #1f033d;
 }
