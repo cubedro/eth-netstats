@@ -9,6 +9,16 @@ html(ng-app="netStatsApp")
     link(rel='stylesheet', href='/css/netstats.min.css')
     script(src="//cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js")
   body
+    div#particles-js.gradient-bg
+    nav.class.navbar.navbar-toggleable-md.navbar-light.bg-faded(ng-controller='NavCtrl')
+      .collapse.navbar-collapse#navbarSupportedContent
+        ul.navbar-nav.nav
+          li(ng-class="{active: pathName == '/'}")
+            a.nav-link(href="/") Home
+          li
+            a.nav-link(href="/stats/") Stats
+          li
+            a.nav-link(href="http://faucet.testnet.kowala.io/",target="_blank") Coin faucet
     block content
 
     script(src="/js/netstats.min.js")

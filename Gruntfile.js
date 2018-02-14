@@ -93,7 +93,7 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'dist/index.html': 'src/views/index.jade',
-					'dist/stats.html': 'src/views/stats.jade'
+					'dist/stats/index.html': 'src/views/stats/index.jade'
 				}
 			},
 			build_lite: {
