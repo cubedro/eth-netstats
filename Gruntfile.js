@@ -92,7 +92,8 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'dist/index.html': 'src/views/index.jade'
+					'dist/index.html': 'src/views/index.jade',
+					'dist/stats.html': 'src/views/stats.jade'
 				}
 			},
 			build_lite: {
@@ -103,7 +104,8 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'dist-lite/index.html': 'src-lite/views/index.jade'
+					'dist-lite/index.html': 'src-lite/views/index.jade',
+					'dist-lite/stats.html': 'src-lite/views/stats.jade'
 				}
 			}
 		},
@@ -120,7 +122,7 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						cwd: 'src/images/',
-						src: ['*.ico'],
+						src: ['*.ico', '*.png'],
 						dest: 'dist/',
 						filter: 'isFile'
 					},
@@ -151,7 +153,7 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						cwd: 'src-lite/images/',
-						src: ['*.ico'],
+						src: ['*.ico', '*.png'],
 						dest: 'dist-lite/',
 						filter: 'isFile'
 					},
