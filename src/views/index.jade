@@ -6,19 +6,47 @@ block content
     div.row.padding-top
       img.col-xs-push-2.col-xs-8.col-sm-push-4.col-sm-4(src="ktestnet.png")
     div.row.padding-top
-      h3.col-xs-12.text-center An alternative blockchain for testing the Kowala Protocol, kCoins and mTokens. 
+      h3.col-xs-12.text-center An blockchain for testing the Kowala Protocol, kCoins and mTokens. 
     div.row.padding-top
-      div.col-xs-12
-        h4.kowala.text-center kUSD Codebase
-      div.col-xs-12.text-center
-        a.kowala(href="https://github.com/kowala-tech/kUSD" target="_blank") github.com/kowala-tech/kUSD
-    div.row.padding-top
-      div.col-xs-12
-        h4.kowala.text-center kUSD Testnet Stats
-      div.col-xs-12.text-center
-        a.kowala(href="/stats/" target="_blank") testnet.kowala.io/stats
-    //- div.row.padding-top
-    //-   div.col-xs-12
-    //-     h4.kowala.text-center kUSD Faucet
-    //-   div.col-xs-12.text-center
-    //-     a.kowala(href="//testnet.kowala.io/faucet" target="_blank") testnet.kowala.io/faucet
+      .col-xs-push-2.col-xs-8.col-sm-push-2.col-sm-8(src="ktestnet.png")
+        .alert.alert-info <strong>This is a work in progress!</strong> We're actively improving the network, and it may sometimes be unstable or behave in unexpected ways.
+    div.row.content
+      .container
+        .row
+          .col
+            h4 What is this?
+            p The Kowala testnet is a sandbox blockchain for testing and experimenting with our flagship stablecoin, kUSD. It's an evolving technology demo which showcases some of things that will be possible with the Kowala Protocol. You can spin up your own node and connect to the network, see how the network is performing using the dashboard, and get free kUSD to play with using the faucet.
+            p kUSD is currently in a pre-release state. This testnet doesn't make use of mining tokens yet, but it is using the next-generation Konsensus protocol to advance the blockchain. The block time is currently fixed to 15 seconds while we performance test other parts of the system, but it will soon be significantly shorter.
+
+            h4 Connecting to the testnet
+            p We're currently working on some slick, Docker-based tooling that will make running a node a trivial task. Until then, if you're a technical sort of person who understands <code>git</code> and <code>docker</code> you can clone the GitHub repository and run the mining client in console mode via the CLI:
+            pre
+              code
+                | $ git clone git@github.com:kowala-tech/kUSD.git
+                | $ cd kUSD
+                | $ docker run --rm -it \
+                | -v `pwd`/internal/assets/genesis.json:/kusd/genesis.json \
+                | -p 22334:22334/udp \
+                | -p 22334:22334 \
+                | kowalatech/kusd:latest \
+                | --syncmode "full" \
+                | --bootnodes "enode://9791d40d97585d7241edeedd2491187e82e3273414cf1bed2aca049e8b21d96930437efe3e591d6996ee303d3e2fe4338e53551bb6e50f05dfeeaccd660eac01@18.220.38.32:33445" \
+                | --networkid 1 \
+                | --lightpeers 20 \
+                | --cache 128 \
+                | --gasprice 1 \
+                | --txpool.journal transactions.rlp \
+                | --txpool.rejournal 1h \
+                | --txpool.pricelimit 1 \
+                | --txpool.pricebump 10 \
+                | --txpool.accountslots 16 \
+                | --txpool.globalslots 4096 \
+                | --txpool.accountqueue 64 \
+                | --txpool.globalqueue 1024 \
+                | --txpool.lifetime 3h \
+                | --gpoblocks 10 \
+                | --gpopercentile 50 \
+                | --maxpeers 25 \
+                | --stats console:DVagynuHLdn9sK6c@testnet.kowala.io:80 \
+                | --port 22334 \
+                | console
