@@ -497,3 +497,16 @@ svg .y.axis .tick:first-child text {
 	color: #fe0053 !important;
 	text-shadow: 2px 2px 2px #1f033d !important;
 }
+
+.navbar {
+  background-color: rgba(0,0,0,0.25);
+}
+
+.navbar a {
+  color: white;
+  font-size: 0.85em;
+}
+
+.navbar li:hover, .navbar a:hover {
+  background-color: rgba(0,0,0,0.15) !important;
+}

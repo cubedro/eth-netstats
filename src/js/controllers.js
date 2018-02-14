@@ -652,3 +652,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 			return obj;
 	}
 });
+
+netStatsApp.controller('NavCtrl', function($scope) {
+  $scope.pathName = window.location.pathname;
+});
