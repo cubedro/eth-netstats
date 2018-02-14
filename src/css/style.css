@@ -1,11 +1,25 @@
 html {
 	width: 100%;
+	height: 100%;
 }
 
 #particles-js{
 	position: absolute;
 	width: 100%;
 	height: 100%;
+}
+
+.gradient-bg{
+	background: #531c85 !important;
+  background: -moz-linear-gradient(top, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
+  background: -webkit-linear-gradient(top, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
+  background: linear-gradient(to bottom, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#531c85', endColorstr='#f90054',GradientType=0 );
+  color: #fff;
+}
+
+.padding-top{
+	padding-top: 2em;
 }
 
 body {
@@ -15,6 +29,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-family: "Montserrat";
+	background: #fe0053 !important;
 }
 
 table {
@@ -474,11 +489,11 @@ svg .y.axis .tick:first-child text {
 }
 
 .kowala{
-	color: #fff;
-	text-shadow: 2px 2px 2px #1f033d;
+	color: #fff !important;
+	text-shadow: 2px 2px 2px #1f033d !important;
 }
 
 .kowala-inverse{
-	color: #fe0053;
-	text-shadow: 2px 2px 2px #1f033d;
+	color: #fe0053 !important;
+	text-shadow: 2px 2px 2px #1f033d !important;
 }
