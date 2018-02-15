@@ -531,7 +531,7 @@ svg .y.axis .tick:first-child text {
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
   background-color: #20033f;
-  padding-top: 3em;
+  padding-top: 4em;
 }
 
 .content{
