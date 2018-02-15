@@ -507,7 +507,7 @@ svg .y.axis .tick:first-child text {
   font-size: 0.85em;
 }
 
-.navbar li a:hover {
+.navbar li a:hover, .navbar li a:visited  {
   background-color: rgba(0,0,0,0.15) !important;
 }
 
