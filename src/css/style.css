@@ -350,6 +350,7 @@ nodepropagchart {
 	max-width: 400px;
 	text-align: left;
 	font-size: 12px;
+	text-shadow: none;
 }
 
 .map-holder {
@@ -531,7 +532,7 @@ svg .y.axis .tick:first-child text {
 }
 
 .content{
-	width: 25%;
+	max-width: 100vw;
 }
 
 .content h4 {
