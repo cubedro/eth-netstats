@@ -6,25 +6,29 @@ html(ng-app="netStatsApp")
     title kTESTNET (kUSD)
     style(type="text/css") [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak { display: none !important; }
     link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600"')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css')
     link(rel='stylesheet', href='/css/netstats.min.css')
-    script(src="//cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js")
   body
-    div#particles-js.gradient-bg
-    nav.class.navbar.navbar-toggleable-md.navbar-light.bg-faded(ng-controller='NavCtrl')
-      .collapse.navbar-collapse#navbarSupportedContent
-        ul.navbar-nav.nav
-          li(ng-class="{active: pathName == '/'}")
-            a.nav-link(href="/") Home
-          li
-            a.nav-link(href="/stats/") Stats
-          li
-            a.nav-link(href="http://faucet.testnet.kowala.io/",target="_blank") Coin faucet
-          li
-            a.nav-link(href="#") Chat (coming soon!)
-        ul.nav.navbar-nav.navbar-right
-          li
-            a.nav-link(href="https://github.com/kowala-tech/kUSD", target="_blank") GitHub
+    section#nav.container
+      nav.navbar(ng-controller='NavCtrl')
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#Navbar') 
+            i.fa.fa-bars
+          a.hidden-sm.navbar-brand(href="/")
+            img(src="/ktestnet.png" height="25")
+        #Navbar.collapse.navbar-collapse
+          ul.navbar-nav.nav
+            li
+              a(href="/stats/") Network Stats
+            li
+              a(href="http://faucet.testnet.kowala.io/" target="_blank") Coin Faucet
+            li
+              a(href="https://gitter.im/kowala-tech/Lobby" target="_blank") Chat
+          ul.navbar-nav.nav.navbar-right
+            li
+              a(href="https://github.com/kowala-tech/kUSD", target="_blank") Github
 
     block content
 
+    script(src="//cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js")
     script(src="/js/netstats.min.js")
