@@ -122,7 +122,6 @@ block content
                     i.kowala.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time", ng-click="orderTable(['-stats.block.received'], false)")
                   th.th-peerPropagationTime
                     i.kowala.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
-                  th.th-peerPropagationChart
                   th.th-peerPropagationAvg
                     i.kowala.icon-gas(data-toggle="tooltip", data-placement="top", title="Average propagation time", ng-click="orderTable(['stats.propagationAvg'], false)")
                   th
@@ -154,6 +153,4 @@ block content
                   td.kowala(class="{{ node.stats | propagationTimeClass : bestBlock }}")
                     div.propagationBox
                     span {{node.stats.block.propagation | blockPropagationFilter}}
-                  td.kowala.peerPropagationChart(class="{{node.id}}")
-                    nodepropagchart(data="{{node.history.join(',')}}")
                   td.kowala(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}
