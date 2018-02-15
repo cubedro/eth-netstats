@@ -28,7 +28,7 @@
 })();
 
 window.onload = function() {
-  particlesJS('particles-js', {
+  particlesJS('particles', {
 	  "particles": {
 	    "number": {
 	      "value": 271,

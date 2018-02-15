@@ -1,15 +1,11 @@
-html {
-	width: 100%;
-	height: 100%;
+#particles canvas{
+	position: absolute;
+  top: 0;
+  left: 0;
 }
 
-#particles-js{
-	position: fixed;
-	width: 100%;
-	height: 100%;
-}
-
-.gradient-bg{
+#particles{
+	position: relative;
 	background: #531c85 !important;
   background: -moz-linear-gradient(top, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
   background: -webkit-linear-gradient(top, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
@@ -18,23 +14,19 @@ html {
   color: #fff;
 }
 
-.padding-top{
-	padding-top: 2em;
-}
-
-.container-fluid {
-  padding-left: 30px !important;
-  padding-right: 30px !important;
+html {
+	width: 100%;
+	height: 100%;
 }
 
 body {
-	width: 100%;
-	height: 100%;
+	width: 100vw;
 	font-smooth: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-family: "Montserrat";
   background: #20033f !important;
+	overflow-x: hidden;
 }
 
 table {
@@ -506,15 +498,16 @@ svg .y.axis .tick:first-child text {
 }
 
 .navbar {
-  background-color: rgba(0,0,0,0.25);
+	margin: 0 !important;
+	background-color: transparent;
 }
 
-.navbar a {
+.navbar li a {
   color: white;
   font-size: 0.85em;
 }
 
-.navbar li:hover, .navbar a:hover {
+.navbar li a:hover {
   background-color: rgba(0,0,0,0.15) !important;
 }
 
@@ -528,19 +521,21 @@ svg .y.axis .tick:first-child text {
   color: white;
 }
 
-.content {
+.curved-top-container {
   position: relative;
-  z-index: 1000;
   width: 300%;
   margin-left: -100%;
   padding-bottom: 2em;
-  margin-top: 2em;
+  margin-top: -3em;
+  margin-bottom: -3em;
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
   background-color: #20033f;
-  padding-top: 2em;
-  padding-bottom: 4em;
-  min-height: 10em;
+  padding-top: 3em;
+}
+
+.content{
+	width: 25%;
 }
 
 .content h4 {
@@ -551,4 +546,12 @@ svg .y.axis .tick:first-child text {
   padding: 1em;
   font-size: 0.8em;
   background-color: rgba(2555,255,255,0.1);
+}
+
+.padding-top{
+	padding-top: 2em;
+}
+
+.full{
+	min-height: 100vh;
 }
