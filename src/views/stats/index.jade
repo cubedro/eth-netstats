@@ -73,23 +73,23 @@ block content
                 span.big-details.kowala-inverse {{ upTimeTotal | upTimeFilter }}
               div.clearfix
         div.row(ng-cloak)
-          div.col-lg-3.col-md-6.stat-holder
+          div.col-lg-3.col-sm-6.stat-holder
             div.big-info.kowala.chart
               //- i.icon-gasprice
               span.small-title gas spending
               sparkchart.big-details.spark-gasspending(data="{{gasSpending.join(',')}}")
-          div.col-lg-3.col-md-6.stat-holder
+          div.col-lg-3.col-sm-6.stat-holder
             div.big-info.kowala.chart
               //- i.icon-uncle
               span.small-title transactions
               sparkchart.big-details.spark-transactions(data="{{transactionDensity.join(',')}}")
-          div.col-lg-3.col-md-6.stat-holder
+          div.col-lg-3.col-sm-6.stat-holder
             div.big-info.kowala.chart(class="{{ avgBlockTime | avgTimeClass }}")
               //- i.icon-time
               span.small-title block time
               //- span.small-value {{ avgBlockTime | avgTimeFilter }}
               sparkchart.big-details.spark-blocktimes(data="{{lastBlocksTime.join(',')}}", tooltipsuffix="s")
-          div.col-lg-3.col-md-6.stat-holder.xpull-right
+          div.col-lg-3.col-sm-6.stat-holder.xpull-right
             div.big-info.kowala.chart.xdouble-chart(class="{{ blockPropagationAvg | propagationAvgTimeClass : true }}")
               //- i.icon-gas
               span.small-title block propagation
