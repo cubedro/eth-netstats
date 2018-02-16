@@ -24,7 +24,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-family: "Montserrat";
-  background: #20033f !important;
+  background: #f90054 !important;
 	overflow-x: hidden;
 }
 
@@ -496,6 +496,10 @@ svg .y.axis .tick:first-child text {
 	text-shadow: 2px 2px 2px #1f033d !important;
 }
 
+#nav {
+	background-color: #20033f;
+}
+
 .navbar {
 	margin: 0 !important;
 	background-color: transparent;
@@ -535,6 +539,10 @@ svg .y.axis .tick:first-child text {
 	max-width: 100vw;
 }
 
+.content h3 {
+  margin-top: -2em;
+}
+
 .content h4 {
   margin-top: 2em;
 }
@@ -555,5 +563,5 @@ svg .y.axis .tick:first-child text {
 
 #header{
 	position: relative;
-	min-height: 35vh;
+	min-height: 50vh;
 }
