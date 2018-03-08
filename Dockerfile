@@ -1,10 +1,12 @@
 FROM node
 
-RUN git clone https://github.com/gochain-io/eth-netstats
-RUN cd /eth-netstats && npm install  &&\
-	npm install -g grunt-cli  &&\
-	grunt all
+WORKDIR /netstats
 
-WORKDIR /eth-netstats
+RUN npm install -g grunt-cli
+ADD package.* /netstats
+RUN cd /netstats && npm install
+
+ADD . /netstats
+RUN	grunt all
 
 CMD ["npm", "start"]
