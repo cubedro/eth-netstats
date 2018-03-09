@@ -1,10 +1,26 @@
-Ethereum Network Stats
+GoChain Network Stats
 ============
 [![Build Status][travis-image]][travis-url] [![dependency status][dep-image]][dep-url]
 
 This is a visual interface for tracking ethereum network status. It uses WebSockets to receive stats from running nodes and output them through an angular interface. It is the front-end implementation for [eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api).
 
 ![Screenshot](https://raw.githubusercontent.com/cubedro/eth-netstats/master/src/images/screenshot.jpg?v=0.0.6 "Screenshot")
+
+## Prequisites
+
+* Docker
+
+## Run
+
+```sh
+export WS_SECRET=YOURSECRET
+make docker
+make run
+```
+
+Check it out at http://localhost:3000
+
+# Running outside Docker
 
 ## Prerequisite
 * node
