@@ -115,14 +115,8 @@ block content
 
               div.col-xs-3.stat-holder.xpull-right
                 div.big-info.chart.xdouble-chart
-                  span.small-title last blocks miners
-                  div.blocks-holder(ng-repeat='miner in miners track by miner.miner', data-toggle="tooltip", data-placement="right", data-original-title="{{miner.blocks}}")
-                    div.block-count(class="{{miner.blocks | minerBlocksClass : 'text-'}}") {{miner.blocks}}
-                    //- div.small-title-miner {{miner.miner | minerNameFilter : miner.name}}
-                    div.small-title-miner {{miner.miner}}
-                    minerblock(blocks="{{miner.blocks}}")
-                    div.clearfix
-
+                  span.small-title transactions per second
+                  sparkchart.big-details.spark-transactions(data="{{transactionRate.join(',')}}")
               div.col-xs-3.stat-holder
                 div.big-info.chart.text-info
                   //- i.icon-uncle
@@ -134,7 +128,7 @@ block content
               div.col-xs-3.stat-holder
                 div.big-info.chart.text-info
                   //- i.icon-uncle
-                  span.small-title transactions
+                  span.small-title transactions per block
                   sparkchart.big-details.spark-transactions(data="{{transactionDensity.join(',')}}")
 
               div.col-xs-3.stat-holder

@@ -24,7 +24,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 	$scope.lastGasLimit = _.fill(Array(MAX_BINS), 2);
 	$scope.lastBlocksTime = _.fill(Array(MAX_BINS), 2);
 	$scope.difficultyChart = _.fill(Array(MAX_BINS), 2);
-	$scope.transactionDensity = _.fill(Array(MAX_BINS), 2);
+	$scope.transactionRate = _.fill(Array(MAX_BINS), 2);
 	$scope.gasSpending = _.fill(Array(MAX_BINS), 2);
 	$scope.miners = [];
 
@@ -355,6 +355,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 				if( !_.isEqual($scope.transactionDensity, data.transactions) && data.transactions.length >= MAX_BINS )
 					$scope.transactionDensity = data.transactions;
+
+				if( !_.isEqual($scope.transactionRate, data.transactionrate) && data.transactionrate.length >= MAX_BINS )
+					$scope.transactionRate = data.transactionrate;
 
 				if( !_.isEqual($scope.gasSpending, data.gasSpending) && data.gasSpending.length >= MAX_BINS )
 					$scope.gasSpending = data.gasSpending;
