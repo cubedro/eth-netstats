@@ -4,7 +4,7 @@ extends ./layout.jade
 block content
   div.container-fluid(ng-controller='StatsCtrl')
     div.row(ng-cloak)
-      div.col-xs-2.stat-holder
+      div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder
         div.big-info.bestblock.text-info
           div.pull-left.icon-full-width
             i.icon-block
@@ -12,7 +12,7 @@ block content
             span.small-title best block
             span.big-details {{'#'}}{{ bestBlock | number}}
           div.clearfix
-      div.col-xs-2.stat-holder
+      div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder
         div.big-info.uncleCount.text-info
           div.pull-left.icon-full-width
             i.icon-uncle
@@ -21,7 +21,7 @@ block content
               span.small (current / last 50)
             span.big-details {{ bestStats.block.uncles.length }}/{{ uncleCount }}
           div.clearfix
-      div.col-xs-2.stat-holder
+      div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder
         div.big-info.blocktime(class="{{ lastBlock | timeClass : true }}")
           div.pull-left.icon-full-width
             i.icon-time
@@ -30,7 +30,7 @@ block content
             span.big-details {{ lastBlock | blockTimeFilter }}
             //- span.big-details(time-ago="lastBlock")
           div.clearfix
-      div.col-xs-2.stat-holder
+      div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder
         div.big-info.avgblocktime(class="{{ avgBlockTime | avgTimeClass }}")
           div.pull-left.icon-full-width
             i.icon-gas
@@ -38,7 +38,7 @@ block content
             span.small-title avg block time
             span.big-details {{ avgBlockTime | avgTimeFilter }}
           div.clearfix
-      div.col-xs-2.stat-holder
+      div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder
         div.big-info.difficulty.text-orange
           div.pull-left.icon-full-width
             i.icon-hashrate
@@ -46,7 +46,7 @@ block content
             span.small-title avg network hashrate
             span.big-details(ng-bind-html="avgHashrate | networkHashrateFilter")
           div.clearfix
-      div.col-xs-2.stat-holder
+      div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder
         div.big-info.difficulty.text-danger
           div.pull-left.icon-full-width
             i.icon-difficulty
@@ -62,58 +62,58 @@ block content
     div.row(ng-cloak)
       div.col-xs-12.stats-boxes(style="padding-top: 0px;")
         div.row.second-row
-          div.col-xs-2.stat-holder.box
+          div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder.box
             div.active-nodes(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
               i.icon-node
               span.small-title active nodes
               span.small-value {{nodesActive}}/{{nodesTotal}}
-          div.col-xs-2.stat-holder.box
+          div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder.box
             div.gasprice.text-info
               i.icon-gasprice
               span.small-title gas price
               span.small-value {{ bestStats.gasPrice.toString() | gasPriceFilter }}
-          div.col-xs-2.stat-holder.box
+          div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder.box
             div.gasprice.text-info
               i.icon-gasprice
               span.small-title gas limit
               span.small-value {{ bestStats.block.gasLimit }} gas
-          div.col-xs-2.stat-holder.box
+          div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder.box
             div.page-latency(class="{{ {active: true, latency: latency} | latencyClass }}")
               i.icon-clock
               span.small-title page latency
               span.small-value {{latency}} ms
-          div.col-xs-2.stat-holder.box
+          div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder.box
             div.uptime(class="{{ upTimeTotal | upTimeClass : true }}")
               i.icon-bulb
               span.small-title uptime
               span.small-value {{ upTimeTotal | upTimeFilter }}
-          div.col-xs-2.stat-holder.box
+          div.col-sm-6.col-md-6.col-lg-2.stat-holder.box
 
         div.row
-          div.col-xs-8
+          div.col-xs-12.col-sm-12.col-md-12.col-lg-8
             div.row
-              div.col-xs-3.stat-holder
+              div.col-xs-6.col-sm-4.col-md-3.stat-holder
                 div.big-info.chart(class="{{ avgBlockTime | avgTimeClass }}")
                   //- i.icon-time
                   span.small-title block time
                   //- span.small-value {{ avgBlockTime | avgTimeFilter }}
                   sparkchart.big-details.spark-blocktimes(data="{{lastBlocksTime.join(',')}}", tooltipsuffix="s")
 
-              div.col-xs-3.stat-holder
+              div.col-xs-6.col-sm-4.col-md-3.stat-holder
                 div.big-info.chart.text-info
                   //- i.icon-difficulty
                   span.small-title difficulty
                   //- span.small-value {{ lastDifficulty | number }}
                   sparkchart.big-details.spark-difficulty(data="{{difficultyChart.join(',')}}")
 
-              div.col-xs-3.stat-holder.xpull-right
+              div.col-xs-6.col-sm-4.col-md-3.stat-holder.xpull-right
                 div.big-info.chart.xdouble-chart(class="{{ blockPropagationAvg | propagationAvgTimeClass : true }}")
                   //- i.icon-gas
                   span.small-title block propagation
                   //- span.small-value {{ blockPropagationAvg | blockPropagationFilter : '' }}
                   histogram.big-details.d3-blockpropagation(data="blockPropagationChart")
 
-              div.col-xs-3.stat-holder.xpull-right
+              div.col-xs-6.col-sm-4.col-md-3.stat-holder.xpull-right
                 div.big-info.chart.xdouble-chart
                   span.small-title last blocks miners
                   div.blocks-holder(ng-repeat='miner in miners track by miner.miner', data-toggle="tooltip", data-placement="right", data-original-title="{{miner.blocks}}")
@@ -123,7 +123,7 @@ block content
                     minerblock(blocks="{{miner.blocks}}")
                     div.clearfix
 
-              div.col-xs-3.stat-holder
+              div.col-xs-6.col-sm-4.col-md-3.stat-holder
                 div.big-info.chart.text-info
                   //- i.icon-uncle
                   span.small-title uncle count&nbsp;
@@ -131,19 +131,19 @@ block content
                   //- span.small-value {{ bestStats.block.uncles.length }}/{{ uncleCount }}
                   sparkchart.big-details.spark-uncles(data="{{uncleCountChart.join(',')}}")
 
-              div.col-xs-3.stat-holder
+              div.col-xs-6.col-sm-4.col-md-3.stat-holder
                 div.big-info.chart.text-info
                   //- i.icon-uncle
                   span.small-title transactions
                   sparkchart.big-details.spark-transactions(data="{{transactionDensity.join(',')}}")
 
-              div.col-xs-3.stat-holder
+              div.col-xs-6.col-sm-4.col-md-3.stat-holder
                 div.big-info.chart.text-info
                   //- i.icon-gasprice
                   span.small-title gas spending
                   sparkchart.big-details.spark-gasspending(data="{{gasSpending.join(',')}}")
 
-              div.col-xs-3.stat-holder
+              div.col-xs-6.col-sm-4.col-md-3.stat-holder
                 div.big-info.chart.text-info
                   //- i.icon-difficulty
                   span.small-title gas limit
@@ -152,7 +152,7 @@ block content
 
 
 
-          div.col-xs-4.stat-holder.map-holder
+          div.col-xs-12.col-sm-12.col-md-12.col-lg-4.stat-holder.map-holder
             //- div.col-xs-12
             nodemap#mapHolder(data="map")
 
