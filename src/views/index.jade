@@ -18,7 +18,7 @@ block content
             i.icon-uncle
           div.big-details-holder
             span.small-title uncles&nbsp;
-              span.small (current / last 50)
+              span.small.hidden-xs (current / last 50)
             span.big-details {{ bestStats.block.uncles.length }}/{{ uncleCount }}
           div.clearfix
       div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder
@@ -43,7 +43,10 @@ block content
           div.pull-left.icon-full-width
             i.icon-hashrate
           div.big-details-holder
-            span.small-title avg network hashrate
+            span.small-title
+              span.hidden-xs avg&nbsp;
+              | network hash
+              span.hidden-xs rate
             span.big-details(ng-bind-html="avgHashrate | networkHashrateFilter")
           div.clearfix
       div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder
@@ -87,7 +90,7 @@ block content
               i.icon-bulb
               span.small-title uptime
               span.small-value {{ upTimeTotal | upTimeFilter }}
-          div.col-sm-6.col-md-6.col-lg-2.stat-holder.box
+          div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder.box
 
         div.row
           div.col-xs-12.col-sm-12.col-md-12.col-lg-8
@@ -127,7 +130,7 @@ block content
                 div.big-info.chart.text-info
                   //- i.icon-uncle
                   span.small-title uncle count&nbsp;
-                    span.small (25 blocks per bar)
+                    span.small.hidden-xs (25 blocks per bar)
                   //- span.small-value {{ bestStats.block.uncles.length }}/{{ uncleCount }}
                   sparkchart.big-details.spark-uncles(data="{{uncleCountChart.join(',')}}")
 
@@ -184,20 +187,20 @@ block content
               i.icon-node(data-toggle="tooltip", data-placement="top", title="Node name", ng-click="orderTable(['info.name'], false)")
             th.th-nodetype.hidden-xs
               i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type", ng-click="orderTable(['info.node'], false)")
-            th.th-latency
+            th.th-latency.hidden-xs
               i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency", ng-click="orderTable(['stats.latency'], false)")
-            th
+            th.hidden-xs
               i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining", ng-click="orderTable(['-stats.hashrate'], false)")
             th
               i.icon-group(data-toggle="tooltip", data-placement="top", title="Peers", ng-click="orderTable(['-stats.peers'], false)")
             th
               i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions", ng-click="orderTable(['-stats.pending'], false)")
-            th
+            th.hidden-xs
               i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
             th.th-blockhash.hidden-xs.hidden-sm.hidden-md &nbsp;
             th.th-blockhash.hidden-xs.hidden-sm.hidden-md
               i.icon-difficulty(data-toggle="tooltip", data-placement="top", title="Total difficulty", ng-click="orderTable(['-stats.block.totalDifficulty'], false)")
-            th
+            th.hidden-xs
               i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions", ng-click="orderTable(['-stats.block.transactions.length'], false)")
             th.hidden-xs
               i.icon-uncle(data-toggle="tooltip", data-placement="top", title="Uncles", ng-click="orderTable(['-stats.block.uncles.length'], false)")
@@ -221,12 +224,12 @@ block content
                 i.icon-warning-o
             td.hidden-xs
               div.small(ng-bind-html="node.info.node | nodeVersion")
-            td(class="{{ node.readable.latencyClass }}")
+            td(class="{{ node.readable.latencyClass }}").hidden-xs
               span.small {{ node.readable.latency }}
-            td(class="{{ node.stats.mining | hashrateClass : node.stats.active }}", ng-bind-html="node.stats.hashrate | hashrateFilter : node.stats.mining")
+            td(class="{{ node.stats.mining | hashrateClass : node.stats.active }}", ng-bind-html="node.stats.hashrate | hashrateFilter : node.stats.mining").hidden-xs
             td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
             td(style="padding-left: 15px;") {{node.stats.pending}}
-            td(class="{{ node.stats | blockClass : bestBlock }}")
+            td(class="{{ node.stats | blockClass : bestBlock }}").hidden-xs
               span(class="{{ node.readable.forkMessage ? node.readable.forkClass : '' }}") {{'#'}}{{ node.stats.block.number | number }}
               //- a.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{ node.readable.forkMessage }}", class="{{ node.readable.forkClass }}")
                 i.icon-warning-o
@@ -234,7 +237,7 @@ block content
               span.small {{node.stats.block.hash | hashFilter}}
             td(class="{{ node.stats | blockClass : bestBlock }}").hidden-xs.hidden-sm.hidden-md
               span.small {{node.stats.block.totalDifficulty | number}}
-            td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
+            td(style="padding-left: 14px;").hidden-xs {{node.stats.block.transactions.length || 0}}
             td(style="padding-left: 14px;").hidden-xs {{node.stats.block.uncles.length || 0}}
             td(class="{{ node.stats.block.received | timeClass : node.stats.active }}") {{node.stats.block.received | blockTimeFilter }}
             td(class="{{ node.stats | propagationTimeClass : bestBlock }}")

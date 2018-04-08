@@ -147,9 +147,9 @@ span.small-title span.small {
 }
 
 .big-info.chart .big-details {
-	display: block;
-	position: absolute;
+	display: table;
 	top: 40px;
+	margin: 0 auto;
 }
 
 .big-info.chart {
@@ -166,6 +166,8 @@ span.small-title span.small {
 	width: 288px;
 	padding-top: 6px;
 	margin-left: -2px;
+	display: table;
+	margin: 0 auto;
 }
 
 .blocks-holder {
@@ -465,4 +467,52 @@ svg .axis text {
 
 svg .y.axis .tick:first-child text {
 	opacity: 0;
+}
+
+@media (max-width: 768px) {
+	.container-fluid {
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+
+	.big-info .icon-full-width i {
+		width: 75px;
+		height: 67px;
+		font-size: 67px;
+		margin-left: -25px;
+	}
+
+	.big-info .big-details-holder {
+		left: 75px;
+	}
+
+	.big-info .big-details {
+		font-size: 35px;
+	}
+
+	.blocks-holder div.small-title-miner {
+		font-family: inherit;
+		font-size: 11px;
+		letter-spacing: -.5px;
+	}
+
+	.blocks-holder {
+		width: 100%;
+	}
+
+	.big-info.chart i, .second-row .box i {
+		font-size: 18px;
+		margin-right: 0px;
+	}
+
+	.second-row .box {
+		height: 100%; /* BUG XXX */
+	}
+}
+
+
+@media (max-width: 600px) {
+	.blocks-holder div.small-title-miner {
+		font-size: 10px;
+	}
 }
