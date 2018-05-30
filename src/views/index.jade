@@ -3,59 +3,53 @@ extends ./layout.jade
 
 block content
   section#header
-    #particles
     .container
       .row.padding-top
-        img.col-xs-push-2.col-xs-8.col-sm-push-4.col-sm-4(src="kowala-testnet.png")
+        img.col-xs-push-2.col-xs-8.col-sm-push-4.col-sm-4(src="logo.png")
       .row.padding-top
-        h3.col-xs-12.text-center A blockchain for testing the Kowala Protocol, kCoins and mTokens. 
+        h3.col-xs-12.text-center A blockchain for testing the Kowala Protocol, kCoins and mTokens.
   section#text
-    .curved-top
-      .container.content
-        .row
-          .col-xs-12
-            .alert.alert-info <strong>This is a work in progress!</strong> We're actively improving the network, and it may sometimes be unstable or behave in unexpected ways.
-        .row
-          .col-xs-12
-            h4 What is the Kowala Testnet?
-            p The Kowala testnet is a sandbox blockchain for testing and experimenting with our flagship stablecoin, kUSD. It's an evolving technology demo which showcases some of things that will be possible with the Kowala Protocol. You can spin up your own node and connect to the network, see how the network is performing using the dashboard, and get free kUSD to play with using the faucet.
-            p kUSD is currently in a pre-release state. This testnet doesn't make use of mining tokens yet, but it is using the next-generation Konsensus protocol to advance the blockchain.
-          .col-xs-12
-            h4 Connecting to the Kowala Testnet via the console
-            p While we're working on our wallet app, you can connect to the testnet using node console provided by the kUSD mining client. We strongly advise you to use the official kUSD Docker image, but advanced users are of course free to clone the sourcecode from GitHub and compile their own clients.
-            p The first step is to <a href="https://www.docker.com/community-edition" target="_blank">install Docker</a> if you don't already have it installed. There are Linux, Mac and Windows versions available. Docker is a virtualization system that allows software compiled for Linux to run on any platform. We use it to automatically fetch and run pre-compiled, up-to-date versions (called 'images') of the kUSD mining client.
-            p With docker installed, it's time to fire up the terminal. To download the mining client, start it, geneerate a wallet and connect to the testnet, run:
-            pre
-              code
-                | docker run --rm -it kowalatech/kusd
-            p Docker should fetch the mining client and then start running it. The two flags &mdash; <code>--rm</code> and <code>-it</code> are shorthand instructions to <strong>r</strong>e<strong>m</strong>ove the image when we're done, and run the container in <strong>i</strong>n<strong>t</strong>eractive mode. This command will create a disposable version of the mining client &mdash; all accounts will be deleted when you exit the console. That's the recommended approach for the testnet: since it may sometimes be unstable, you probably want to start again each time. If you want to make it persist, you can leave off the <code>--rm</code> flag.
-            p After a bit of setup, you should be in the interactive kUSD JavaScript console. This is a command environment that's very similar to the <a href="https://github.com/ethereum/go-ethereum/wiki/JavaScript-Console" target="_blank">Ethereum version</a>. Your node will want to synchonise with the network, which may take a few minutes.
-            p Note that we're currently still using Ethereum names (like 'eth' and 'ether') in the console. That will likely change in the near future.
+    .container.content
+      .row
+        .col-xs-12
+          .alert.alert-info <strong>This is a work in progress!</strong> We're actively improving the network, and it may sometimes be unstable or behave in unexpected ways.
+      .row
+        .col-xs-12
+          h4 What is the Kowala Testnet?
+          p The Kowala testnet is a sandbox blockchain for testing and experimenting with our flagship stablecoin, kUSD. It's an evolving technology demo which showcases some of things that will be possible with the Kowala Protocol. You can spin up your own node and connect to the network and see how the network is performing using the dashboard.
+          p kUSD is currently in a pre-release state. This testnet doesn't make use of mining tokens yet, but it is using the next-generation Konsensus protocol to advance the blockchain.
+        .col-xs-12
+          h4 Connecting to the Kowala Testnet via the console
+          p While we're working on our wallet app, you can connect to the testnet using node console provided by the kUSD mining client. We strongly advise you to use the official kUSD Docker image, but advanced users are of course free to clone the sourcecode from GitHub and compile their own clients.
+          p The first step is to <a href="https://www.docker.com/community-edition" target="_blank">install Docker</a> if you don't already have it installed. There are Linux, Mac and Windows versions available. Docker is a virtualization system that allows software compiled for Linux to run on any platform. We use it to automatically fetch and run pre-compiled, up-to-date versions (called 'images') of the kUSD mining client.
+          p With docker installed, it's time to fire up the terminal. To download the mining client, start it, geneerate a wallet and connect to the testnet, run:
+          pre
+            code
+              | docker run --rm -it kowalatech/kusd
+          p Docker should fetch the mining client and then start running it. The two flags &mdash; <code>--rm</code> and <code>-it</code> are shorthand instructions to <strong>r</strong>e<strong>m</strong>ove the image when we're done, and run the container in <strong>i</strong>n<strong>t</strong>eractive mode. This command will create a disposable version of the mining client &mdash; all accounts will be deleted when you exit the console. That's the recommended approach for the testnet: since it may sometimes be unstable, you probably want to start again each time. If you want to make it persist, you can leave off the <code>--rm</code> flag.
+          p After a bit of setup, you should be in the interactive kUSD JavaScript console. This is a command environment that's very similar to the <a href="https://github.com/ethereum/go-ethereum/wiki/JavaScript-Console" target="_blank">Ethereum version</a>. Your node will want to synchonise with the network, which may take a few minutes.
+          p Note that we're currently still using Ethereum names (like 'eth' and 'ether') in the console. That will likely change in the near future.
 
-            h4 Getting kUSD to play with
-            p The official Docker image will create an account for you when it starts, and you can get its public address via the console:
-            pre
-              code
-                | eth.coinbase
-            p The console will output your public address. For example::
-            pre
-              code
-                | > eth.coinbase
-                | "0xe2ac86cbae1bbbb47d157516d334e70859a1be45"
-            p You can use that address in the <a href="http://faucet.testnet.kowala.io/" target="_blank">Coin Faucet</a> to acquire some free money. The Coin Faucet will send you money more or less immediately, and you can check your balance with:
-            pre
-              code
-                | eth.getBalance(eth.coinbase)
+          h4 Getting kUSD to play with
+          p The official Docker image will create an account for you when it starts, and you can get its public address via the console:
+          pre
+            code
+              | eth.coinbase
+          p The console will output your public address. For example::
+          pre
+            code
+              | > eth.coinbase
+              | "0xe2ac86cbae1bbbb47d157516d334e70859a1be45"
 
-            h4 Sending transactions via the console
-            p kUSD is sent using the <code>eth.sendTransaction()</code> function in the console. To send one of your kUSD to address <code>0xe2ac86cbae1bbbb47d157516d334e70859a1be45</code>, you can use:
-            pre
-              code
-                | eth.sendTransaction({from:eth.coinbase, to:"0xe2ac86cbae1bbbb47d157516d334e70859a1be45", value: web3.toWei(1, "ether")})
-            p As noted above, we're still using some Ethereum terminology. 1 kUSD is, in the console, 1 "ether".
+          h4 Sending transactions via the console
+          p kUSD is sent using the <code>eth.sendTransaction()</code> function in the console. To send one of your kUSD to address <code>0xe2ac86cbae1bbbb47d157516d334e70859a1be45</code>, you can use:
+          pre
+            code
+              | eth.sendTransaction({from:eth.coinbase, to:"0xe2ac86cbae1bbbb47d157516d334e70859a1be45", value: web3.toWei(1, "ether")})
+          p As noted above, we're still using some Ethereum terminology. 1 kUSD is, in the console, 1 "ether".
 
-            h4 Updating the docker image
-            p We frequently push updates to the mining client. Fortunately, Docker makes keeping everything up to date very easy. Just run:
-            pre
-              code
-                | docker pull kowalatech/kusd
+          h4 Updating the docker image
+          p We frequently push updates to the mining client. Fortunately, Docker makes keeping everything up to date very easy. Just run:
+          pre
+            code
+              | docker pull kowalatech/kusd

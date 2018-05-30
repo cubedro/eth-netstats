@@ -3,7 +3,7 @@ doctype html
 html(ng-app="netStatsApp")
   head
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
-    title kTESTNET (kUSD)
+    title Kowala Test Network
     style(type="text/css") [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak { display: none !important; }
     link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600"')
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css')
@@ -12,23 +12,17 @@ html(ng-app="netStatsApp")
     section#nav.container-fluid
       nav.navbar(ng-controller='NavCtrl')
         .navbar-header
-          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#Navbar') 
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#Navbar')
             i.fa.fa-bars
           a.navbar-brand(href="/")
-            img(src="/kowala-testnet.png" height="25")
+            img(src="/logo.png" height="25")
         #Navbar.collapse.navbar-collapse
-          ul.navbar-nav.nav
-            li
-              a(href="/stats/") Network Stats
-            li
-              a(href="http://faucet.testnet.kowala.io/" target="_blank") Coin Faucet
-            li
-              a(href="https://gitter.im/kowala-tech/Lobby" target="_blank") Chat
           ul.navbar-nav.nav.navbar-right
             li
-              a(href="https://github.com/kowala-tech/kUSD", target="_blank") Github
+              a(href="https://gitter.im/kowala-tech/Lobby", target="_blank") Gitter Chat
+            li
+              a(href="https://t.me/kowalaofficial", target="_blank") Telegram Community
+    section#content.container-fluid
+      block content
 
-    block content
-
-    script(src="//cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js")
     script(src="/js/netstats.min.js")

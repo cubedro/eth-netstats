@@ -1,30 +1,20 @@
-#particles{
-	position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #531c85 !important;
-  background: -moz-linear-gradient(top, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
-  background: -webkit-linear-gradient(top, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
-  background: linear-gradient(to bottom, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#531c85', endColorstr='#f90054',GradientType=0 );
-  color: #fff;
-	background-image: url("");
-  background-size: cover;
-  background-position: 50% 50%;
-}
-
 html {
 	width: 100%;
 	height: 100%;
+	background-color: #f90054;
 }
 
 body {
-	width: 100vw;
+	width: 100%;
+	background: -moz-linear-gradient(top, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
+	background: -webkit-linear-gradient(top, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
+	background: linear-gradient(to bottom, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#531c85', endColorstr='#f90054',GradientType=0 );
+	color: #fff;
 	font-smooth: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-family: "Montserrat";
-  background: #f90054 !important;
 	overflow-x: hidden;
 }
 
@@ -497,7 +487,8 @@ svg .y.axis .tick:first-child text {
 }
 
 #nav {
-	background-color: #20033f;
+	background-color: #531c85;
+	padding-bottom: 25px;
 }
 
 .navbar {
@@ -563,5 +554,5 @@ svg .y.axis .tick:first-child text {
 
 #header{
 	position: relative;
-	min-height: 50vh;
+	padding-bottom: 50px;
 }
