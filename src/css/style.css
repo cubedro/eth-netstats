@@ -18,6 +18,18 @@ body {
 	overflow-x: hidden;
 }
 
+.content {
+	background-color: rgba(0,0,0,0.2);
+	padding-top: 2em;
+	border-radius: 1em;
+	margin-bottom: 1em;
+}
+
+.content a {
+	color: white;
+	text-decoration: underline;
+}
+
 table {
 	min-width: 1200px;
 }
