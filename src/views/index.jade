@@ -27,7 +27,7 @@ block content
             code
               | docker run --rm -it kowalatech/kusd --testnet --new-account console
           p Docker should fetch the mining client and then start running it. The two flags near the start of the command &mdash; <code>--rm</code> and <code>-it</code> &mdash; are shorthand instructions to <strong>r</strong>e<strong>m</strong>ove the image when we're done, and run the container in <strong>i</strong>n<strong>t</strong>eractive mode. This command will create a disposable version of the mining client &mdash; all accounts will be deleted when you exit the console. That's the recommended approach for the testnet: since it may sometimes be unstable, you probably want to start again each time. If you want to make it persist, you can leave off the <code>--rm</code> flag.
-          p After a bit of automatic setup, you should be in the interactive kUSD JavaScript console. This is a command environment that's very similar to the <a href="https://github.com/ethereum/go-ethereum/wiki/JavaScript-Console" target="_blank">Ethereum version</a>. Your node will want to synchonise with the network, which may take a few minutes.
+          p After a bit of automatic setup, you should be in the interactive kUSD JavaScript console. This is a command environment that's very similar to the <a href="https://github.com/ethereum/go-ethereum/wiki/JavaScript-Console" target="_blank">Ethereum version</a>. Your node will want to synchronise with the network, which may take a few minutes.
 
           h4 Using a kUSD wallet
           p The official Docker image will create an account for you when it starts, and you can get its public address via the console:
@@ -40,16 +40,21 @@ block content
               | > kcoin.coinbase
               | "0xe2ac86cbae1bbbb47d157516d334e70859a1be45"
 
-          p By default the account will be locked. You can unlock it using the `personal.unlockAccount` function, and entering am empty password when prompted:
+          p By default the account will be locked. You can unlock it using the <code>personal.unlockAccount</code> function, and entering am empty password when prompted:
           pre
             code
               | > personal.unlockAccount(kcoin.coinbase)
               | Unlock account 0x3687c597c3366bf0c2d2fb0ff24b72117638dc8b
               | Passphrase:
-              | true
 
           p 
-            em (If you want to use a non-empty password, you can pass an extra `--new-account-password=<yourpassword>` argument to the Docker command).
+            em (If you want to use a non-empty password, you can pass an extra <code>--new-account-password=yourpassword</code> argument to the Docker command).
+
+          h4 Getting kUSD balance
+          p You can get your current balance (or the balance of any address) using <code>kcoin.getBalance</code>:
+          pre
+            code
+              | > kcoin.getBalance(kcoin.coinbase)
 
           h4 Sending transactions via the console
           p kUSD is sent using the <code>kcoin.sendTransaction()</code> function in the console. To send one of your kUSD to address <code>0xe2ac86cbae1bbbb47d157516d334e70859a1be45</code>, you can use:
@@ -57,6 +62,17 @@ block content
             code
               | kcoin.sendTransaction({from:kcoin.coinbase, to:"0xe2ac86cbae1bbbb47d157516d334e70859a1be45", value: web3.toWei(1, "ether")})
           p As noted above, we're still using some Ethereum terminology. 1 kUSD is, in the console, 1 "ether".
+
+          h4 Using mining tokens
+          p You can get the balance of any address's mining tokens using <code>mtoken.getBalance</code>:
+          pre
+            code
+              | mtoken.getBalance(kcoin.coinbase)
+
+          p Transferring mining tokens can be achieved with <code>mtoken.transfer</code>, which is very simular to <code>kcoin.sendTransaction</code>:
+          pre
+            code
+              | mtoken.transfer({from:kcoin.coinbase, to: "0xe2ac86cbae1bbbb47d157516d334e70859a1be45", value: 1})
 
           h4 Updating the docker image
           p We frequently push updates to the mining client. Fortunately, Docker makes keeping everything up to date very easy. Just run:
