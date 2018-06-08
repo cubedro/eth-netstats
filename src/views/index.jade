@@ -25,8 +25,9 @@ block content
           p With docker installed, it's time to fire up the terminal. To download the mining client, start it, generate a wallet and connect to the testnet via the console, run:
           pre
             code
-              | docker run --rm -it kowalatech/kusd --testnet --new-account console
+              | docker run --rm -it kowalatech/kusd --testnet --v5disc --new-account console
           p Docker should fetch the mining client and then start running it. The two flags near the start of the command &mdash; <code>--rm</code> and <code>-it</code> &mdash; are shorthand instructions to <strong>r</strong>e<strong>m</strong>ove the image when we're done, and run the container in <strong>i</strong>n<strong>t</strong>eractive mode. This command will create a disposable version of the mining client &mdash; all accounts will be deleted when you exit the console. That's the recommended approach for the testnet: since it may sometimes be unstable, you probably want to start again each time. If you want to make it persist, you can leave off the <code>--rm</code> flag.
+          p The flags at the end tell the client to connect to the testnet, use version 5 of the discovery protocol (future versions will not require this flag; it's a temporary measure) create a new account, and start the command-line console. 
           p After a bit of automatic setup, you should be in the interactive kUSD JavaScript console. This is a command environment that's very similar to the <a href="https://github.com/ethereum/go-ethereum/wiki/JavaScript-Console" target="_blank">Ethereum version</a>. Your node will want to synchronise with the network, which may take a few minutes.
 
           h4 Using a kUSD wallet
