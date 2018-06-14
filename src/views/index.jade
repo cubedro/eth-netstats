@@ -5,7 +5,7 @@ block content
   section#header
     .container
       .row.padding-top
-        img.col-xs-push-2.col-xs-8.col-sm-push-4.col-sm-4(src="logo.png")
+        img.col-xs-push-2.col-xs-8.col-sm-push-4.col-sm-4(src="kowala-zygote-testnet.svg")
       .row.padding-top
         h3.col-xs-12.text-center A blockchain for testing the Kowala Protocol, kCoins and mTokens.
   section#text
@@ -27,7 +27,7 @@ block content
             code
               | docker run --rm -it kowalatech/kusd --testnet --v5disc --new-account console
           p Docker should fetch the mining client and then start running it. The two flags near the start of the command &mdash; <code>--rm</code> and <code>-it</code> &mdash; are shorthand instructions to <strong>r</strong>e<strong>m</strong>ove the image when we're done, and run the container in <strong>i</strong>n<strong>t</strong>eractive mode. This command will create a disposable version of the mining client &mdash; all accounts will be deleted when you exit the console. That's the recommended approach for the testnet: since it may sometimes be unstable, you probably want to start again each time. If you want to make it persist, you can leave off the <code>--rm</code> flag.
-          p The flags at the end tell the client to connect to the testnet, use version 5 of the discovery protocol (future versions will not require this flag; it's a temporary measure) create a new account, and start the command-line console. 
+          p The flags at the end tell the client to connect to the testnet, use version 5 of the discovery protocol (future versions will not require this flag; it's a temporary measure) create a new account, and start the command-line console.
           p After a bit of automatic setup, you should be in the interactive kUSD JavaScript console. This is a command environment that's very similar to the <a href="https://github.com/ethereum/go-ethereum/wiki/JavaScript-Console" target="_blank">Ethereum version</a>. Your node will want to synchronise with the network, which may take a few minutes.
 
           h4 Using a kUSD wallet
@@ -48,7 +48,7 @@ block content
               | Unlock account 0x3687c597c3366bf0c2d2fb0ff24b72117638dc8b
               | Passphrase:
 
-          p 
+          p
             em (If you want to use a non-empty password, you can pass an extra <code>--new-account-password=yourpassword</code> argument to the Docker command).
 
           h4 Getting kUSD balance
@@ -56,7 +56,7 @@ block content
           pre
             code
               | > kcoin.getBalance(kcoin.coinbase)
-          
+
           p You can get free coins for the testnet using the <a href="http://faucet.zygote.kowala.io" target="_blank">faucet</a>.
 
           h4 Sending transactions via the console

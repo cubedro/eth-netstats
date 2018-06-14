@@ -122,7 +122,7 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						cwd: 'src/images/',
-						src: ['*.ico', '*.png'],
+						src: ['*.ico', '*.png', '*.svg'],
 						dest: 'dist/',
 						filter: 'isFile'
 					},
