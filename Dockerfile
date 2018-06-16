@@ -5,4 +5,4 @@ RUN npm install
 COPY . .
 RUN npm install -g grunt-cli
 RUN grunt
-RUN npm start
+CMD npm start
