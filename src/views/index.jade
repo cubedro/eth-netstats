@@ -55,8 +55,7 @@ block content
             i.icon-difficulty
           div.big-details-holder
             span.small-title difficulty
-            span.big-details
-              span.small-hash {{ lastDifficulty | totalDifficultyFilter }}
+            span.big-details(ng-bind-html="lastDifficulty | totalDifficultyFilter")
           div.clearfix
 
       div.clearfix
@@ -79,7 +78,7 @@ block content
             div.gasprice.text-info
               i.icon-gasprice
               span.small-title gas limit
-              span.small-value {{ bestStats.block.gasLimit }} gas
+              span.small-value {{ bestStats.block.gasLimit | number }} gas
           div.col-xs-6.col-sm-6.col-md-6.col-lg-2.stat-holder.box
             div.page-latency(class="{{ {active: true, latency: latency} | latencyClass }}")
               i.icon-clock
