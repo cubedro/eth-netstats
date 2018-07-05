@@ -27,7 +27,7 @@ var vendor = [
 ];
 
 var styles = [
-	'bootstrap.min.css',
+	'bootstrap.css',
 	'minimal-icons-embedded.css',
 	'toastr.min.css',
 	'style.css'
@@ -59,7 +59,7 @@ var vendor_lite = [
 ];
 
 var styles_lite = [
-	'bootstrap.min.css',
+	'bootstrap.css',
 	'minimal-icons-embedded.css',
 	'toastr.min.css',
 	'style.css'
@@ -76,6 +76,13 @@ module.exports = function(grunt) {
 			cleanup_js_lite: ['dist-lite/js/*.*', '!dist-lite/js/netstats.*'],
 			cleanup_css_lite: ['dist-lite/css/*.css', '!dist-lite/css/netstats.*.css']
 		},
+		watch: {
+			files: ['src/*/**'],
+			tasks: ['build'],
+			options: {
+				livereload: true
+			}
+		},
 		jade: {
 			build: {
 				options: {
@@ -85,7 +92,8 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'dist/index.html': 'src/views/index.jade'
+					'dist/index.html': 'src/views/index.jade',
+					'dist/stats/index.html': 'src/views/stats/index.jade'
 				}
 			},
 			build_lite: {
@@ -96,7 +104,8 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'dist-lite/index.html': 'src-lite/views/index.jade'
+					'dist-lite/index.html': 'src-lite/views/index.jade',
+					'dist-lite/stats.html': 'src-lite/views/stats.jade'
 				}
 			}
 		},
@@ -113,7 +122,7 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						cwd: 'src/images/',
-						src: ['*.ico'],
+						src: ['*.ico', '*.png', '*.svg'],
 						dest: 'dist/',
 						filter: 'isFile'
 					},
@@ -144,7 +153,7 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						cwd: 'src-lite/images/',
-						src: ['*.ico'],
+						src: ['*.ico', '*.png'],
 						dest: 'dist-lite/',
 						filter: 'isFile'
 					},
@@ -266,6 +275,7 @@ module.exports = function(grunt) {
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-concat');

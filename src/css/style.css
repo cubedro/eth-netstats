@@ -1,13 +1,37 @@
 html {
 	width: 100%;
+	height: 100%;
+	background-color: #f90054;
 }
 
 body {
 	width: 100%;
-	min-width: 1900px;
+	background: -moz-linear-gradient(top, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
+	background: -webkit-linear-gradient(top, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
+	background: linear-gradient(to bottom, #531c85 0%, #571b84 14%, #641980 30%, #7a157a 46%, #981071 62%, #be0a65 79%, #ed0258 96%, #f90054 100%) !important;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#531c85', endColorstr='#f90054',GradientType=0 );
+	color: #fff;
 	font-smooth: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	font-family: "Montserrat";
+	overflow-x: hidden;
+}
+
+.content {
+	background-color: rgba(0,0,0,0.5);
+	padding-top: 2em;
+	border-radius: 1em;
+	margin-bottom: 1em;
+}
+
+.content a {
+	color: white;
+	text-decoration: underline;
+}
+
+table {
+	min-width: 1200px;
 }
 
 table td {
@@ -15,6 +39,11 @@ table td {
 	white-space: nowrap !important;
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-osx-font-smoothing: auto;
+}
+
+.table-responsive{
+	border: none;
+	position: relative;
 }
 
 .propagationBox {
@@ -30,27 +59,27 @@ table td {
 
 .bg-success,
 .text-success .propagationBox {
-	background: #7bcc3a;
+	background: #3DCF35;
 }
 
 .bg-info,
 .text-info .propagationBox {
-	background: #10a0de;
+	background: #FF4500;
 }
 
 .bg-warning,
 .text-warning .propagationBox {
-	background: #FFD162;
+	background: #FF9641;
 }
 
 .bg-orange,
 .text-orange .propagationBox {
-	background: #ff8a00;
+	background: #c20061;
 }
 
 .bg-danger,
 .text-danger .propagationBox {
-	background: #F74B4B;
+	background: #FF4500;
 }
 
 .text-gray .propagationBox {
@@ -71,7 +100,7 @@ table td {
 }
 
 .text-orange {
-	color: #ff8a00;
+	color: #c20061;
 }
 
 .container-fluid {
@@ -80,7 +109,7 @@ table td {
 }
 
 .stat-holder {
-	background: #090909;
+	background: transparent;
 	border: 1px solid rgba(255,255,255,0.05);
 }
 
@@ -106,12 +135,12 @@ table td {
 
 span.small-title,
 div.small-title-miner {
-	font-weight: 700;
+	font-weight: 300;
 	font-size: 14px;
 	line-height: 20px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
-	color: #aaa;
+	color: #fff;
 }
 
 span.small-title span.small {
@@ -119,16 +148,16 @@ span.small-title span.small {
 	font-weight: 600;
 	line-height: 16px;
 	letter-spacing: 0px;
-	color: #666;
+	color: #fff;
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-osx-font-smoothing: auto;
 }
 
 .big-info .big-details {
 	display: block;
-	font-weight: 200;
-	font-size: 50px;
-	line-height: 55px;
+	font-weight: 400;
+	font-size: 45px;
+	line-height: 50px;
 	letter-spacing: -4px;
 	word-spacing: nowrap !important;
 }
@@ -209,13 +238,6 @@ span.small-title span.small {
 	margin-right: 0px;
 }
 
-.second-row .box {
-	height: 40px;
-	line-height: 24px !important;
-	padding: 5px 15px;
-}
-
-.second-row .box i,
 .big-info.chart i {
 	position: relative;
 	top: 2px;
@@ -239,9 +261,6 @@ span.small-title span.small {
 	float: right;
 }
 
-.second-row .box .small-value {
-	float: right;
-}
 .big-info .small-value {
 	position: absolute;
 	right: 14px;
@@ -255,7 +274,7 @@ table i {
 
 table th,
 table td {
-	border-color: #222 !important;
+	border-bottom: 1px solid rgba(255,255,255,0.05) !important;
 }
 
 table td {
@@ -263,7 +282,7 @@ table td {
 }
 
 table th {
-	color: #888;
+	color: #fff;
 }
 
 table th i {
@@ -333,6 +352,7 @@ nodepropagchart {
 	max-width: 400px;
 	text-align: left;
 	font-size: 12px;
+	text-shadow: none;
 }
 
 .map-holder {
@@ -458,7 +478,7 @@ svg .axis text {
 	fill: #777;
 	font-size: 10px;
 	letter-spacing: 0px;
-	font-family: "Source Sans Pro";
+	font-family: "Montserrat";
 	font-weight: 700;
 	-webkit-font-smoothing: subpixel-antialiased;
 	-moz-osx-font-smoothing: auto;
@@ -466,4 +486,85 @@ svg .axis text {
 
 svg .y.axis .tick:first-child text {
 	opacity: 0;
+}
+
+.kowala{
+	color: #fff !important;
+	text-shadow: 2px 2px 2px #1f033d !important;
+}
+
+.kowala-inverse{
+	color: #fe0053 !important;
+	text-shadow: 2px 2px 2px #1f033d !important;
+}
+
+#nav {
+	background-color: #531c85;
+	padding-bottom: 25px;
+}
+
+.navbar {
+	margin: 0 !important;
+	background-color: transparent;
+}
+
+.navbar li a {
+  color: white;
+  font-size: 0.85em;
+}
+
+.navbar li a:hover, .navbar li a:visited  {
+  background-color: rgba(0,0,0,0.15) !important;
+}
+
+.alert {
+  position: relative;
+}
+
+.alert.alert-info {
+  background-color: #d9edf744;
+  border-color: #bce8f166;
+  color: white;
+}
+
+.curved-top {
+  position: relative;
+  width: 400vw;
+  margin-left: -150vw;
+  margin-top: -3em;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  background-color: #20033f;
+  padding-top: 4em;
+}
+
+.content{
+	max-width: 100vw;
+}
+
+.content h3 {
+  margin-top: -2em;
+}
+
+.content h4 {
+  margin-top: 2em;
+}
+
+.content pre {
+  padding: 1em;
+  font-size: 0.8em;
+  background-color: rgba(2555,255,255,0.1);
+}
+
+.padding-top{
+	padding-top: 2em;
+}
+
+.full{
+	min-height: 100vh;
+}
+
+#header{
+	position: relative;
+	padding-bottom: 50px;
 }

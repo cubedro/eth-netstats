@@ -2,245 +2,83 @@
 extends ./layout.jade
 
 block content
-  div.container-fluid(ng-controller='StatsCtrl')
-    div.row(ng-cloak)
-      div.col-xs-2.stat-holder
-        div.big-info.bestblock.text-info
-          div.pull-left.icon-full-width
-            i.icon-block
-          div.big-details-holder
-            span.small-title best block
-            span.big-details {{'#'}}{{ bestBlock | number}}
-          div.clearfix
-      div.col-xs-2.stat-holder
-        div.big-info.uncleCount.text-info
-          div.pull-left.icon-full-width
-            i.icon-uncle
-          div.big-details-holder
-            span.small-title uncles&nbsp;
-              span.small (current / last 50)
-            span.big-details {{ bestStats.block.uncles.length }}/{{ uncleCount }}
-          div.clearfix
-      div.col-xs-2.stat-holder
-        div.big-info.blocktime(class="{{ lastBlock | timeClass : true }}")
-          div.pull-left.icon-full-width
-            i.icon-time
-          div.big-details-holder
-            span.small-title last block
-            span.big-details {{ lastBlock | blockTimeFilter }}
-            //- span.big-details(time-ago="lastBlock")
-          div.clearfix
-      div.col-xs-2.stat-holder
-        div.big-info.avgblocktime(class="{{ avgBlockTime | avgTimeClass }}")
-          div.pull-left.icon-full-width
-            i.icon-gas
-          div.big-details-holder
-            span.small-title avg block time
-            span.big-details {{ avgBlockTime | avgTimeFilter }}
-          div.clearfix
-      div.col-xs-2.stat-holder
-        div.big-info.difficulty.text-orange
-          div.pull-left.icon-full-width
-            i.icon-hashrate
-          div.big-details-holder
-            span.small-title avg network hashrate
-            span.big-details(ng-bind-html="avgHashrate | networkHashrateFilter")
-          div.clearfix
-      div.col-xs-2.stat-holder
-        div.big-info.difficulty.text-danger
-          div.pull-left.icon-full-width
-            i.icon-difficulty
-          div.big-details-holder
-            span.small-title difficulty
-            span.big-details
-              span.small-hash {{ lastDifficulty | totalDifficultyFilter }}
-          div.clearfix
+  section#header
+    .container
+      .row.padding-top
+        img.col-xs-push-2.col-xs-8.col-sm-push-4.col-sm-4(src="kowala-zygote-testnet.svg")
+      .row.padding-top
+        h3.col-xs-12.text-center A blockchain for testing the Kowala Protocol, kCoins and mTokens.
+  section#text
+    .container.content
+      .row
+        .col-xs-12
+          .alert.alert-info <strong>This is a work in progress!</strong> We're actively improving the network, and it may sometimes be unstable or behave in unexpected ways.
+      .row
+        .col-xs-12
+          h4 What is the Zygote Testnet?
+          p The Zygote testnet is a sandbox blockchain for testing and experimenting with our flagship stablecoin, kUSD. It's an evolving technology demo which showcases some of things that will be possible with the Kowala Protocol. You can spin up your own node and connect to the network and see how the network is performing using the dashboard. It's also possible to hold and transfer mining tokens.
+          p kUSD is currently in a pre-release state, but we intend for the Zygote network to be a permanently stable release candidate for the network. In other words, it will always includ the bleeding-edge features of the Kowala Protocl before they're released.
+        .col-xs-12
+          h4 Connecting to the Zygote Testnet via the console
+          p While we're working on our wallet app, you can connect to the testnet using node console provided by the kUSD mining client. We reccomend that you use the official kUSD Docker image, but advanced users are of course free to download the latest stable binaries and use those. This guide assumes the use of the Docker image.
+          p The first step is to <a href="https://www.docker.com/community-edition" target="_blank">install Docker</a> if you don't already have it installed. There are Linux, Mac and Windows versions available. Docker is a virtualization system that allows software compiled for Linux to run on any platform. We use it to automatically fetch and run pre-compiled, up-to-date versions (called 'images') of the kUSD mining client.
+          p With docker installed, it's time to fire up the terminal. To download the mining client, start it, generate a wallet and connect to the testnet via the console, run:
+          pre
+            code
+              | docker run --rm -it kowalatech/kusd --testnet --new-account console
+          p Docker should fetch the mining client and then start running it. The two flags near the start of the command &mdash; <code>--rm</code> and <code>-it</code> &mdash; are shorthand instructions to <strong>r</strong>e<strong>m</strong>ove the image when we're done, and run the container in <strong>i</strong>n<strong>t</strong>eractive mode. This command will create a disposable version of the mining client &mdash; all accounts will be deleted when you exit the console. That's the recommended approach for the testnet: since it may sometimes be unstable, you probably want to start again each time. If you want to make it persist, you can leave off the <code>--rm</code> flag.
+          p The flags at the end tell the client to connect to the testnet, create a new account, and start the command-line console.
+          p After a bit of automatic setup, you should be in the interactive kUSD JavaScript console. This is a command environment that's very similar to the <a href="https://github.com/ethereum/go-ethereum/wiki/JavaScript-Console" target="_blank">Ethereum version</a>. Your node will want to synchronise with the network, which may take a few minutes.
 
-      div.clearfix
+          h4 Using a kUSD wallet
+          p The official Docker image will create an account for you when it starts, and you can get its public address via the console:
+          pre
+            code
+              | kcoin.coinbase
+          p The console will output your public address. For example:
+          pre
+            code
+              | > kcoin.coinbase
+              | "0xe2ac86cbae1bbbb47d157516d334e70859a1be45"
 
+          p By default the account will be locked. You can unlock it using the <code>personal.unlockAccount</code> function, and entering am empty password when prompted:
+          pre
+            code
+              | > personal.unlockAccount(kcoin.coinbase)
+              | Unlock account 0x3687c597c3366bf0c2d2fb0ff24b72117638dc8b
+              | Passphrase:
 
-    div.row(ng-cloak)
-      div.col-xs-12.stats-boxes(style="padding-top: 0px;")
-        div.row.second-row
-          div.col-xs-2.stat-holder.box
-            div.active-nodes(class="{{ nodesActive | nodesActiveClass : nodesTotal }}")
-              i.icon-node
-              span.small-title active nodes
-              span.small-value {{nodesActive}}/{{nodesTotal}}
-          div.col-xs-2.stat-holder.box
-            div.gasprice.text-info
-              i.icon-gasprice
-              span.small-title gas price
-              span.small-value {{ bestStats.gasPrice.toString() | gasPriceFilter }}
-          div.col-xs-2.stat-holder.box
-            div.gasprice.text-info
-              i.icon-gasprice
-              span.small-title gas limit
-              span.small-value {{ bestStats.block.gasLimit }} gas
-          div.col-xs-2.stat-holder.box
-            div.page-latency(class="{{ {active: true, latency: latency} | latencyClass }}")
-              i.icon-clock
-              span.small-title page latency
-              span.small-value {{latency}} ms
-          div.col-xs-2.stat-holder.box
-            div.uptime(class="{{ upTimeTotal | upTimeClass : true }}")
-              i.icon-bulb
-              span.small-title uptime
-              span.small-value {{ upTimeTotal | upTimeFilter }}
-          div.col-xs-2.stat-holder.box
+          p
+            em (If you want to use a non-empty password, you can pass an extra <code>--new-account-password=yourpassword</code> argument to the Docker command).
 
-        div.row
-          div.col-xs-8
-            div.row
-              div.col-xs-3.stat-holder
-                div.big-info.chart(class="{{ avgBlockTime | avgTimeClass }}")
-                  //- i.icon-time
-                  span.small-title block time
-                  //- span.small-value {{ avgBlockTime | avgTimeFilter }}
-                  sparkchart.big-details.spark-blocktimes(data="{{lastBlocksTime.join(',')}}", tooltipsuffix="s")
+          h4 Getting kUSD balance
+          p You can get your current balance (or the balance of any address) using <code>kcoin.getBalance</code>:
+          pre
+            code
+              | > kcoin.getBalance(kcoin.coinbase)
 
-              div.col-xs-3.stat-holder
-                div.big-info.chart.text-info
-                  //- i.icon-difficulty
-                  span.small-title difficulty
-                  //- span.small-value {{ lastDifficulty | number }}
-                  sparkchart.big-details.spark-difficulty(data="{{difficultyChart.join(',')}}")
+          p You can get free coins for the testnet using the <a href="http://faucet.zygote.kowala.io" target="_blank">faucet</a>.
 
-              div.col-xs-3.stat-holder.xpull-right
-                div.big-info.chart.xdouble-chart(class="{{ blockPropagationAvg | propagationAvgTimeClass : true }}")
-                  //- i.icon-gas
-                  span.small-title block propagation
-                  //- span.small-value {{ blockPropagationAvg | blockPropagationFilter : '' }}
-                  histogram.big-details.d3-blockpropagation(data="blockPropagationChart")
+          h4 Sending transactions via the console
+          p kUSD is sent using the <code>kcoin.sendTransaction()</code> function in the console. To send one of your kUSD to address <code>0xe2ac86cbae1bbbb47d157516d334e70859a1be45</code>, you can use:
+          pre
+            code
+              | kcoin.sendTransaction({from:kcoin.coinbase, to:"0xe2ac86cbae1bbbb47d157516d334e70859a1be45", value: web3.toWei(1, "ether")})
+          p As noted above, we're still using some Ethereum terminology. 1 kUSD is, in the console, 1 "ether".
 
-              div.col-xs-3.stat-holder.xpull-right
-                div.big-info.chart.xdouble-chart
-                  span.small-title last blocks miners
-                  div.blocks-holder(ng-repeat='miner in miners track by miner.miner', data-toggle="tooltip", data-placement="right", data-original-title="{{miner.blocks}}")
-                    div.block-count(class="{{miner.blocks | minerBlocksClass : 'text-'}}") {{miner.blocks}}
-                    //- div.small-title-miner {{miner.miner | minerNameFilter : miner.name}}
-                    div.small-title-miner {{miner.miner}}
-                    minerblock(blocks="{{miner.blocks}}")
-                    div.clearfix
+          h4 Using mining tokens
+          p You can get the balance of any address's mining tokens using <code>mtoken.getBalance</code>:
+          pre
+            code
+              | mtoken.getBalance(kcoin.coinbase)
 
-              div.col-xs-3.stat-holder
-                div.big-info.chart.text-info
-                  //- i.icon-uncle
-                  span.small-title uncle count&nbsp;
-                    span.small (25 blocks per bar)
-                  //- span.small-value {{ bestStats.block.uncles.length }}/{{ uncleCount }}
-                  sparkchart.big-details.spark-uncles(data="{{uncleCountChart.join(',')}}")
+          p Transferring mining tokens can be achieved with <code>mtoken.transfer</code>, which is very simular to <code>kcoin.sendTransaction</code>:
+          pre
+            code
+              | mtoken.transfer({from:kcoin.coinbase, to: "0xe2ac86cbae1bbbb47d157516d334e70859a1be45", value: 1})
 
-              div.col-xs-3.stat-holder
-                div.big-info.chart.text-info
-                  //- i.icon-uncle
-                  span.small-title transactions
-                  sparkchart.big-details.spark-transactions(data="{{transactionDensity.join(',')}}")
-
-              div.col-xs-3.stat-holder
-                div.big-info.chart.text-info
-                  //- i.icon-gasprice
-                  span.small-title gas spending
-                  sparkchart.big-details.spark-gasspending(data="{{gasSpending.join(',')}}")
-
-              div.col-xs-3.stat-holder
-                div.big-info.chart.text-info
-                  //- i.icon-difficulty
-                  span.small-title gas limit
-                  //- span.small-value {{ lastDifficulty | number }}
-                  sparkchart.big-details.spark-difficulty(data="{{lastGasLimit.join(',')}}")
-
-
-
-          div.col-xs-4.stat-holder.map-holder
-            //- div.col-xs-12
-            nodemap#mapHolder(data="map")
-
-    div.row
-      div.col-xs-12.stats-boxes
-        div.row.second-row
-          div.col-xs-12.stat-holder.box
-            div.active-nodes.text-warning
-              i.icon-warning-o
-              span.small-title ATTENTION!
-              span.small-value This page does not represent the entire state of the ethereum network - listing a node on this page is a voluntary process.
-          //- div.col-xs-12.stat-holder.box
-          //-   div.active-nodes.text-danger
-          //-     i.icon-hashrate
-          //-     span.small-title SECURITY ALERT
-          //-     span.small-value
-          //-       a(href="https://blog.ethereum.org/2015/09/10/security-alert-previous-security-patch-can-lead-to-invalid-state-root-on-go-clients-with-a-specific-transaction-sequence-fixed-please-update/", target="_blank", class="text-danger") Read the blog post
-
-
-      //- div.clearfix
-
-    div.row(ng-cloak, style="padding-top: 10px")
-      table.table.table-striped
-        thead
-          tr.text-info
-            th.th-nodecheck
-              i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Pin nodes to display first", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
-            th.th-nodename
-              i.icon-node(data-toggle="tooltip", data-placement="top", title="Node name", ng-click="orderTable(['info.name'], false)")
-            th.th-nodetype
-              i.icon-laptop(data-toggle="tooltip", data-placement="top", title="Node type", ng-click="orderTable(['info.node'], false)")
-            th.th-latency
-              i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency", ng-click="orderTable(['stats.latency'], false)")
-            th
-              i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining", ng-click="orderTable(['-stats.hashrate'], false)")
-            th
-              i.icon-group(data-toggle="tooltip", data-placement="top", title="Peers", ng-click="orderTable(['-stats.peers'], false)")
-            th
-              i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions", ng-click="orderTable(['-stats.pending'], false)")
-            th
-              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
-            th.th-blockhash &nbsp;
-            th.th-blockhash
-              i.icon-difficulty(data-toggle="tooltip", data-placement="top", title="Total difficulty", ng-click="orderTable(['-stats.block.totalDifficulty'], false)")
-            th
-              i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions", ng-click="orderTable(['-stats.block.transactions.length'], false)")
-            th
-              i.icon-uncle(data-toggle="tooltip", data-placement="top", title="Uncles", ng-click="orderTable(['-stats.block.uncles.length'], false)")
-            th.th-blocktime
-              i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time", ng-click="orderTable(['-stats.block.received'], false)")
-            th.th-peerPropagationTime
-              i.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
-            th.th-peerPropagationChart
-            th.th-peerPropagationAvg
-              i.icon-gas(data-toggle="tooltip", data-placement="top", title="Average propagation time", ng-click="orderTable(['stats.propagationAvg'], false)")
-            th
-              i.icon-bulb(data-toggle="tooltip", data-placement="top", title="Up-time", ng-click="orderTable(['-stats.uptime'], false)")
-        tbody(ng-cloak)
-          tr(ng-repeat='node in nodes | orderBy:predicate track by node.id', class="{{ node.stats | mainClass : bestBlock }}", id="node_{{node.id}}")
-            td.td-nodecheck
-              i(ng-click="pinNode(node.id)", class="{{ node.pinned | nodePinClass }}", data-toggle="tooltip", data-placement="right", data-original-title="Click to {{ node.pinned ? 'un' : '' }}pin")
-            td.nodeInfo(rel="{{node.id}}")
-              span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{node | geoTooltip}}") {{node.info.name}}
-              //- span.small &nbsp;({{node.info.ip}})
-              a.small(href="https://github.com/ethereum/wiki/wiki/Network-Status#updating", target="_blank", data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="Netstats client needs update.<br>Click this icon for instructions.", class="{{ node.info | nodeClientClass : currentApiVersion }}")
-                i.icon-warning-o
-            td
-              div.small(ng-bind-html="node.info.node | nodeVersion")
-            td(class="{{ node.readable.latencyClass }}")
-              span.small {{ node.readable.latency }}
-            td(class="{{ node.stats.mining | hashrateClass : node.stats.active }}", ng-bind-html="node.stats.hashrate | hashrateFilter : node.stats.mining")
-            td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
-            td(style="padding-left: 15px;") {{node.stats.pending}}
-            td(class="{{ node.stats | blockClass : bestBlock }}")
-              span(class="{{ node.readable.forkMessage ? node.readable.forkClass : '' }}") {{'#'}}{{ node.stats.block.number | number }}
-              //- a.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{ node.readable.forkMessage }}", class="{{ node.readable.forkClass }}")
-                i.icon-warning-o
-            td(class="{{ node.stats | blockClass : bestBlock }}")
-              span.small {{node.stats.block.hash | hashFilter}}
-            td(class="{{ node.stats | blockClass : bestBlock }}")
-              span.small {{node.stats.block.totalDifficulty | number}}
-            td(style="padding-left: 14px;") {{node.stats.block.transactions.length || 0}}
-            td(style="padding-left: 14px;") {{node.stats.block.uncles.length || 0}}
-            td(class="{{ node.stats.block.received | timeClass : node.stats.active }}") {{node.stats.block.received | blockTimeFilter }}
-            td(class="{{ node.stats | propagationTimeClass : bestBlock }}")
-              div.propagationBox
-              span {{node.stats.block.propagation | blockPropagationFilter}}
-            td.peerPropagationChart(class="{{node.id}}")
-              nodepropagchart(data="{{node.history.join(',')}}")
-            td(class="{{ node.stats | propagationNodeAvgTimeClass : bestBlock }}") {{ node.stats | blockPropagationAvgFilter : bestBlock }}
-            td(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}
+          h4 Updating the docker image
+          p We frequently push updates to the mining client. Fortunately, Docker makes keeping everything up to date very easy. Just run:
+          pre
+            code
+              | docker pull kowalatech/kusd

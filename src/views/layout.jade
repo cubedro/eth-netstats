@@ -3,11 +3,32 @@ doctype html
 html(ng-app="netStatsApp")
   head
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
-    title Ethereum Network Status
+    title Kowala Test Network
     style(type="text/css") [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak { display: none !important; }
-    link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700')
+    link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600"')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css')
     link(rel='stylesheet', href='/css/netstats.min.css')
   body
-    block content
+    section#nav.container-fluid
+      nav.navbar(ng-controller='NavCtrl')
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#Navbar')
+            i.fa.fa-bars
+          a.navbar-brand(href="/")
+            img(src="/kowala-zygote-testnet.svg" height="25")
+        #Navbar.collapse.navbar-collapse
+          ul.navbar-nav.nav.navbar-right
+            li
+              a(href="/stats") Network stats
+            li
+              a(href="https://faucet.zygote.kowala.tech", target="_blank") Coin faucet
+            li
+              a(href="https://github.com/kowala-tech/kcoin", target="_blank") Github
+            li
+              a(href="https://docs.kowala.tech", target="_blank") Documentation
+            li
+              a(href="https://t.me/kowalaofficial", target="_blank") Telegram Community
+    section#content.container-fluid
+      block content
 
     script(src="/js/netstats.min.js")
