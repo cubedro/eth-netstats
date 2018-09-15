@@ -75,7 +75,7 @@ angular.module('netStatsApp.filters', [])
 		return $sce.trustAsHtml('<span class="small">' + filter('number')(result.toFixed(1)) + ' <span class="small-hash">' + unit + 'H/s</span></span>');
 	};
 }])
-.filter('totalDifficultyFilter', ['$sce', '$filter', function($sce, filter) {
+.filter('totalDifficultyFilter', function() {
 	return function(hashes) {
 		var result = hashes;
 		var units = ['', 'K', 'M', 'G', 'T', 'P'];
@@ -87,9 +87,9 @@ angular.module('netStatsApp.filters', [])
 			unit = units[i];
 		}
 
-		return $sce.trustAsHtml(filter('number')(result.toFixed(2)) + ' <span class="small-hash">' + unit + 'H</span>');
+		return result.toFixed(2) + ' ' + unit + 'H';
 	};
-}])
+})
 .filter('nodeVersion', function($sce) {
 	return function(version) {
 		if(version)
