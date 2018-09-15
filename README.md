@@ -1,4 +1,4 @@
-Ethereum Network Stats
+Ethereum Network Stats based off github.com/cubedro/eth-netstats
 ============
 [![Build Status][travis-image]][travis-url] [![dependency status][dep-image]][dep-url]
 
@@ -35,6 +35,28 @@ npm start
 ```
 
 see the interface at http://localhost:3000
+
+## Updates since original cubedro/eth-netstats base:
+
++ Fixed block history if chain is shorted than MAX_HISTORY
+
++ Fixed broken headings in Markdown files
+
++ Docker support added (compatible with puppeth)
+
++ Updated geoip-lite package to latest version (fixed location info)
+
++ Responsive design patch added for mobile view
+
++ Bug fixed with charts and formats
+
+## To-do list
+
++ Update npm libraries for vulnerability patch & performance increase
+
++ Add average TPS calculation
+
++ More features with DPOS / POA!
 
 [travis-image]: https://travis-ci.org/eosclab/eth-netstats.svg
 [travis-url]: https://travis-ci.org/eosclab/eth-netstats
