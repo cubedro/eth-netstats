@@ -43,7 +43,7 @@ grunt lite
 
 If you want to build both versions run
 ```bash
-grunt all
+npm run dist
 ```
 
 ## Run

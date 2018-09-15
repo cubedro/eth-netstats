@@ -8,6 +8,7 @@
     "npm": "2.5.1"
   },
   "scripts": {
+    "dist": "grunt",
     "start": "node ./bin/www"
   },
   "dependencies": {
