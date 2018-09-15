@@ -1,7 +1,7 @@
 {
   "name": "eth-netstats",
   "description": "Ethereum Network Intelligence dashboard",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "scripts": {
     "dist": "grunt",
     "start": "node ./bin/www"
