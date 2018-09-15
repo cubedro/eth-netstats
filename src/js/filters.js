@@ -63,7 +63,7 @@ angular.module('netStatsApp.filters', [])
 			return $sce.trustAsHtml('<i class="icon-cancel"></i>');
 
 		var result = hashes;
-		var units = ['', 'K', 'M', 'G', 'T', 'P'];
+		var units = ['', 'K', 'M', 'G', 'T', 'P', 'E'];
 		var unit = 'K';
 
 		for(var i = 1; result > 1000; i++)
@@ -78,7 +78,7 @@ angular.module('netStatsApp.filters', [])
 .filter('totalDifficultyFilter', function() {
 	return function(hashes) {
 		var result = hashes;
-		var units = ['', 'K', 'M', 'G', 'T', 'P'];
+		var units = ['', 'K', 'M', 'G', 'T', 'P', 'E'];
 		var unit = '';
 
 		for(var i = 1; result > 1000; i++)
