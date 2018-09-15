@@ -3,7 +3,7 @@
   "description": "Ethereum Network Intelligence dashboard",
   "version": "0.0.9",
   "scripts": {
-    "build": "grunt",
+    "dist": "grunt",
     "start": "node ./bin/www"
   },
   "repository": {

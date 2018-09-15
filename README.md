@@ -25,7 +25,7 @@ npm install
 
 To build run
 ```bash
-npm run build
+npm run dist
 ```
 
 ## Run
