@@ -36,7 +36,7 @@
     "primus": "^6.0.5",
     "primus-emit": "^1.0.0",
     "primus-spark-latency": "^0.1.1",
-    "ws": "^1.1.1"
+    "ws": "^1.1.5"
   },
   "devDependencies": {}
 }
