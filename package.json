@@ -14,7 +14,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
-    "d3": "^5.7.0",
+    "d3": "3.5.17",
     "debug": "^4.1.0",
     "express": "^4.16.4",
     "geoip-lite": "^1.3.2",
@@ -27,7 +27,7 @@
     "grunt-contrib-jade": "^1.0.0",
     "grunt-contrib-uglify": "^4.0.0",
     "jade": "^1.11.0",
-    "lodash": "^4.17.11",
+    "lodash": "3.10.1",
     "primus": "^7.3.1",
     "primus-emit": "^1.0.0",
     "primus-spark-latency": "^0.1.1",
