@@ -26,7 +26,7 @@
     "grunt-contrib-cssmin": "^3.0.0",
     "grunt-contrib-jade": "^1.0.0",
     "grunt-contrib-uglify": "^4.0.0",
-    "jade": "1.11.0",
+    "jade": "^1.11.0",
     "lodash": "3.10.1",
     "primus": "^6.0.5",
     "primus-emit": "^1.0.0",
