@@ -73,6 +73,11 @@ table td {
 	background: #8be9fd;
 }
 
+.bg-highlight,
+.text-highlight .propagationBox {
+	background: #bd93f9;
+}
+
 .bg-warning,
 .text-warning .propagationBox {
 	background: #f1fa8c;
