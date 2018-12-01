@@ -2,7 +2,6 @@
 */**/.DS_Store
 node_modules
 dist
-dist-lite
 npm-debug.log
 ansible/venv
 config/nodes.js
@@ -12,3 +11,5 @@ config/nodes.js
 .node-xmlhttprequest-*
 ws_secret.json
 stats.json
+package-lock.json
+
