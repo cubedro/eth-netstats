@@ -4,7 +4,7 @@ Ethereum POA-Network Stats
 
 This is a visual interface for tracking proof-of-authority network status. It uses WebSockets to receive stats from running nodes and output them through an angular interface. It is the front-end implementation for [netstats-client](https://github.com/goerli/netstats-client).
 
-![Screenshot](https://raw.githubusercontent.com/cubedro/eth-netstats/master/src/images/screenshot.jpg?v=0.0.6 "Screenshot")
+![Screenshot](src/images/screenshot-v0.1.0.png "Screenshot")
 
 ## Prerequisite
 * node
