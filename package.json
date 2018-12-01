@@ -1,6 +1,6 @@
 {
   "name": "netstats-server",
-  "description": "POA Network Intelligence dashboard",
+  "description": "Görli Network Dashboard",
   "version": "0.1.0",
   "private": true,
   "engines": {
