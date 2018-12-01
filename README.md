@@ -22,14 +22,14 @@ npm install
 sudo npm install -g grunt-cli
 ```
 
-##Build the resources
+## Build the resources
 In order to build the static files you have to run grunt tasks which will generate dist directories containing the js and css files, fonts and images.
 
 ```bash
 grunt
 ```
 
-##Run
+## Run
 
 ```bash
 WS_SECRET="asdf" npm start
