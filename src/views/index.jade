@@ -38,7 +38,7 @@ block content
             span.big-details {{ bestStats.gasPrice.toString() | gasPriceFilter }}
           div.clearfix
       div.col-xs-2.stat-holder
-        div.big-info.gasprice.text-info
+        div.big-info.gasprice.text-highlight
           div.pull-left.icon-full-width
             i.icon-difficulty
           div.big-details-holder
@@ -88,7 +88,7 @@ block content
           div.clearfix
       div.col-xs-2.stat-holder.xpull-right
         div.big-info.chart.xdouble-chart.text-danger
-          i.icon-hashrate
+          //- i.icon-hashrate
           span.small-title last blocks miners
           div.blocks-holder(ng-repeat='miner in miners track by miner.miner', data-toggle="tooltip", data-placement="right", data-original-title="{{miner.blocks}}")
             div.block-count(class="{{miner.blocks | minerBlocksClass : 'text-'}}") {{miner.blocks}}
