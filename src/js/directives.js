@@ -100,6 +100,24 @@ angular.module('netStatsApp.directives', [])
 			{
 				tElement.replaceWith('<span>' + tAttrs.data + "</span>");
 
+				// register resize watcher
+				var timeout;
+				var width;
+				$(window).on('resize', function(e) {
+					if( $('body').width() < 600 )
+						width = 4;
+					else if( $('body').width() < 1200 )
+						width = 5;
+					else
+						width = 6;
+
+					if(timeout)
+						clearTimeout(timeout);
+					timeout = setTimeout(function() {
+						$.fn.sparkline.defaults.bar.barWidth = width;
+					}, 200);
+				});
+
 				return function(scope, element, attrs)
 				{
 					attrs.$observe("data", function (newValue)
@@ -302,6 +320,12 @@ angular.module('netStatsApp.directives', [])
 				var width = 280 - margin.left - margin.right,
 					height = 63 - margin.top - margin.bottom;
 
+				// fix for mobile devices
+				if( $('body').width() < 600 )
+					width = 200 - margin.left - margin.right;
+				else( $('body').width() < 1200 )
+					width = 240 - margin.left - margin.right;
+
 				var TICKS = 40;
 
 				var x = d3.scale.linear()
@@ -342,9 +366,25 @@ angular.module('netStatsApp.directives', [])
 						return '<div class="tooltip-arrow"></div><div class="tooltip-inner"><b>' + (d.x/1000) + 's - ' + ((d.x + d.dx)/1000) + 's</b><div class="small">Percent: <b>' + Math.round(d.y * 100) + '%</b>' + '<br>Frequency: <b>' + d.frequency + '</b><br>Cumulative: <b>' + Math.round(d.cumpercent*100) + '%</b></div></div>';
 					})
 
-				scope.init = function()
+				scope.init = function(width)
 				{
 					var data = scope.data;
+
+					var x = d3.scale.linear()
+						.domain([0, 10000])
+						.rangeRound([0, width])
+						.interpolate(d3.interpolateRound);
+
+					var xAxis = d3.svg.axis()
+						.scale(x)
+						.orient("bottom")
+						.ticks(4, ",.1s")
+						.tickFormat(function(t){ return t/1000 + "s"});
+
+					var line = d3.svg.line()
+						.x(function(d) { return x(d.x + d.dx/2) - 1; })
+						.y(function(d) { return y(d.y) - 2; })
+						.interpolate('basis');
 
 					// Adjust y axis
 					y.domain([0, d3.max(data, function(d) { return d.y; })]);
@@ -414,9 +454,24 @@ angular.module('netStatsApp.directives', [])
 
 				scope.$watch('data', function() {
 					if(scope.data.length > 0) {
-						scope.init();
+						scope.init(width);
 					}
 				}, true);
+
+				var timeout;
+				$(window).on('resize', function(e) {
+					var width = 280 - margin.left - margin.right;
+					if( $('body').width() < 768 )
+						width = 200 - margin.left - margin.right;
+
+					if(timeout)
+						clearTimeout(timeout);
+
+					timeout = setTimeout(function() {
+						// redraw
+						scope.init(width);
+					}, 200);
+				});
 			}
 		};
 	}]);
