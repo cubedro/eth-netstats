@@ -6,4 +6,3 @@ before_install: npm install -g grunt-cli
 install:
   - npm install
   - npm run dist
-
