@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/eosclab/eth-netstats.git"
+    "url": "https://github.com/gangnamtestnet/eth-netstats.git"
   },
-  "author": "EOSC LAB <info@eos-classic.io>",
+  "author": "Ikmyeong Na <naikmyeong@naver.com>",
   "license": "LGPL-3.0",
   "bugs": {
-    "url": "https://github.com/eosclab/eth-netstats/issues"
+    "url": "https://github.com/gangnamtestnet/eth-netstats/issues"
   },
-  "homepage": "https://github.com/eosclab/eth-netstats",
+  "homepage": "https://github.com/gangnamtestnet/eth-netstats",
   "dependencies": {
     "body-parser": "1.13.3",
     "chalk": "1.1.1",
