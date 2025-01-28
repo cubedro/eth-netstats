@@ -2,6 +2,7 @@ var _ = require('lodash');
 var logger = require('./lib/utils/logger');
 var chalk = require('chalk');
 var http = require('http');
+const v8 = require('v8')
 
 // Init WS SECRET
 var WS_SECRET;
@@ -29,7 +30,8 @@ else
 	}
 }
 
-var banned = require('./lib/utils/config').banned;
+var banned   = require('./lib/utils/config').banned;
+var reserved = require('./lib/utils/config').reserved;
 
 // Init http server
 if( process.env.NODE_ENV !== 'production' )
@@ -96,17 +98,39 @@ Nodes.setChartsCallback(function (err, charts)
 	}
 });
 
+let connections=0
+const C_LIMIT = 5
+const C_RESET_MS = 30_000
+setInterval(() => {
+	if(connections > C_LIMIT){
+		const stats = v8.getHeapStatistics();
+		if(stats.used_heap_size/1000000 < 1000){
+			console.success('API', 'CON', 'RESET-LIMIT(MB) ', Math.floor(stats.used_heap_size/1000000), 'CON: ' + connections, 'WINDOW(sec): ', Math.floor(C_RESET_MS/1000) , JSON.stringify(stats));
+			connections=0
+		}else{
+			console.success('API', 'CON', 'RESET-SKIP(MB) ', Math.floor(stats.used_heap_size/1000000), 'CON: ' + connections, 'WINDOW(sec):', Math.floor(C_RESET_MS/1000), JSON.stringify(stats));
+		}
+	}
+}, C_RESET_MS);
+
 
 // Init API Socket events
 api.on('connection', function (spark)
 {
+	if(connections > C_LIMIT){
+		// connection limit reached for the window, skip proceeding with connection
+		console.success('API', 'CON', 'LIMIT: '+connections, spark.address.ip);
+		spark.end(undefined, { reconnect: true }); // trigger a client-side reconnection
+		return false
+	}
+	connections++
 	console.info('API', 'CON', 'Open:', spark.address.ip);
 
 	spark.on('hello', function (data)
 	{
 		console.info('API', 'CON', 'Hello', data['id']);
 
-		if( _.isUndefined(data.secret) || WS_SECRET.indexOf(data.secret) === -1 || banned.indexOf(spark.address.ip) >= 0 )
+		if( _.isUndefined(data.secret) || WS_SECRET.indexOf(data.secret) === -1 || banned.indexOf(spark.address.ip) >= 0 || _.isUndefined(data.id) || reserved.indexOf(data.id) >= 0 )
 		{
 			spark.end(undefined, { reconnect: false });
 			console.error('API', 'CON', 'Closed - wrong auth', data);
@@ -132,7 +156,7 @@ api.on('connection', function (spark)
 				{
 					spark.emit('ready');
 
-					console.success('API', 'CON', 'Connected', data.id);
+					console.success('API', 'CON', 'Connected: ' + connections, data.id);
 
 					client.write({
 						action: 'add',
@@ -196,7 +220,7 @@ api.on('connection', function (spark)
 							data: stats
 						});
 
-						console.success('API', 'BLK', 'Block:', data.block['number'], 'from:', data.id);
+						console.success('API', 'BLK', 'Block:', data.block['number'], 'td:', data.block['totalDifficulty'], 'from:', data.id, 'ip:', spark.address.ip);
 
 						Nodes.getCharts();
 					}

@@ -100,6 +100,24 @@ angular.module('netStatsApp.directives', [])
 			{
 				tElement.replaceWith('<span>' + tAttrs.data + "</span>");
 
+				// register resize watcher
+				var timeout;
+				var width;
+				$(window).on('resize', function(e) {
+					if( $('body').width() < 600 )
+						width = 4;
+					else if( $('body').width() < 1200 )
+						width = 5;
+					else
+						width = 6;
+
+					if(timeout)
+						clearTimeout(timeout);
+					timeout = setTimeout(function() {
+						$.fn.sparkline.defaults.bar.barWidth = width;
+					}, 200);
+				});
+
 				return function(scope, element, attrs)
 				{
 					attrs.$observe("data", function (newValue)
@@ -166,11 +184,11 @@ angular.module('netStatsApp.directives', [])
 							tooltipSuffix: '',
 							chartRangeMax: 8000,
 							colorMap: jQuery.range_map({
-								'0:1': '#10a0de',
-								'1:1000': '#7bcc3a',
-								'1001:3000': '#FFD162',
-								'3001:7000': '#ff8a00',
-								'7001:': '#F74B4B'
+								'0:1': '#8be9fd',
+								'1:1000': '#50fa7b',
+								'1001:3000': '#f1fa8c',
+								'3001:7000': '#ffb86c',
+								'7001:': '#ff5555'
 							}),
 							tooltipFormatter: function (spark, opt, ms) {
 								var tooltip = '<div class="tooltip-arrow"></div><div class="tooltip-inner">';
@@ -219,11 +237,11 @@ angular.module('netStatsApp.directives', [])
 						width: width,
 						height: 242,
 						fills: {
-							success: '#7BCC3A',
-							info: '#10A0DE',
-							warning: '#FFD162',
-							orange: '#FF8A00',
-							danger: '#F74B4B',
+							success: '#50fa7b',
+							info: '#8be9fd',
+							warning: '#f1fa8c',
+							orange: '#ffb86c',
+							danger: '#ff5555',
 							defaultFill: '#282828'
 						},
 						geographyConfig: {
@@ -302,6 +320,12 @@ angular.module('netStatsApp.directives', [])
 				var width = 280 - margin.left - margin.right,
 					height = 63 - margin.top - margin.bottom;
 
+				// fix for mobile devices
+				if( $('body').width() < 600 )
+					width = 200 - margin.left - margin.right;
+				else( $('body').width() < 1200 )
+					width = 240 - margin.left - margin.right;
+
 				var TICKS = 40;
 
 				var x = d3.scale.linear()
@@ -315,7 +339,7 @@ angular.module('netStatsApp.directives', [])
 
 				var color = d3.scale.linear()
 					.domain([1000, 3000, 7000, 10000])
-					.range(["#7bcc3a", "#FFD162", "#ff8a00", "#F74B4B"]);
+					.range(["#50fa7b", "#f1fa8c", "#ffb86c", "#ff5555"]);
 
 				var xAxis = d3.svg.axis()
 					.scale(x)
@@ -342,9 +366,25 @@ angular.module('netStatsApp.directives', [])
 						return '<div class="tooltip-arrow"></div><div class="tooltip-inner"><b>' + (d.x/1000) + 's - ' + ((d.x + d.dx)/1000) + 's</b><div class="small">Percent: <b>' + Math.round(d.y * 100) + '%</b>' + '<br>Frequency: <b>' + d.frequency + '</b><br>Cumulative: <b>' + Math.round(d.cumpercent*100) + '%</b></div></div>';
 					})
 
-				scope.init = function()
+				scope.init = function(width)
 				{
 					var data = scope.data;
+
+					var x = d3.scale.linear()
+						.domain([0, 10000])
+						.rangeRound([0, width])
+						.interpolate(d3.interpolateRound);
+
+					var xAxis = d3.svg.axis()
+						.scale(x)
+						.orient("bottom")
+						.ticks(4, ",.1s")
+						.tickFormat(function(t){ return t/1000 + "s"});
+
+					var line = d3.svg.line()
+						.x(function(d) { return x(d.x + d.dx/2) - 1; })
+						.y(function(d) { return y(d.y) - 2; })
+						.interpolate('basis');
 
 					// Adjust y axis
 					y.domain([0, d3.max(data, function(d) { return d.y; })]);
@@ -414,9 +454,24 @@ angular.module('netStatsApp.directives', [])
 
 				scope.$watch('data', function() {
 					if(scope.data.length > 0) {
-						scope.init();
+						scope.init(width);
 					}
 				}, true);
+
+				var timeout;
+				$(window).on('resize', function(e) {
+					var width = 280 - margin.left - margin.right;
+					if( $('body').width() < 768 )
+						width = 200 - margin.left - margin.right;
+
+					if(timeout)
+						clearTimeout(timeout);
+
+					timeout = setTimeout(function() {
+						// redraw
+						scope.init(width);
+					}, 200);
+				});
 			}
 		};
 	}]);

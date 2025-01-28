@@ -1,6 +1,3 @@
-var src = 'src/';
-var dest = 'dist/';
-
 var scripts = [
 	'src/js/app.js',
 	'src/js/controllers.js',
@@ -33,50 +30,17 @@ var styles = [
 	'style.css'
 ];
 
-var src_lite = 'src-lite/';
-var dest_lite = 'dist-lite/';
-
-var scripts_lite = [
-	'src-lite/js/app.js',
-	'src-lite/js/controllers.js',
-	'src-lite/js/filters.js',
-	'src-lite/js/directives.js',
-	'src-lite/js/script.js'
-];
-
-var vendor_lite = [
-	'dist-lite/js/lib/jquery-1.11.3.min.js',
-	'dist-lite/js/lib/bootstrap.min.js',
-	'dist-lite/js/lib/angular.min.js',
-	'dist-lite/js/lib/lodash.min.js',
-	'dist-lite/js/lib/d3.min.js',
-	'dist-lite/js/lib/d3.tip.min.js',
-	'dist-lite/js/lib/moment.min.js',
-	'dist-lite/js/lib/moment.en.min.js',
-	'dist-lite/js/lib/toastr.min.js',
-	'dist-lite/js/lib/jquery.sparkline.min.js',
-	'dist-lite/js/lib/primus.min.js'
-];
-
-var styles_lite = [
-	'bootstrap.min.css',
-	'minimal-icons-embedded.css',
-	'toastr.min.css',
-	'style.css'
-];
-
 module.exports = function(grunt) {
+	scripts.unshift(grunt.option('configPath') || 'src/js/defaultConfig.js');
+
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		clean: {
 			build: ['dist'],
-			cleanup_js: ['dist/js/*.*', '!dist/js/netstats.*'],
-			cleanup_css: ['dist/css/*.css', '!dist/css/netstats.*.css'],
-			build_lite: ['dist-lite'],
-			cleanup_js_lite: ['dist-lite/js/*.*', '!dist-lite/js/netstats.*'],
-			cleanup_css_lite: ['dist-lite/css/*.css', '!dist-lite/css/netstats.*.css']
+			js: ['dist/js/*.*', '!dist/js/netstats.*'],
+			css: ['dist/css/*.css', '!dist/css/netstats.*.css']
 		},
-		jade: {
+		pug: {
 			build: {
 				options: {
 					data: {
@@ -85,10 +49,10 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'dist/index.html': 'src/views/index.jade'
+					'dist/index.html': 'src/views/index.pug'
 				}
 			},
-			build_lite: {
+			build_pow: {
 				options: {
 					data: {
 						debug: false,
@@ -96,7 +60,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'dist-lite/index.html': 'src-lite/views/index.jade'
+					'dist/index.html': 'src/pow/views/index.pug'
 				}
 			}
 		},
@@ -106,14 +70,14 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						cwd: 'src/fonts/',
-						src: ['minimal-*.*'],
+						src: ['*.*'],
 						dest: 'dist/fonts/',
 						filter: 'isFile'
 					},
 					{
 						expand: true,
 						cwd: 'src/images/',
-						src: ['*.ico'],
+						src: ['*.*'],
 						dest: 'dist/',
 						filter: 'isFile'
 					},
@@ -132,34 +96,34 @@ module.exports = function(grunt) {
 					}
 				]
 			},
-			build_lite: {
+			build_pow: {
 				files: [
 					{
 						expand: true,
-						cwd: 'src-lite/fonts/',
-						src: ['minimal-*.*'],
-						dest: 'dist-lite/fonts/',
-						filter: 'isFile'
-					},
-					{
-						expand: true,
-						cwd: 'src-lite/images/',
-						src: ['*.ico'],
-						dest: 'dist-lite/',
-						filter: 'isFile'
-					},
-					{
-						expand: true,
-						cwd: 'src-lite/css/',
-						src: styles,
-						dest: 'dist-lite/css/',
-						filter: 'isFile'
-					},
-					{
-						expand: true,
-						cwd: 'src-lite/js/lib/',
+						cwd: 'src/fonts/',
 						src: ['*.*'],
-						dest: 'dist-lite/js/lib'
+						dest: 'dist/fonts/',
+						filter: 'isFile'
+					},
+					{
+						expand: true,
+						cwd: 'src/images/',
+						src: ['*.*'],
+						dest: 'dist/',
+						filter: 'isFile'
+					},
+					{
+						expand: true,
+						cwd: 'src/pow/css/',
+						src: styles,
+						dest: 'dist/css/',
+						filter: 'isFile'
+					},
+					{
+						expand: true,
+						cwd: 'src/js/lib/',
+						src: ['*.*'],
+						dest: 'dist/js/lib'
 					}
 				]
 			}
@@ -171,14 +135,6 @@ module.exports = function(grunt) {
 					cwd: 'dist/css',
 					src: ['*.css', '!*.min.css'],
 					dest: 'dist/css/'
-				}]
-			},
-			build_lite: {
-				files: [{
-					expand: true,
-					cwd: 'dist-lite/css',
-					src: ['*.css', '!*.min.css'],
-					dest: 'dist-lite/css/'
 				}]
 			}
 		},
@@ -212,36 +168,6 @@ module.exports = function(grunt) {
 			css: {
 				src: ['dist/css/*.min.css', 'dist/css/*.css'],
 				dest: 'dist/css/netstats.min.css'
-			},
-			vendor_lite: {
-				options: {
-					sourceMap: false,
-					sourceMapIncludeSources: true,
-					sourceMapIn: ['dist-lite/js/lib/*.map']
-				},
-				src: vendor_lite,
-				dest: 'dist-lite/js/vendor.min.js'
-			},
-			scripts_lite : {
-				options: {
-					separator: ';\n',
-				},
-				src: scripts_lite,
-				dest: 'dist-lite/js/app.js'
-			},
-			netstats_lite: {
-				options: {
-					sourceMap: false,
-					sourceMapIncludeSources: true,
-					sourceMapIn: ['dist-lite/js/vendor.min.js.map', 'dist-lite/js/app.min.js.map']
-				},
-				src: ['<%= concat.vendor_lite.dest %>', '<%= uglify.app_lite.dest %>'],
-				dest: 'dist-lite/js/netstats.min.js',
-				nonull: true,
-			},
-			css_lite: {
-				src: ['dist-lite/css/*.min.css', 'dist-lite/css/*.css'],
-				dest: 'dist-lite/css/netstats.min.css'
 			}
 		},
 		uglify: {
@@ -253,15 +179,6 @@ module.exports = function(grunt) {
 				},
 				dest: 'dist/js/app.min.js',
 				src: ['<%= concat.scripts.dest %>']
-			},
-			app_lite: {
-				options: {
-					mangle: false,
-					sourceMap: false,
-					sourceMapIncludeSources: true
-				},
-				dest: 'dist-lite/js/app.min.js',
-				src: ['<%= concat.scripts_lite.dest %>']
 			}
 		}
 	});
@@ -269,12 +186,11 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-jade');
+	grunt.loadNpmTasks('grunt-contrib-pug');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 
-	grunt.registerTask('default', ['clean:build', 'clean:cleanup_js', 'clean:cleanup_css', 'jade:build', 'copy:build', 'cssmin:build', 'concat:vendor', 'concat:scripts', 'uglify:app', 'concat:netstats', 'concat:css', 'clean:cleanup_js', 'clean:cleanup_css']);
-	grunt.registerTask('lite', ['clean:build_lite', 'clean:cleanup_js_lite', 'clean:cleanup_css_lite', 'jade:build_lite', 'copy:build_lite', 'cssmin:build_lite', 'concat:vendor_lite', 'concat:scripts_lite', 'uglify:app_lite', 'concat:netstats_lite', 'concat:css_lite', 'clean:cleanup_js_lite', 'clean:cleanup_css_lite']);
-	grunt.registerTask('build',   'default');
-	grunt.registerTask('all',   ['default', 'lite']);
+	grunt.registerTask('default', ['clean:build', 'clean:js', 'clean:css', 'pug:build', 'copy:build', 'cssmin:build', 'concat:vendor', 'concat:scripts', 'uglify:app', 'concat:netstats', 'concat:css', 'clean:js', 'clean:css']);
+	grunt.registerTask('pow', ['clean:build', 'clean:js', 'clean:css', 'pug:build_pow', 'copy:build_pow', 'cssmin:build', 'concat:vendor', 'concat:scripts', 'uglify:app', 'concat:netstats', 'concat:css', 'clean:js', 'clean:css']);
+	grunt.registerTask('poa',   'default');
 };
